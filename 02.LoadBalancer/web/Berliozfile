@@ -1,0 +1,20 @@
+---
+kind: service
+cluster: hello_world
+name: web
+
+discovery:
+    - kind: load_balancer
+      strategy: round-robin
+
+provides:
+    client:
+        - port: 4000
+          protocol: http
+
+scale:
+    min: 2
+
+resources:
+    memory:
+        min: 128
