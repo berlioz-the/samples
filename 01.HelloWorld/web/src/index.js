@@ -14,11 +14,11 @@ berlioz.monitorPeers('hello_world', 'app', 'client', peers => {
 });
 
 const app = express()
-const port = 3000
+
 app.get('/', (request, response) => {
 
     var data = 'Hello from Berlioz Web Tier! \n<br />';
-    data += 'Peers:' + JSON.stringify(currentPeers, null, 2) + '\n<br />';
+    data += 'Peers: <strong>' + JSON.stringify(currentPeers, null, 2) + '</strong>\n<br />';
 
     if (currentPeers && _.keys(currentPeers).length > 0)
     {
@@ -26,14 +26,12 @@ app.get('/', (request, response) => {
         Request('http://' + peer.address + ':' + peer.hostPort, {json:false}, (err, res, body) => {
           if (err) {
               console.log(err);
-              data += 'ERROR From App Tier:' + JSON.stringify(err, null, 2) + '\n<br />';
+              data += 'ERROR From App Tier:<strong>' + JSON.stringify(err, null, 2) + '</strong>\n<br />';
               response.send(data);
               return;
           }
-          console.log(body.url);
-          console.log(body.explanation);
 
-          data += 'Result From App Tier:' + JSON.stringify(body, null, 2) + '\n<br />';
+          data += 'Result From App Tier:<strong>' + JSON.stringify(body, null, 2) + '</strong>\n<br />';
           response.send(data);
       });
   } else {
@@ -42,10 +40,10 @@ app.get('/', (request, response) => {
   }
 })
 
-app.listen(port, (err) => {
+app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
 
-    console.log(`server is listening on ${port}`)
+    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
 })
