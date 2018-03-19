@@ -1,17 +1,12 @@
 ---
 kind: service
 cluster: hello_world
-name: web
+name: app
 
 provides:
     client:
-        - port: 3000
+        - port: 4000
           protocol: http
-
-consumes:
-    - cluster: hello_world
-      service: app
-      endpoint: client
 
 scale:
     min: 1
