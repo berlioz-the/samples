@@ -2,6 +2,7 @@
 kind: cluster
 name: hello_world
 
+
 provides:
     - service: web
       endpoint: client

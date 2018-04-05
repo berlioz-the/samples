@@ -3,10 +3,18 @@ kind: service
 cluster: hello_world
 name: app
 
+identity:
+    kind: sequential
+
 provides:
     client:
         - port: 4000
           protocol: http
+
+storage:
+    - permanent: true
+      path: /var/hello_world
+      size: 1GB
 
 scale:
     min: 1

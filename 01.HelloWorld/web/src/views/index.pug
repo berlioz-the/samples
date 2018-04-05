@@ -1,0 +1,64 @@
+doctype html
+html
+  include includes/head.pug
+
+  body
+    div.container
+        h1 Berlioz Hello World
+
+        div.row
+            div.col-sm
+                div.card.blue
+                    div.card-header Web Task Environment
+                    div.card-body
+                        table.table
+                            tbody
+                                each setting in settings
+                                    tr
+                                        th(scope='row')= setting.name
+                                        td= setting.value
+
+            div.col-sm
+                div.card.green
+                    div.card-header App::Client Peers
+                    div.card-body
+                        if peers && peers.length > 0
+                            table.table
+                                thead
+                                    tr
+                                        th(scope='col') Identity
+                                        th(scope='col') Protocol
+                                        th(scope='col') Address
+                                        th(scope='col') Port
+                                tbody
+                                    each peer, identity in peers
+                                        tr
+                                            th(scope='row')= identity
+                                            td= peer[0].protocol
+                                            td= peer[0].address
+                                            td= peer[0].hostPort
+                        else
+                            div No peers present
+
+        div.row
+            div.col-sm
+                div(class='card ' + appPeer.cardClass)
+                    div.card-header App::Client Peer Response
+                    div.card-body
+                        if appPeer.url
+                            div.card-text
+                                div URL: #{appPeer.url}
+                        div.card-title= appPeer.title
+                        div.card-text= appPeer.response
+
+        if error
+            div.row
+                div.col-sm
+                    div.card.red
+                        div.card-header GLOBAL ERROR
+                        div.card-body
+                            div= error
+
+
+
+        include includes/foot.pug

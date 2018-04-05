@@ -3,10 +3,16 @@ kind: service
 cluster: hello_world
 name: web
 
+discovery:
+    - kind: dns
+      access: public
+    - kind: address_reserve
+
 provides:
     client:
         - port: 3000
           protocol: http
+          load-balance: true
 
 consumes:
     - cluster: hello_world
@@ -14,7 +20,7 @@ consumes:
       endpoint: client
 
 scale:
-    min: 1
+    min: 4
 
 resources:
     memory:

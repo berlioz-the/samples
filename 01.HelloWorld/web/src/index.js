@@ -1,44 +1,91 @@
 const express = require('express')
 const _ = require('lodash')
-const Request = require('request')
-
-var currentPeers = null;
-
+const request = require('request-promise');
+const Promise = require('promise');
 const berlioz = require('berlioz-connector');
 
+var currentPeers = null;
 berlioz.monitorPeers('hello_world', 'app', 'client', peers => {
     console.log('PEERS:');
     console.log(JSON.stringify(peers, null, 2));
-    // processPeers(peers);
     currentPeers = peers;
 });
 
 const app = express()
+app.set('view engine', 'pug');
+app.use(express.static('public'))
 
-app.get('/', (request, response) => {
+app.get('/', function (req, response) {
+    // currentPeers = {
+    //     "22": [ {
+    //         "name": "client",
+    //         "port": 4000,
+    //         "protocol": "http",
+    //         "networkProtocol": "tcp",
+    //         "hostPort": 32768,
+    //         "address": "10.0.0.45",
+    //         "instanceAddress": "10.0.0.45",
+    //         "publicAddress": "54.161.64.164" } ],
+    //     "11": [ {
+    //         "name": "client",
+    //         "port": 4000,
+    //         "protocol": "http",
+    //         "networkProtocol": "tcp",
+    //         "hostPort": 32744,
+    //         "address": "10.0.0.45",
+    //         "instanceAddress": "10.0.0.45",
+    //         "publicAddress": "54.161.64.164" } ]
+    // };
 
-    var data = 'Hello from Berlioz Web Tier! \n<br />';
-    data += 'Peers: <strong>' + JSON.stringify(currentPeers, null, 2) + '</strong>\n<br />';
+    var renderData = {
+        settings: [
+            {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
+            {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
+            {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
+        ],
+        peers: currentPeers,
+        peersStr: JSON.stringify(currentPeers, null, 2),
+        appPeer: {
+        }
+    };
 
+    return Promise.resolve()
+        .then(() => queryFromAppClient(renderData.appPeer))
+        .catch(error => {
+            if (error instanceof Error) {
+                renderData.error = error.stack + error.stack;
+            } else {
+                renderData.error = JSON.stringify(error, null, 2);
+            }
+        })
+        .then(() => {
+            response.render('index', renderData);
+        })
+        ;
+})
+
+function queryFromAppClient(appPeer)
+{
     if (currentPeers && _.keys(currentPeers).length > 0)
     {
         var peer = currentPeers[_.keys(currentPeers)[0]][0];
-        Request('http://' + peer.address + ':' + peer.hostPort, {json:false}, (err, res, body) => {
-          if (err) {
-              console.log(err);
-              data += 'ERROR From App Tier:<strong>' + JSON.stringify(err, null, 2) + '</strong>\n<br />';
-              response.send(data);
-              return;
-          }
-
-          data += 'Result From App Tier:<strong>' + JSON.stringify(body, null, 2) + '</strong>\n<br />';
-          response.send(data);
-      });
-  } else {
-      data += 'No Peers Present \n<br />';
-      response.send(data);
-  }
-})
+        appPeer.url = 'http://' + peer.address + ':' + peer.hostPort;
+        return request({url: appPeer.url, json:false, timeout:5000 })
+            .then(body => {
+                appPeer.cardClass = 'eastern-blue';
+                appPeer.title = 'RESPONSE';
+                appPeer.response = JSON.stringify(body, null, 2);
+            })
+            .catch(error => {
+                appPeer.cardClass = 'red';
+                appPeer.title = 'ERROR';
+                appPeer.response = JSON.stringify(error, null, 2);
+            });
+    } else {
+        appPeer.cardClass = 'yellow';
+        appPeer.title = 'No peers present';
+    }
+}
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
