@@ -4,15 +4,17 @@ cluster: hello_world
 name: web
 
 discovery:
-    - kind: dns
-      access: public
-    - kind: address_reserve
+    # - kind: dns
+    #   access: public
 
 provides:
     client:
         - port: 3000
           protocol: http
           load-balance: true
+    backdoor:
+        - port: 3500
+          protocol: http
 
 consumes:
     - cluster: hello_world
@@ -20,7 +22,7 @@ consumes:
       endpoint: client
 
 scale:
-    min: 4
+    min: 11
 
 resources:
     memory:

@@ -6,18 +6,22 @@ name: app
 identity:
     kind: sequential
 
+discovery:
+    # - kind: address_reserve
+
 provides:
     client:
         - port: 4000
           protocol: http
+          load-balance: true
 
-storage:
-    - permanent: true
-      path: /var/hello_world
-      size: 1GB
+# storage:
+#     - permanent: true
+#       path: /var/hello_world
+#       size: 1GB
 
 scale:
-    min: 1
+    min: 12
 
 resources:
     memory:

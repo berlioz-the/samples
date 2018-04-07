@@ -12,8 +12,9 @@ berlioz.monitorPeers('hello_world', 'app', 'client', peers => {
 });
 
 const app = express()
-app.set('view engine', 'pug');
+
 app.use(express.static('public'))
+app.set('view engine', 'ejs');
 
 app.get('/', function (req, response) {
     // currentPeers = {
@@ -59,7 +60,7 @@ app.get('/', function (req, response) {
             }
         })
         .then(() => {
-            response.render('index', renderData);
+            response.render('pages/index', renderData);
         })
         ;
 })
