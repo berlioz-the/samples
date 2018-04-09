@@ -1,0 +1,27 @@
+docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" -p "8088:8088" -p "8087:8087" splunk/splunk
+
+
+cd $SPLUNK_HOME/bin
+./splunk status
+
+*******************************************************************
+
+docker build -t berlioz-splunk .
+docker run -d -p "8000:8000" -p "8087:8087" berlioz-splunk
+docker run -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -p "8000:8000" -p "8087:8087" berlioz-splunk
+
+
+*******************************************************************
+/opt/splunk/etc/apps/launcher/local/inputs.conf
+[http://sample]
+disabled = 0
+token = 7ad8ab2c-d6ef-41f7-a24f-753c09d5e2bb
+index = main
+source = sample
+
+*******************************************************************
+/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf
+[http]
+port = 8087
+disabled = 0
+enableSSL = 0
