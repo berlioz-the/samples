@@ -1,0 +1,22 @@
+---
+kind: service
+cluster: auth
+name: mysql
+
+identity:
+    kind: sequential
+
+discovery:
+    # - kind: address_reserve
+
+provides:
+    client:
+        port: 3306
+        protocol: tcp
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 512

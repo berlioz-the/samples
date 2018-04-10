@@ -1,0 +1,13 @@
+---
+kind: cluster
+name: anlytc
+
+
+provides:
+    web:
+        service: splunk
+        endpoint: web
+        public: true
+    collector:
+        service: splunk
+        endpoint: collector

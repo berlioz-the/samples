@@ -1,0 +1,8 @@
+---
+kind: cluster
+name: auth
+
+provides:
+    client:
+        service: app
+        endpoint: client

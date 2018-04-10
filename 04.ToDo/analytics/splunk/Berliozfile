@@ -1,0 +1,23 @@
+---
+kind: service
+cluster: anlytc
+name: splunk
+
+discovery:
+    # - kind: dns
+    #   access: public
+
+provides:
+    web:
+        port: 8000
+        protocol: http
+    collector:
+        port: 8087
+        protocol: http
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 350

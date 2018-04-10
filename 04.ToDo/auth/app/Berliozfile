@@ -1,7 +1,7 @@
 ---
 kind: service
-cluster: hello_world
-name: web
+cluster: auth
+name: app
 
 discovery:
     # - kind: dns
@@ -12,16 +12,15 @@ provides:
         port: 3000
         protocol: http
         load-balance: true
-    backdoor:
-        port: 3500
-        protocol: http
 
 consumes:
-    - service: app
+    - service: mysql
       endpoint: client
+    - cluster: anlytc
+      endpoint: collector
 
 scale:
-    min: 11
+    min: 1
 
 resources:
     memory:

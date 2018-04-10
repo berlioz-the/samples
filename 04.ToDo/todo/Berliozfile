@@ -1,6 +1,7 @@
 ---
 kind: cluster
-name: hello_world
+name: todo
+
 
 provides:
     web:

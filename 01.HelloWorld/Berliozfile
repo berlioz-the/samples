@@ -4,5 +4,7 @@ name: hello_world
 
 
 provides:
-    - service: web
-      endpoint: client
+    web:
+        service: web
+        endpoint: client
+        public: true
