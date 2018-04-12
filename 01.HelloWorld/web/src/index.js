@@ -69,9 +69,9 @@ function queryFromAppClient(appPeer)
 {
     if (currentPeers && _.keys(currentPeers).length > 0)
     {
-        var peer = currentPeers[_.keys(currentPeers)[0]][0];
-        appPeer.url = 'http://' + peer.address + ':' + peer.hostPort;
-        return request({url: appPeer.url, json:false, timeout:5000 })
+        var peer = currentPeers[_.keys(currentPeers)[0]];
+        appPeer.url = 'http://' + peer.address + ':' + peer.port;
+        return request({ url: appPeer.url, json: false, timeout: 5000 })
             .then(body => {
                 appPeer.cardClass = 'eastern-blue';
                 appPeer.title = 'RESPONSE';
@@ -92,6 +92,5 @@ app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_AD
     if (err) {
         return console.log('something bad happened', err)
     }
-
     console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
 })

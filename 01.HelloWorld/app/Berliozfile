@@ -21,7 +21,7 @@ provides:
 #       size: 1GB
 
 scale:
-    min: 12
+    min: 2
 
 resources:
     memory:

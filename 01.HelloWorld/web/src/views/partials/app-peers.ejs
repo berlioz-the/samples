@@ -15,13 +15,13 @@
             </thead>
             <tbody>
                 <% for(var identity in peers) {
-                    var peer = peers[identity][0];
+                    var peer = peers[identity];
                     %>
                     <tr>
                         <th scope="row"><%= identity %></th>
                         <td><%= peer.protocol %></td>
                         <td><%= peer.address %></td>
-                        <td><%= peer.hostPort %></td>
+                        <td><%= peer.port %></td>
                     </tr>
                 <% } %>
             </tbody>
