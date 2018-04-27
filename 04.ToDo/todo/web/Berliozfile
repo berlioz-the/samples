@@ -11,7 +11,7 @@ provides:
     client:
         port: 3000
         protocol: http
-        load-balance: true
+        load-balance: false
     backdoor:
         port: 3500
         protocol: http

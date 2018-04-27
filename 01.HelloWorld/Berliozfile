@@ -8,3 +8,11 @@ provides:
         service: web
         endpoint: client
         public: true
+    app:
+        service: app
+        endpoint: client
+        public: false
+    extra:
+        service: app
+        endpoint: extra
+        public: true

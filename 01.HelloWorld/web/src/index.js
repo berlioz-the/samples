@@ -5,7 +5,7 @@ const Promise = require('promise');
 const berlioz = require('berlioz-connector');
 
 var currentPeers = null;
-berlioz.monitorPeers('hello_world', 'app', 'client', peers => {
+berlioz.monitorPeers('service', 'app', 'client', peers => {
     console.log('PEERS:');
     console.log(JSON.stringify(peers, null, 2));
     currentPeers = peers;

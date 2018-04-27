@@ -12,6 +12,7 @@ provides:
         port: 3000
         protocol: http
         load-balance: true
+        dns: true
     backdoor:
         port: 3500
         protocol: http
@@ -19,10 +20,14 @@ provides:
 consumes:
     - service: app
       endpoint: client
+    - service: app
+      endpoint: extra
+    - service: web
+      endpoint: backdoor
 
 scale:
-    min: 2
+    min: 1
 
 resources:
     memory:
-        min: 128
+        min: 100
