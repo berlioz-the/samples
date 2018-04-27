@@ -1,0 +1,18 @@
+<div class="card <%= appPeer.cardClass %>">
+    <div class="card-header">
+        App::Client Peer Response
+    </div>
+    <div class="card-body">
+        <% if (appPeer.url) { %>
+            <div class="card-text">
+                URL: <%= appPeer.url %>
+            </div>
+        <% } %>
+        <div class="card-title">
+            <%= appPeer.title %>
+        </div>
+        <div class="card-text">
+            <%= appPeer.response %>
+        </div>
+    </div>
+</div>

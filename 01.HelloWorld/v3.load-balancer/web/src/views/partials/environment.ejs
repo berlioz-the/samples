@@ -1,0 +1,17 @@
+<div class="card blue">
+    <div class="card-header">
+        Web Task Environment
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                <% settings.forEach(function(setting) { %>
+                    <tr>
+                        <th scope="row"><%= setting.name %></th>
+                        <td><%= setting.value %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
