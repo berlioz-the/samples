@@ -1,0 +1,20 @@
+---
+kind: service
+cluster: hello
+name: app
+
+provides:
+    client:
+        port: 4000
+        protocol: http
+
+consumes:
+    - service: db
+      endpoint: client
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 128

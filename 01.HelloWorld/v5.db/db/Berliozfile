@@ -1,0 +1,24 @@
+---
+kind: service
+cluster: hello
+name: db
+
+identity:
+    kind: sequential
+
+provides:
+    client:
+        port: 3306
+        protocol: tcp
+
+storage:
+    - permanent: true
+      path: /var/db
+      size: 1GB
+
+scale:
+    min: 3
+
+resources:
+    memory:
+        min: 300

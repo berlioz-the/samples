@@ -1,0 +1,20 @@
+---
+kind: service
+cluster: hello
+name: web
+
+provides:
+    client:
+        port: 3000
+        protocol: http
+
+consumes:
+    - service: app
+      endpoint: client
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 100
