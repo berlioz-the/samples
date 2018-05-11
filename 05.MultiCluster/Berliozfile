@@ -1,0 +1,10 @@
+---
+kind: cluster
+name: multi
+
+
+provides:
+    web:
+        service: web
+        endpoint: client
+        public: true
