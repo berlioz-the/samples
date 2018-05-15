@@ -1,0 +1,20 @@
+---
+kind: service
+cluster: dynamo
+name: app
+
+provides:
+    client:
+        port: 4000
+        protocol: http
+        load-balance: true
+
+consumes:
+    - database: recipes
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 128

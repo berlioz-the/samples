@@ -1,0 +1,14 @@
+---
+kind: database
+cluster: dynamo
+name: recipes
+class: nosql
+subClass: dynamodb
+
+hashKey:
+    name: myId
+    type: String
+
+rangeKey:
+    name: full_name
+    type: String
