@@ -16,7 +16,7 @@ const app = express()
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
-app.get('/', function (req, response) {
+app.get('/', (req, response) => {
     var renderData = {
         settings: [
             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
@@ -42,6 +42,12 @@ app.get('/', function (req, response) {
             response.render('pages/index', renderData);
         })
         ;
+})
+
+
+app.get('/peers', (req, response) => {
+    response.setHeader('Content-Type', 'application/json');
+    response.send(JSON.stringify(berlioz.extractRoot()));
 })
 
 function queryFromAppClient(appPeer)

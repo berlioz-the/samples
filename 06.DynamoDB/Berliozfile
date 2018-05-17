@@ -1,3 +1,13 @@
 ---
 kind: cluster
 name: dynamo
+
+provides:
+    web:
+        service: web
+        endpoint: client
+        public: true
+    app:
+        service: app
+        endpoint: client
+        public: true
