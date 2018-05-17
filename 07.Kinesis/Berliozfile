@@ -1,0 +1,9 @@
+---
+kind: cluster
+name: kin
+
+provides:
+    web:
+        service: web
+        endpoint: client
+        public: true
