@@ -1,6 +1,7 @@
 const express = require('express')
 const _ = require('lodash')
 const request = require('request-promise');
+const AWS = require('aws-sdk');
 const Promise = require('promise');
 const berlioz = require('berlioz-connector');
 
@@ -48,6 +49,62 @@ app.get('/', (req, response) => {
 app.get('/peers', (req, response) => {
     response.setHeader('Content-Type', 'application/json');
     response.send(JSON.stringify(berlioz.extractRoot()));
+})
+
+app.get('/queue/info', (req, response) => {
+    var kinesisInfo = berlioz.getQueueInfo('messages');
+    response.send(JSON.stringify(kinesisInfo));
+})
+
+app.get('/queue/insert', (req, response) => {
+    var kinesisInfo = berlioz.getQueueInfo('messages');
+    var kinesis = new AWS.Kinesis(kinesisInfo.config);
+
+    var params = {
+        StreamName: kinesisInfo.streamName,
+        PartitionKey: 'myKey',
+        Data: 'Hello from ' + process.env.BERLIOZ_TASK_ID
+    };
+    return kinesis.putRecord(params).promise()
+        .then(data => {
+            response.send(JSON.stringify(data));
+        })
+        .catch(reason => {
+            response.send(err);
+        });
+})
+
+app.get('/queue/read', (req, response) => {
+    var kinesisInfo = berlioz.getQueueInfo('messages');
+    var kinesis = new AWS.Kinesis(kinesisInfo.config);
+
+    return kinesis.describeStream({ StreamName: kinesisInfo.streamName }).promise()
+        .then(streamData => {
+            var shardId = streamData.StreamDescription.Shards[0].ShardId;
+            return kinesis.getShardIterator({ ShardId: shardId, StreamName: kinesisInfo.streamName, ShardIteratorType: 'TRIM_HORIZON' }).promise();
+        })
+        .then(shardIteratorData => {
+            return kinesis.getRecords({ ShardIterator: shardIteratorData.ShardIterator }).promise();
+        })
+        .then(data => {
+            response.send(JSON.stringify(data));
+        })
+        .catch(reason => {
+            response.send(reason);
+        });
+})
+
+app.get('/queue/describe', (req, response) => {
+    var kinesisInfo = berlioz.getQueueInfo('messages');
+    var kinesis = new AWS.Kinesis(kinesisInfo.config);
+
+    return kinesis.describeStream({ StreamName: kinesisInfo.streamName }).promise()
+        .then(data => {
+            response.send(JSON.stringify(data));
+        })
+        .catch(reason => {
+            response.send(reason);
+        });
 })
 
 function queryFromAppClient(appPeer)

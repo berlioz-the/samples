@@ -1,41 +1,6 @@
 var AWS = require('aws-sdk');
 
 
-
-//
-// var params = {
-//     TableName: 'localHomePC-dynamo-recipes',
-//     Key: {
-//         'myId': '1234'//,
-//         // 'full_name': 'zzz'
-//     }
-// };
-// docClient.get(params, function(err, data) {
-//     if (err) {
-//         console.log("Error", err);
-//     } else {
-//         console.log("Success", data.Item);
-//     }
-// });
-
-// var params = {
-//     TableName: 'localHomePC-dynamo-recipes',
-//     Item: {
-//         'myId': '1234',
-//         'full_name': 'zzasdfasdf',
-//         'eee': 'ddd'
-//     }
-// };
-// docClient.put(params, function(err, data) {
-//     if (err) {
-//         console.log("Error", err);
-//     } else {
-//         console.log("Success", data);
-//     }
-// });
-
-// return;
-
 const express = require('express')
 const berlioz = require('berlioz-connector');
 
