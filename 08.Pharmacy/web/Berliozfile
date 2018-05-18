@@ -1,0 +1,19 @@
+---
+kind: service
+cluster: pharm
+name: web
+
+provides:
+    client:
+        port: 3000
+        protocol: http
+
+# consumes:
+#     - queue: messages
+#
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 100

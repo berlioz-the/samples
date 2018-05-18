@@ -1,0 +1,14 @@
+---
+kind: database
+cluster: pharm
+name: registry_db
+class: nosql
+subClass: dynamodb
+
+hashKey:
+    name: id
+    type: String
+
+# rangeKey:
+#     name: full_name
+#     type: String

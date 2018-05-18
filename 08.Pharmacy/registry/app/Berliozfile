@@ -1,0 +1,21 @@
+---
+kind: service
+cluster: pharm
+name: registry_app
+
+provides:
+    client:
+        port: 4000
+        protocol: http
+        load-balance: true
+
+consumes:
+    - database: registry_db
+    - queue: registry_queue
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 128

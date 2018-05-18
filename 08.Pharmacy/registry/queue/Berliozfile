@@ -1,0 +1,6 @@
+---
+kind: queue
+cluster: pharm
+name: registry_queue
+class: queue
+subClass: kinesis
