@@ -1,0 +1,22 @@
+<div class="card green">
+    <div class="card-header">
+        Prescription Drop Off
+    </div>
+    <div class="card-body">
+        <form action="/drop-prescription" method="post">
+            <div class="form-group">
+                <label for="patientFullName">Full Name</label>
+                <input type="text" name="patient" class="form-control" id="patientFullName" placeholder="Enter Full Name">
+            </div>
+            <div class="form-group">
+                <label for="medication">Medication</label>
+                <select class="form-control" id="medication" name="medication">
+                    <% drugs.forEach(function(drug) { %>
+                        <option><%= drug.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Drop off</button>
+        </form>
+    </div>
+</div>
