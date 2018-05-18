@@ -1,0 +1,16 @@
+---
+kind: service
+cluster: pharm
+name: work_proc
+
+consumes:
+    - queue: work_tasks
+    - service: dash_app
+      endpoint: client
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 128

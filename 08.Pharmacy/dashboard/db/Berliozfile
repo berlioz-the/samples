@@ -1,12 +1,12 @@
 ---
 kind: database
 cluster: pharm
-name: drugs
+name: dash
 class: nosql
 subClass: dynamodb
 
 hashKey:
-    name: name
+    name: id
     type: String
 
 # rangeKey:

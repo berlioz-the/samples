@@ -7,10 +7,16 @@ provides:
     client:
         port: 3000
         protocol: http
+        load-balance: true
 
-# consumes:
-#     - queue: messages
-#
+consumes:
+    - service: registry_app
+      endpoint: client
+    - service: work_app
+      endpoint: client
+    - service: dash_app
+      endpoint: client
+
 scale:
     min: 1
 

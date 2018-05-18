@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: pharm
-name: registry_app
+name: dash_app
 
 provides:
     client:
@@ -10,7 +10,7 @@ provides:
         load-balance: false
 
 consumes:
-    - database: drugs
+    - database: dash
 
 scale:
     min: 1

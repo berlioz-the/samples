@@ -1,6 +1,6 @@
 ---
 kind: queue
 cluster: pharm
-name: registry_queue
+name: work_tasks
 class: queue
 subClass: kinesis

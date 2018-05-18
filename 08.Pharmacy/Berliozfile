@@ -2,8 +2,8 @@
 kind: cluster
 name: pharm
 
-# provides:
-#     web:
-#         service: web
-#         endpoint: client
-#         public: true
+provides:
+    registry:
+        service: web
+        endpoint: client
+        public: true
