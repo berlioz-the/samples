@@ -15,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, response) => {
     var renderData = {
-        drugs: []
+        drugs: [],
+        readyItems: []
     };
 
     return Promise.resolve()
@@ -23,13 +24,22 @@ app.get('/', (req, response) => {
             var peer = berlioz.getRandomPeer('service', 'registry_app', 'client');
             if (peer) {
                 var url = 'http://' + peer.address + ':' + peer.port + '/items';
-                return request({ url: url, json: true, timeout: 1000 })
+                return request({ url: url, json: true, timeout: 5000 })
                     .then(result => {
                         renderData.drugs = result;
                     });
             }
         })
-        // .then(() => queryFromAppClient(renderData.appPeer))
+        .then(() => {
+            var peer = berlioz.getRandomPeer('service', 'dash_app', 'client');
+            if (peer) {
+                var url = 'http://' + peer.address + ':' + peer.port + '/items';
+                return request({ url: url, json: true, timeout: 5000 })
+                    .then(result => {
+                        renderData.readyItems = result;
+                    });
+            }
+        })
         .catch(error => {
             if (error instanceof Error) {
                 renderData.error = error.stack + error.stack;
@@ -49,7 +59,7 @@ app.post('/new-drug', (req, response) => {
         return response.status(503).send('Peer Unavailable.');
     }
     var url = 'http://' + peer.address + ':' + peer.port + '/item';
-    return request({ url: url, body: req.body, method: 'POST', json: true, timeout: 1000 })
+    return request({ url: url, body: req.body, method: 'POST', json: true, timeout: 5000 })
         .then(body => {
             return response.redirect('/');
         })
@@ -64,8 +74,16 @@ app.post('/drop-prescription', (req, response) => {
         return response.status(503).send('Peer Unavailable.');
     }
     var url = 'http://' + peer.address + ':' + peer.port + '/job';
-    return request({ url: url, body: req.body, method: 'POST', json: true, timeout: 1000 })
-        .then(body => {
+    var body = {
+        patient: req.body.patient,
+        medication: req.body.medication,
+        dropDate: new Date().toISOString()
+    };
+    var requestData = { url: url, body: body, method: 'POST', json: true, timeout: 5000 };
+    console.log('In /drop-prescription: ' + JSON.stringify(requestData, null, 4));
+    return request(requestData)
+        .then(result => {
+            console.log('/drop-prescription Result: ' + JSON.stringify(result, null, 4));
             return response.redirect('/');
         })
         .catch(error => {
@@ -73,124 +91,53 @@ app.post('/drop-prescription', (req, response) => {
         });
 });
 
-app.get('/debug', (req, response) => {
-    var appClientEndpoints = {};
-    var renderData = {
-        settings: [
-            {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
-            {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
-            {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
-        ],
-        peers: appClientEndpoints,
-        peersStr: JSON.stringify(appClientEndpoints, null, 2),
-        appPeer: {
-        }
-    };
-
-    return Promise.resolve()
-        // .then(() => queryFromAppClient(renderData.appPeer))
-        .catch(error => {
-            if (error instanceof Error) {
-                renderData.error = error.stack + error.stack;
-            } else {
-                renderData.error = JSON.stringify(error, null, 2);
-            }
+app.post('/pick-up', (req, response) => {
+    var peer = berlioz.getRandomPeer('service', 'dash_app', 'client');
+    if (!peer) {
+        return response.status(503).send('Peer Unavailable.');
+    }
+    var url = 'http://' + peer.address + ':' + peer.port + '/pick-up';
+    return request({ url: url, body: req.body, method: 'POST', json: true, timeout: 5000 })
+        .then(body => {
+            return response.redirect('/');
         })
-        .then(() => {
-            response.render('pages/debug', renderData);
-        })
-        ;
-})
+        .catch(reason => {
+            response.send('ERROR FROM Web::PickUp ' + JSON.stringify(reason));
+        });
+});
 
-
-
-
-
-
-app.get('/peers', (req, response) => {
-    response.send(berlioz.extractRoot());
-})
-
-// app.get('/queue/info', (req, response) => {
-//     var kinesisInfo = berlioz.getQueueInfo('messages');
-//     response.send(JSON.stringify(kinesisInfo));
-// })
-//
-// app.get('/queue/insert', (req, response) => {
-//     var kinesisInfo = berlioz.getQueueInfo('messages');
-//     var kinesis = new AWS.Kinesis(kinesisInfo.config);
-//
-//     var params = {
-//         StreamName: kinesisInfo.streamName,
-//         PartitionKey: 'myKey',
-//         Data: 'Hello from ' + process.env.BERLIOZ_TASK_ID
+// app.get('/debug', (req, response) => {
+//     var appClientEndpoints = {};
+//     var renderData = {
+//         settings: [
+//             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
+//             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
+//             {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
+//         ],
+//         peers: appClientEndpoints,
+//         peersStr: JSON.stringify(appClientEndpoints, null, 2),
+//         appPeer: {
+//         }
 //     };
-//     return kinesis.putRecord(params).promise()
-//         .then(data => {
-//             response.send(JSON.stringify(data));
+//
+//     return Promise.resolve()
+//         // .then(() => queryFromAppClient(renderData.appPeer))
+//         .catch(error => {
+//             if (error instanceof Error) {
+//                 renderData.error = error.stack + error.stack;
+//             } else {
+//                 renderData.error = JSON.stringify(error, null, 2);
+//             }
 //         })
-//         .catch(reason => {
-//             response.send(err);
-//         });
+//         .then(() => {
+//             response.render('pages/debug', renderData);
+//         })
+//         ;
 // })
 //
-// app.get('/queue/read', (req, response) => {
-//     var kinesisInfo = berlioz.getQueueInfo('messages');
-//     var kinesis = new AWS.Kinesis(kinesisInfo.config);
-//
-//     return kinesis.describeStream({ StreamName: kinesisInfo.streamName }).promise()
-//         .then(streamData => {
-//             var shardId = streamData.StreamDescription.Shards[0].ShardId;
-//             return kinesis.getShardIterator({ ShardId: shardId, StreamName: kinesisInfo.streamName, ShardIteratorType: 'TRIM_HORIZON' }).promise();
-//         })
-//         .then(shardIteratorData => {
-//             return kinesis.getRecords({ ShardIterator: shardIteratorData.ShardIterator }).promise();
-//         })
-//         .then(data => {
-//             response.send(JSON.stringify(data));
-//         })
-//         .catch(reason => {
-//             response.send(reason);
-//         });
+// app.get('/peers', (req, response) => {
+//     response.send(berlioz.extractRoot());
 // })
-//
-// app.get('/queue/describe', (req, response) => {
-//     var kinesisInfo = berlioz.getQueueInfo('messages');
-//     var kinesis = new AWS.Kinesis(kinesisInfo.config);
-//
-//     return kinesis.describeStream({ StreamName: kinesisInfo.streamName }).promise()
-//         .then(data => {
-//             response.send(JSON.stringify(data));
-//         })
-//         .catch(reason => {
-//             response.send(reason);
-//         });
-// })
-//
-// function queryFromAppClient(appPeer)
-// {
-//     if (appClientEndpoints && _.keys(appClientEndpoints).length > 0)
-//     {
-//         var peerIdentities = _.keys(appClientEndpoints);
-//         var peerIdentity = peerIdentities[_.random(peerIdentities.length - 1)];
-//         var peer = appClientEndpoints[peerIdentity];
-//         appPeer.url = 'http://' + peer.address + ':' + peer.port;
-//         return request({ url: appPeer.url, json: false, timeout: 5000 })
-//             .then(body => {
-//                 appPeer.cardClass = 'eastern-blue';
-//                 appPeer.title = 'RESPONSE';
-//                 appPeer.response = JSON.stringify(body, null, 2);
-//             })
-//             .catch(error => {
-//                 appPeer.cardClass = 'red';
-//                 appPeer.title = 'ERROR';
-//                 appPeer.response = JSON.stringify(error, null, 2);
-//             });
-//     } else {
-//         appPeer.cardClass = 'yellow';
-//         appPeer.title = 'No peers present';
-//     }
-// }
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

@@ -21,6 +21,7 @@ app.post('/job', (request, response) => {
         PartitionKey: request.body.patient,
         Data: JSON.stringify(request.body)
     };
+    console.log('Kinesis::Put ' + JSON.stringify(params, null, 2));
     return kinesis.putRecord(params).promise()
         .then(data => {
             response.send(data);

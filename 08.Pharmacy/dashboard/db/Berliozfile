@@ -6,7 +6,7 @@ class: nosql
 subClass: dynamodb
 
 hashKey:
-    name: id
+    name: patient
     type: String
 
 # rangeKey:

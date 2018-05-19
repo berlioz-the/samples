@@ -3,7 +3,7 @@ kind: cluster
 name: pharm
 
 provides:
-    registry:
+    web:
         service: web
         endpoint: client
         public: true
