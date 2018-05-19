@@ -42,7 +42,7 @@ app.get('/', function (req, response) {
             response.render('pages/index', renderData);
         })
         ;
-})
+});
 
 function queryFromAppClient(appPeer)
 {
@@ -68,6 +68,9 @@ function queryFromAppClient(appPeer)
         appPeer.title = 'No peers present';
     }
 }
+
+berlioz.setupDebugExpressJSRoutes(app);
+// require('./kuku')(app, berlioz);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
