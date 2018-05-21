@@ -22,7 +22,7 @@ app.get('/', function (req, response) {
 
     return Promise.resolve()
         .then(() => {
-            var options = { url: '/', json: false, timeout: 5000 };
+            var options = { url: '/', json: true, timeout: 5000 };
             return berlioz.requestRandomPeer('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
