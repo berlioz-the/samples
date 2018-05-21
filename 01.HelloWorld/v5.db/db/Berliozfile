@@ -13,11 +13,17 @@ provides:
 
 storage:
     - permanent: true
-      path: /var/db
+      path: /etc/mysql/conf.d
+      size: 1GB
+    - permanent: true
+      path: /var/lib/mysql
       size: 1GB
 
+environment:
+    MYSQL_ROOT_PASSWORD: mypassword
+
 scale:
-    min: 3
+    min: 1
 
 resources:
     memory:

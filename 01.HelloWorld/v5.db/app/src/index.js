@@ -1,17 +1,13 @@
 const express = require('express')
 
 const berlioz = require('berlioz-connector');
-var dbClientEndpoints = null;
-berlioz.monitorPeers('service', 'db', 'client', peers => {
-    dbClientEndpoints = peers;
-});
 
 const app = express()
 app.get('/', (request, response) => {
     var data = {
         myId: process.env.BERLIOZ_TASK_ID,
         message: 'Hello From App Tier',
-        myDbPeers: dbClientEndpoints
+        myDbPeers: berlioz.getPeers('service', 'db', 'client')
     }
     response.send(data);
 })

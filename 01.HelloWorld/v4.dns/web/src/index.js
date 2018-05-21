@@ -1,6 +1,5 @@
 const express = require('express')
 const _ = require('lodash')
-const request = require('request-promise');
 const Promise = require('promise');
 const berlioz = require('berlioz-connector');
 
