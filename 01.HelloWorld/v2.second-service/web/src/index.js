@@ -10,17 +10,14 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
 app.get('/', function (req, response) {
-    var appClientPeers = berlioz.getPeers('service', 'app', 'client');
     var renderData = {
         settings: [
             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
         ],
-        peers: appClientPeers,
-        peersStr: JSON.stringify(appClientPeers, null, 2),
-        appPeer: {
-        }
+        peers: berlioz.getPeers('service', 'app', 'client'),
+        appPeer: { }
     };
 
     return Promise.resolve()
@@ -28,11 +25,10 @@ app.get('/', function (req, response) {
             var options = { url: '/', json: false, timeout: 5000 };
             return berlioz.requestRandomPeer('service', 'app', 'client', options)
                 .then(result => {
-                    console.log('RESULT: ' + JSON.stringify(result, null, 2));
                     if (result) {
                         renderData.appPeer.url = result.url;
                         renderData.appPeer.cardClass = 'eastern-blue';
-                        renderData.appPeer.title = 'RESPONSE';
+                        renderData.appPeer.title = 'RESPONSE:';
                         renderData.appPeer.response = JSON.stringify(result.body, null, 2);
                     } else {
                         renderData.appPeer.cardClass = 'yellow';
