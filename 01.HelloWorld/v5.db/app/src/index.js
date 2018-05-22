@@ -1,46 +1,12 @@
 const express = require('express')
 const berlioz = require('berlioz-connector');
 const mysql = require('promise-mysql');
-
-function executeQuery(querySql)
-{
-    var conn = null;
-    var finalResult = null;
-    var peer = berlioz.getRandomPeer('service', 'db', 'client');
-    var options = {
-        host: peer.address,
-        port: peer.port,
-        user: process.env.HELLO_RELATIONAL_DB_USER,
-        password: process.env.HELLO_RELATIONAL_DB_PASS,
-        database: process.env.HELLO_RELATIONAL_DB_NAME,
-        insecureAuth: true
-    };
-    return mysql.createConnection(options)
-        .then(result => {
-            conn = result;
-            return conn.query(querySql);
-        })
-        .then(result => {
-            finalResult = result;
-        })
-        .finally(() => conn.end())
-        .then(() => finalResult);
-}
-
-//
-// return executeQuery('select * from addressBook')
-//     .then(rows => {
-//         console.log(rows);
-//     })
-//     .then(() => executeQuery('select * from addressBook'))
-//     .then(rows => {
-//         var row = rows[0];
-//         console.log(JSON.stringify(row));
-//     })
-//     ;
-
+const bodyParser = require('body-parser');
 
 const app = express()
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get('/', (request, response) => {
     var data = {
         myId: process.env.BERLIOZ_TASK_ID,
@@ -56,6 +22,49 @@ app.get('/entries', (request, response) => {
             response.send(rows);
         })
 })
+
+app.post('/entry', (request, response) => {
+    var querySql = 'INSERT INTO `addressBook`(`name`, `phone`) VALUES(\'' + request.body.name + '\', \'' + request.body.phone + '\')';
+    return executeQuery(querySql)
+        .then(result => {
+            response.send(result);
+        })
+})
+
+function executeQuery(querySql)
+{
+    var peer = berlioz.getRandomPeer('service', 'db', 'client');
+    if (!peer) {
+        return Promise.resolve(null);
+    }
+
+    var options = {
+        host: peer.address,
+        port: peer.port,
+        user: process.env.HELLO_RELATIONAL_DB_USER,
+        password: process.env.HELLO_RELATIONAL_DB_PASS,
+        database: process.env.HELLO_RELATIONAL_DB_NAME,
+        insecureAuth: true
+    };
+
+    var conn = null;
+    var finalResult = null;
+    return mysql.createConnection(options)
+        .then(result => {
+            conn = result;
+            return conn.query(querySql);
+        })
+        .then(result => {
+            finalResult = result;
+        })
+        .finally(() => {
+            if (conn) {
+                return conn.end();
+            }
+        })
+        .then(() => finalResult);
+}
+
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,
            process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {

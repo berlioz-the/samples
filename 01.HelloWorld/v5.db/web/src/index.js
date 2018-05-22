@@ -2,9 +2,11 @@ const express = require('express')
 const _ = require('lodash')
 const Promise = require('promise');
 const berlioz = require('berlioz-connector');
+const bodyParser = require('body-parser');
 
 const app = express()
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
@@ -16,15 +18,17 @@ app.get('/', function (req, response) {
             {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
         ],
         peers: berlioz.getPeers('service', 'app', 'client'),
+        entries: [],
         appPeer: { }
     };
 
     return Promise.resolve()
         .then(() => {
-            var options = { url: '/', json: true, timeout: 5000 };
+            var options = { url: '/entries', json: true, timeout: 5000 };
             return berlioz.requestRandomPeer('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
+                        renderData.entries = result.body;
                         renderData.appPeer.url = result.url;
                         renderData.appPeer.cardClass = 'eastern-blue';
                         renderData.appPeer.title = 'RESPONSE:';

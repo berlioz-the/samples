@@ -1,0 +1,17 @@
+<div class="card blue">
+    <div class="card-header">
+        Address Book
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                <% entries.forEach(function(entry) { %>
+                    <tr>
+                        <th scope="row"><%= entry.name %></th>
+                        <td><%= entry.phone %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
