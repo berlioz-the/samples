@@ -8,3 +8,8 @@ provides:
         service: web
         endpoint: client
         public: true
+
+environment:
+    HELLO_RELATIONAL_DB_NAME: demo
+    HELLO_RELATIONAL_DB_USER: berlioz
+    HELLO_RELATIONAL_DB_PASS: myPassword

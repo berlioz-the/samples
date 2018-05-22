@@ -10,6 +10,7 @@ provides:
     client:
         port: 3306
         protocol: tcp
+        reserve: true
 
 storage:
     - permanent: true
@@ -21,6 +22,9 @@ storage:
 
 environment:
     MYSQL_ROOT_PASSWORD: mypassword
+    MYSQL_DATABASE: ${HELLO_RELATIONAL_DB_NAME}
+    MYSQL_USER: ${HELLO_RELATIONAL_DB_USER}
+    MYSQL_PASSWORD: ${HELLO_RELATIONAL_DB_PASS}
 
 scale:
     min: 1
