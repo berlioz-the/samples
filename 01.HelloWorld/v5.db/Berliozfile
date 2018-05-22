@@ -13,3 +13,5 @@ environment:
     HELLO_RELATIONAL_DB_NAME: demo
     HELLO_RELATIONAL_DB_USER: berlioz
     HELLO_RELATIONAL_DB_PASS: myPassword
+    HELLO_NOSQL_DB_USER: berlioz
+    HELLO_NOSQL_DB_PASS: myPassword

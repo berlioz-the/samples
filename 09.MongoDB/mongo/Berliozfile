@@ -1,0 +1,28 @@
+---
+kind: service
+cluster: hello
+name: mongo
+
+identity:
+    kind: sequential
+
+provides:
+    client:
+        port: 27017
+        protocol: tcp
+
+# storage:
+#     - permanent: true
+#       path: /var/lib/mysql
+#       size: 1GB
+
+environment:
+    MONGO_INITDB_ROOT_USERNAME: ${HELLO_NOSQL_DB_USER}
+    MONGO_INITDB_ROOT_PASSWORD: ${HELLO_NOSQL_DB_PASS}
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 300

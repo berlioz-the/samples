@@ -1,0 +1,28 @@
+---
+kind: service
+cluster: hello
+name: mongoweb
+
+identity:
+    kind: sequential
+
+provides:
+    client:
+        port: 8081
+        protocol: http
+
+consumes:
+    - service: mongo
+      endpoint: client
+
+environment:
+    ME_CONFIG_MONGODB_SERVER: 172.17.0.4,
+    ME_CONFIG_MONGODB_ADMINUSERNAME: ${HELLO_NOSQL_DB_USER}
+    ME_CONFIG_MONGODB_ADMINPASSWORD: ${HELLO_NOSQL_DB_PASS}
+
+scale:
+    min: 1
+
+resources:
+    memory:
+        min: 300

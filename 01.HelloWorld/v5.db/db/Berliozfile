@@ -10,12 +10,8 @@ provides:
     client:
         port: 3306
         protocol: tcp
-        reserve: true
 
 storage:
-    - permanent: true
-      path: /etc/mysql/conf.d
-      size: 1GB
     - permanent: true
       path: /var/lib/mysql
       size: 1GB
