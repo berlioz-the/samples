@@ -1,9 +1,16 @@
-<div class="card blue">
+<div class="card purple">
     <div class="card-header">
-        Address Book
+        Contact List
     </div>
     <div class="card-body">
+        <% if (entries) { %>
         <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone</th>
+                </tr>
+            </thead>
             <tbody>
                 <% entries.forEach(function(entry) { %>
                     <tr>
@@ -13,5 +20,6 @@
                 <% }); %>
             </tbody>
         </table>
+        <% } %>
     </div>
 </div>

@@ -19,30 +19,52 @@ app.get('/', function (req, response) {
         ],
         peers: berlioz.getPeers('service', 'app', 'client'),
         entries: [],
-        appPeer: { }
+        appPeer: '',
+        appPeerInfo: { }
     };
+
+    var appPeer = berlioz.getRandomPeer('service', 'app', 'client');
+    if (appPeer) {
+        renderData.appPeer = appPeer.address + ':' + appPeer.port;
+    }
 
     return Promise.resolve()
         .then(() => {
             var options = { url: '/entries', json: true, timeout: 5000 };
-            return berlioz.requestRandomPeer('service', 'app', 'client', options)
+            return berlioz.requestPeer(appPeer, options)
                 .then(result => {
                     if (result) {
                         renderData.entries = result.body;
-                        renderData.appPeer.url = result.url;
-                        renderData.appPeer.cardClass = 'eastern-blue';
-                        renderData.appPeer.title = 'RESPONSE:';
-                        renderData.appPeer.response = JSON.stringify(result.body, null, 2);
+                        renderData.appPeerInfo.url = result.url;
+                        renderData.appPeerInfo.cardClass = 'eastern-blue';
+                        renderData.appPeerInfo.title = 'RESPONSE:';
+                        renderData.appPeerInfo.response = JSON.stringify(result.body, null, 2);
                     } else {
-                        renderData.appPeer.cardClass = 'yellow';
-                        renderData.appPeer.title = 'No peers present';
+                        renderData.appPeerInfo.cardClass = 'yellow';
+                        renderData.appPeerInfo.title = 'No peers present';
                     }
                 })
                 .catch(error => {
-                    renderData.appPeer.url = error.url;
-                    renderData.appPeer.cardClass = 'red';
-                    renderData.appPeer.title = 'ERROR';
-                    renderData.appPeer.response = JSON.stringify(error, null, 2);
+                    renderData.appPeerInfo.url = error.url;
+                    renderData.appPeerInfo.cardClass = 'red';
+                    renderData.appPeerInfo.title = 'ERROR';
+                    renderData.appPeerInfo.response = JSON.stringify(error, null, 2);
+                });
+        })
+        .then(() => {
+            var options = { url: '/', json: true, timeout: 5000 };
+            return berlioz.requestPeer(appPeer, options)
+                .then(result => {
+                    if (result) {
+                        renderData.appDbPeers = result.body.myDbPeers;
+                    }
+                })
+                .catch(error => {
+                })
+                .then(() => {
+                    if (!renderData.appDbPeers) {
+                        renderData.appDbPeers = {};
+                    }
                 });
         })
         .catch(error => {
@@ -56,6 +78,21 @@ app.get('/', function (req, response) {
             response.render('pages/index', renderData);
         })
         ;
+});
+
+app.post('/new-contact', (request, response) => {
+    var options = { url: '/entry', method: 'POST', body: request.body, json: true, timeout: 5000 };
+    return berlioz.requestRandomPeer('service', 'app', 'client', options)
+        .then(result => {
+            console.log('**** ' + JSON.stringify(result));
+            if (!result) {
+                return response.send({ error: 'No app peers present.' });
+            }
+            return response.send(result.body);
+        })
+        .catch(error => {
+            return response.send({ error: error });
+        });
 });
 
 berlioz.setupDebugExpressJSRoutes(app);

@@ -24,6 +24,9 @@ app.get('/entries', (request, response) => {
 })
 
 app.post('/entry', (request, response) => {
+    if (!request.body.name || !request.body.phone) {
+        return response.send({error: 'Missing name or phone'});
+    }
     var querySql = 'INSERT INTO `addressBook`(`name`, `phone`) VALUES(\'' + request.body.name + '\', \'' + request.body.phone + '\')';
     return executeQuery(querySql)
         .then(result => {
