@@ -25,9 +25,10 @@ $ berlioz local push-provision
 $ berlioz local endpoints
 ```
 
-4. Open the endpoint in the browser: http://localhost:40000 (use the returned from the step 3).
+4. Open the endpoint in the browser: http://localhost:40000 (use the port returned from the step 3).
 
 ## Running Samples in AWS
+
 ### Account Setup
 1. Sign-up and login to AWS.
 2. Create AWS access key. For details see the guide [here](https://github.com/berlioz-the/samples/blob/master/docs/aws.md).
@@ -44,3 +45,26 @@ $ berlioz provider create --name myaws --kind aws --key <key> --secret <secret>
 $ berlioz deployment create --name prod --provider myaws --region us-east-1
 $ berlioz deployment create --name test --provider myaws --region us-east-1
 ```
+
+### Deploying the sample to AWS
+1. Navigate to sample directory
+```
+$ cd 01.HelloWorld/v1.basic
+```
+
+2. Build and push the project to berlioz
+```
+$ berlioz push
+```
+
+3. Deploy the project to the test deployment
+```
+$ berlioz provision --deployment test
+```
+
+4. Output service endpoint addresses
+```
+$ berlioz endpoints --deployment test
+```
+
+5. Open the endpoint in the browser: http://1.2.3.4:12345 (use the address and port returned from the step 4).
