@@ -7,9 +7,9 @@ const asciiArt = require('ascii-art')
 const berlioz = require('berlioz-connector');
 
 
-berlioz.monitorQueues('messages', () => {
+berlioz.monitorQueues('jobs', () => {
 
-    var kinesisInfo = berlioz.getQueueInfo('messages');
+    var kinesisInfo = berlioz.getQueueInfo('jobs');
     if (!kinesisInfo) {
         console.log('Kinesis Peer not present');
         return;

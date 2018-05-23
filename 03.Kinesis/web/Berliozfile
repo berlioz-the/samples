@@ -9,7 +9,7 @@ provides:
         protocol: http
 
 consumes:
-    - queue: messages
+    - queue: jobs
     - database: arts
 
 scale:

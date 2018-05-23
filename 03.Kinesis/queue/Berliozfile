@@ -1,6 +1,6 @@
 ---
 kind: queue
 cluster: kin
-name: messages
+name: jobs
 class: queue
 subClass: kinesis

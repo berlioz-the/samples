@@ -4,7 +4,7 @@ cluster: kin
 name: proc
 
 consumes:
-    - queue: messages
+    - queue: jobs
     - database: arts
 
 scale:

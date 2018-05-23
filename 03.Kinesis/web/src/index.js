@@ -20,7 +20,7 @@ app.get('/', function (req, response) {
         ]
     };
 
-    var queueInfo = berlioz.getQueueInfo('messages');
+    var queueInfo = berlioz.getQueueInfo('jobs');
     if (queueInfo) {
         renderData.kinesisInfo = {
             name: queueInfo.streamName,
@@ -78,11 +78,11 @@ app.post('/new-job', (request, response) => {
     if (!request.body.name) {
         return response.send({error: 'Missing name'});
     }
-    var kinesisInfo = berlioz.getQueueInfo('messages');
-    var kinesis = new AWS.Kinesis(kinesisInfo.config);
+    var queueInfo = berlioz.getQueueInfo('jobs');
+    var kinesis = new AWS.Kinesis(queueInfo.config);
 
     var params = {
-        StreamName: kinesisInfo.streamName,
+        StreamName: queueInfo.streamName,
         PartitionKey: request.body.name,
         Data: JSON.stringify(request.body)
     };
