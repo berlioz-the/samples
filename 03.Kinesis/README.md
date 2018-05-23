@@ -1,14 +1,14 @@
-# Berlioz DynamoDB Demo
+# Berlioz Kinesis Demo
 
-An contact list application which utilizes AWS DynamoDB NoSQL database.
+An application which performs ASCII art rendering in a batch mode using AWS Kinesis and DynamoDB.
 
-![DynamoDB Diagram](diagram.png)
+![Kinesis Diagram](diagram.png)
 
 ## Running Locally
 
 1. Navigate to sample directory
 ```
-$ cd 02.DynamoDB
+$ cd 03.Kinesis
 ```
 
 2. Build and deploy the project
@@ -37,7 +37,7 @@ $ berlioz push
 
 3. Deploy the project to the test deployment
 ```
-$ berlioz provision --deployment test --cluster dynamo --region us-east-1
+$ berlioz provision --deployment test --cluster kin --region us-east-1
 ```
 
 4. Output service endpoint addresses
@@ -47,5 +47,5 @@ $ berlioz endpoints --deployment test
 
 5. Once completed release AWS resources
 ```
-$ berlioz unprovision --deployment test --cluster dynamo --region us-east-1
+$ berlioz unprovision --deployment test --cluster kin --region us-east-1
 ```
