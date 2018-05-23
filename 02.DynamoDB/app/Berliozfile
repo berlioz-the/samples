@@ -7,7 +7,6 @@ provides:
     client:
         port: 4000
         protocol: http
-        load-balance: true
 
 consumes:
     - database: recipes

@@ -68,3 +68,15 @@ $ berlioz endpoints --deployment test
 ```
 
 5. Open the endpoint in the browser: http://1.2.3.4:12345 (use the address and port returned from the step 4).
+
+
+## Service Diagrams
+The berlioz comes with graphical diagram generation tool. To generate a diagram simply:
+
+```
+$ cd 02.DynamoDB
+$ berlioz output-diagram
+```
+
+Will generate a diagram like this:
+![DynamoDB Sample Diagram](https://github.com/berlioz-the/samples/blob/master/02.DynamoDB/diagram.png)
