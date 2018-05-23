@@ -10,8 +10,22 @@
 </header>
 
 <main>
-    <h1>Berlioz DynamoDB Sample</h1>
-    <h2>v2.second-service</h2>
+    <h1>Berlioz Hello World</h1>
+    <h2>v5.db</h2>
+
+    <div class="row">
+        <div class="col-sm">
+            <% include ../partials/new-contact %>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <% include ../partials/contact-list %>
+        </div>
+    </div>
+
+    <h2>Local Metadata</h2>
 
     <div class="row">
         <div class="col-sm">
@@ -22,9 +36,13 @@
         </div>
     </div>
 
+    <h2>From App Peer</h2>
     <div class="row">
         <div class="col-sm">
             <% include ../partials/app-response %>
+        </div>
+        <div class="col-sm">
+            <% include ../partials/app-db-peers %>
         </div>
     </div>
 

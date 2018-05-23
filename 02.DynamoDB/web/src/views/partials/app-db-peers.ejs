@@ -1,0 +1,19 @@
+<div class="card green">
+    <div class="card-header">
+        Db Peers of App(<%= appPeerInfo.host %>)
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">Table Name</th>
+                    <td><%= appPeerInfo.tableName %></td>
+                </tr>
+                <tr>
+                    <th scope="row">Config</th>
+                    <td><%= JSON.stringify(appPeerInfo.config, null, 2) %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -6,9 +6,5 @@ class: nosql
 subClass: dynamodb
 
 hashKey:
-    name: myId
-    type: String
-
-rangeKey:
-    name: full_name
+    name: name
     type: String
