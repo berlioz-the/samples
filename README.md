@@ -1,1 +1,46 @@
-# samples
+# Berlioz Samples
+The purpose of this repository is to present capabilities of [Berlioz](https://berlioz.cloud) the microservices provisioning, deployment and orchestration service for AWS.
+
+The repo is structured in chapters, starting with trivial samples to more complex applications.
+
+## Prerequisites
+First, install _berlioz_ command line toolkit.
+```
+$ npm install berlioz -g
+```
+
+## Running Samples Locally
+1. Navigate to sample directory
+```
+$ cd 01.HelloWorld/v1.basic
+```
+
+2. Build and deploy the project
+```
+$ berlioz local push-provision
+```
+
+3. Output service endpoint addresses
+```
+$ berlioz local endpoints
+```
+
+4. Open the endpoint in the browser: http://localhost:40000 (use the returned from the step 3).
+
+## Running Samples in AWS
+### Account Setup
+1. Sign-up and login to AWS.
+2. Create AWS access key. For details see the guide [here](https://github.com/berlioz-the/samples/blob/master/docs/aws.md).
+3. Sign-up to Berlioz:
+```
+$ berlioz signup
+```
+4. Link AWS account to Berlioz:
+```
+$ berlioz provider create --name myaws --kind aws --key <key> --secret <secret>
+```
+5. Create deployments for production and test:
+```
+$ berlioz deployment create --name prod --provider myaws --region us-east-1
+$ berlioz deployment create --name test --provider myaws --region us-east-1
+```
