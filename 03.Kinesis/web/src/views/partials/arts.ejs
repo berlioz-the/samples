@@ -1,0 +1,17 @@
+<div class="card blue">
+    <div class="card-header">
+        Rendered ASCII Arts
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                <% entries.forEach(function(entry) { %>
+                    <tr>
+                        <th scope="row"><%= entry.name %></th>
+                        <td><pre><%= entry.art %></pre></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -105,3 +105,78 @@
 .eastern-blue .table thead th {
     border-bottom: 1px solid #28a745;
 }
+
+.purple {
+    background-color: #BDB9CB;
+}
+.purple .card-header {
+    background-color: #4B3F72;
+    color: white;
+    font-weight: 600;
+}
+.purple .table td, .purple .table th {
+    border-top: 1px solid #4B3F72;
+}
+.purple .table thead th {
+    border-bottom: 1px solid #4B3F72;
+}
+
+.yankee-blue {
+    background-color: #848597;
+}
+.yankee-blue .card-header {
+    background-color: #1F2041;
+    color: white;
+    font-weight: 600;
+}
+.yankee-blue .table td, .yankee-blue .table th {
+    border-top: 1px solid #1F2041;
+}
+.yankee-blue .table thead th {
+    border-bottom: 1px solid #1F2041;
+}
+
+.mustard {
+    background-color: #FFE1A3;
+}
+.mustard .card-header {
+    background-color: #FFC857;
+    color: black;
+    font-weight: 600;
+}
+.mustard .table td, .mustard .table th {
+    border-top: 1px solid #FFC857;
+}
+.mustard .table thead th {
+    border-bottom: 1px solid #FFC857;
+}
+
+.blue-green {
+    background-color: #92D2D5;
+}
+.blue-green .card-header {
+    background-color: #119DA4;
+    color: white;
+    font-weight: 600;
+}
+.blue-green .table td, .blue-green .table th {
+    border-top: 1px solid #119DA4;
+}
+.blue-green .table thead th {
+    border-bottom: 1px solid #119DA4;
+}
+
+.blue-sapphire {
+    background-color: #6C9CAC;
+}
+.blue-sapphire .card-header {
+    background-color: #19647E;
+    color: white;
+    font-weight: 600;
+}
+.blue-sapphire .table td, .blue-sapphire .table th {
+    border-top: 1px solid #19647E;
+}
+.blue-sapphire .table thead th {
+    border-bottom: 1px solid #19647E;
+}

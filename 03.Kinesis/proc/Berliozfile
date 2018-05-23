@@ -1,12 +1,7 @@
 ---
 kind: service
 cluster: kin
-name: web
-
-provides:
-    client:
-        port: 3000
-        protocol: http
+name: proc
 
 consumes:
     - queue: messages
@@ -17,4 +12,4 @@ scale:
 
 resources:
     memory:
-        min: 100
+        min: 128

@@ -10,21 +10,33 @@
 </header>
 
 <main>
-    <h1>Berlioz DynamoDB Sample</h1>
-    <h2>v2.second-service</h2>
+    <h1>Berlioz Kinesis Sample</h1>
 
     <div class="row">
         <div class="col-sm">
-            <% include ../partials/environment %>
-        </div>
-        <div class="col-sm">
-            <% include ../partials/app-peers %>
+            <% include ../partials/new-job %>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm">
-            <% include ../partials/app-response %>
+            <% include ../partials/arts %>
+        </div>
+    </div>
+
+    <h2>Local Metadata</h2>
+    <div class="row">
+        <div class="col-sm">
+            <% include ../partials/kinesis-peers %>
+        </div>
+        <div class="col-sm">
+            <% include ../partials/dynamo-peers %>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <% include ../partials/environment %>
         </div>
     </div>
 

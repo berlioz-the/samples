@@ -1,0 +1,10 @@
+---
+kind: database
+cluster: kin
+name: arts
+class: nosql
+subClass: dynamodb
+
+hashKey:
+    name: name
+    type: String

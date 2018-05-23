@@ -1,37 +1,61 @@
+const AWS = require('aws-sdk');
 const express = require('express')
 const _ = require('lodash')
-const request = require('request-promise');
-const AWS = require('aws-sdk');
 const Promise = require('promise');
 const berlioz = require('berlioz-connector');
-
-var appClientEndpoints = null;
-berlioz.monitorPeers('service', 'app', 'client', peers => {
-    console.log('PEERS:');
-    console.log(JSON.stringify(peers, null, 2));
-    appClientEndpoints = peers;
-});
+const bodyParser = require('body-parser');
 
 const app = express()
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
-app.get('/', (req, response) => {
+app.get('/', function (req, response) {
     var renderData = {
         settings: [
             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
-        ],
-        peers: appClientEndpoints,
-        peersStr: JSON.stringify(appClientEndpoints, null, 2),
-        appPeer: {
-        }
+        ]
     };
 
+    var queueInfo = berlioz.getQueueInfo('messages');
+    if (queueInfo) {
+        renderData.kinesisInfo = {
+            name: queueInfo.streamName,
+            region: queueInfo.config.region
+        };
+    } else {
+        renderData.kinesisInfo = {};
+    }
+
+    var dynamoInfo = berlioz.getDatabaseInfo('arts');
+    if (dynamoInfo) {
+        renderData.dynamoInfo = {
+            name: dynamoInfo.tableName,
+            region: dynamoInfo.config.region
+        };
+    } else {
+        renderData.dynamoInfo = {};
+    }
+
     return Promise.resolve()
-        .then(() => queryFromAppClient(renderData.appPeer))
+        .then(() => {
+            if (dynamoInfo) {
+                var docClient = new AWS.DynamoDB.DocumentClient(dynamoInfo.config);
+                var params = {
+                    TableName: dynamoInfo.tableName
+                };
+                return docClient.scan(params).promise()
+                    .then(data => {
+                        renderData.entries = data.Items;
+                    })
+                    .catch(reason => {
+                        console.log(reason);
+                    });
+            }
+        })
         .catch(error => {
             if (error instanceof Error) {
                 renderData.error = error.stack + error.stack;
@@ -40,97 +64,39 @@ app.get('/', (req, response) => {
             }
         })
         .then(() => {
+            if (!renderData.entries) {
+                renderData.entries = [];
+            }
+        })
+        .then(() => {
             response.render('pages/index', renderData);
         })
         ;
-})
+});
 
-
-app.get('/peers', (req, response) => {
-    response.setHeader('Content-Type', 'application/json');
-    response.send(JSON.stringify(berlioz.extractRoot()));
-})
-
-app.get('/queue/info', (req, response) => {
-    var kinesisInfo = berlioz.getQueueInfo('messages');
-    response.send(JSON.stringify(kinesisInfo));
-})
-
-app.get('/queue/insert', (req, response) => {
+app.post('/new-job', (request, response) => {
+    if (!request.body.name) {
+        return response.send({error: 'Missing name'});
+    }
     var kinesisInfo = berlioz.getQueueInfo('messages');
     var kinesis = new AWS.Kinesis(kinesisInfo.config);
 
     var params = {
         StreamName: kinesisInfo.streamName,
-        PartitionKey: 'myKey',
-        Data: 'Hello from ' + process.env.BERLIOZ_TASK_ID
+        PartitionKey: request.body.name,
+        Data: JSON.stringify(request.body)
     };
     return kinesis.putRecord(params).promise()
         .then(data => {
-            response.send(JSON.stringify(data));
+            response.send({result: data});
         })
         .catch(reason => {
-            response.send(err);
+            response.send({error: err});
         });
 })
 
-app.get('/queue/read', (req, response) => {
-    var kinesisInfo = berlioz.getQueueInfo('messages');
-    var kinesis = new AWS.Kinesis(kinesisInfo.config);
 
-    return kinesis.describeStream({ StreamName: kinesisInfo.streamName }).promise()
-        .then(streamData => {
-            var shardId = streamData.StreamDescription.Shards[0].ShardId;
-            return kinesis.getShardIterator({ ShardId: shardId, StreamName: kinesisInfo.streamName, ShardIteratorType: 'TRIM_HORIZON' }).promise();
-        })
-        .then(shardIteratorData => {
-            return kinesis.getRecords({ ShardIterator: shardIteratorData.ShardIterator }).promise();
-        })
-        .then(data => {
-            response.send(JSON.stringify(data));
-        })
-        .catch(reason => {
-            response.send(reason);
-        });
-})
-
-app.get('/queue/describe', (req, response) => {
-    var kinesisInfo = berlioz.getQueueInfo('messages');
-    var kinesis = new AWS.Kinesis(kinesisInfo.config);
-
-    return kinesis.describeStream({ StreamName: kinesisInfo.streamName }).promise()
-        .then(data => {
-            response.send(JSON.stringify(data));
-        })
-        .catch(reason => {
-            response.send(reason);
-        });
-})
-
-function queryFromAppClient(appPeer)
-{
-    if (appClientEndpoints && _.keys(appClientEndpoints).length > 0)
-    {
-        var peerIdentities = _.keys(appClientEndpoints);
-        var peerIdentity = peerIdentities[_.random(peerIdentities.length - 1)];
-        var peer = appClientEndpoints[peerIdentity];
-        appPeer.url = 'http://' + peer.address + ':' + peer.port;
-        return request({ url: appPeer.url, json: false, timeout: 5000 })
-            .then(body => {
-                appPeer.cardClass = 'eastern-blue';
-                appPeer.title = 'RESPONSE';
-                appPeer.response = JSON.stringify(body, null, 2);
-            })
-            .catch(error => {
-                appPeer.cardClass = 'red';
-                appPeer.title = 'ERROR';
-                appPeer.response = JSON.stringify(error, null, 2);
-            });
-    } else {
-        appPeer.cardClass = 'yellow';
-        appPeer.title = 'No peers present';
-    }
-}
+berlioz.setupDebugExpressJSRoutes(app);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
