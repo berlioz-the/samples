@@ -7,7 +7,3 @@ provides:
         service: web
         endpoint: client
         public: true
-    app:
-        service: app
-        endpoint: client
-        public: true
