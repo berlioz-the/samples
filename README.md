@@ -80,3 +80,10 @@ $ berlioz output-diagram
 
 Will generate a diagram like this:
 ![DynamoDB Sample Diagram](https://github.com/berlioz-the/samples/blob/master/02.DynamoDB/diagram.png)
+
+or for a more complex project:
+```
+$ cd 02.Pharmacy
+$ berlioz output-diagram
+```
+![Pharmacy Semo Diagram](https://github.com/berlioz-the/samples/blob/master/04.Pharmacy/diagram.png)
