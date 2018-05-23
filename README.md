@@ -31,7 +31,7 @@ $ berlioz local endpoints
 
 ### Account Setup
 1. Sign-up and login to AWS.
-2. Create AWS access key. For details see the guide [here](https://github.com/berlioz-the/samples/blob/master/docs/aws.md).
+2. Create AWS access key. For details see the guide [here](docs/aws.md).
 3. Sign-up to Berlioz:
 ```
 $ berlioz signup
@@ -79,11 +79,11 @@ $ berlioz output-diagram
 ```
 
 Will generate a diagram like this:
-![DynamoDB Sample Diagram](https://github.com/berlioz-the/samples/blob/master/02.DynamoDB/diagram.png)
+![DynamoDB Sample Diagram](02.DynamoDB/diagram.png)
 
 or for a more complex project:
 ```
 $ cd 02.Pharmacy
 $ berlioz output-diagram
 ```
-![Pharmacy Semo Diagram](https://github.com/berlioz-the/samples/blob/master/04.Pharmacy/diagram.png)
+![Pharmacy Demo Diagram](04.Pharmacy/diagram.png)
