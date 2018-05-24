@@ -78,21 +78,37 @@ app.post('/new-job', (request, response) => {
     if (!request.body.name) {
         return response.send({error: 'Missing name'});
     }
-    var queueInfo = berlioz.getQueueInfo('jobs');
-    var kinesis = new AWS.Kinesis(queueInfo.config);
 
-    var params = {
-        StreamName: queueInfo.streamName,
-        PartitionKey: request.body.name,
-        Data: JSON.stringify(request.body)
-    };
-    return kinesis.putRecord(params).promise()
-        .then(data => {
-            response.send({result: data});
+    return Promise.resolve()
+        .then(() => {
+            var dynamoInfo = berlioz.getDatabaseInfo('arts');
+            var docClient = new AWS.DynamoDB.DocumentClient(dynamoInfo.config);
+            var params = {
+                TableName: dynamoInfo.tableName,
+                Item: {
+                    'name': request.body.name,
+                    'art': 'Render in progress... Refresh in few seconds...'
+                }
+            };
+            return docClient.put(params).promise();
         })
-        .catch(reason => {
-            response.send({error: err});
-        });
+        .then(() => {
+            var queueInfo = berlioz.getQueueInfo('jobs');
+            var kinesis = new AWS.Kinesis(queueInfo.config);
+
+            var params = {
+                StreamName: queueInfo.streamName,
+                PartitionKey: request.body.name,
+                Data: JSON.stringify(request.body)
+            };
+            return kinesis.putRecord(params).promise()
+                .then(data => {
+                    response.send({result: data});
+                })
+                .catch(reason => {
+                    response.send({error: err});
+                });
+        })
 })
 
 
