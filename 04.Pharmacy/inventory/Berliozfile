@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: pharm
-name: work_app
+name: inventory
 
 provides:
     client:
@@ -10,7 +10,7 @@ provides:
         load-balance: false
 
 consumes:
-    - queue: work_tasks
+    - database: drugs
 
 scale:
     min: 1

@@ -7,9 +7,9 @@ const request = require('request-promise');
 const berlioz = require('berlioz-connector');
 
 
-berlioz.monitorQueues('work_tasks', () => {
+berlioz.monitorQueues('jobs', () => {
 
-    var kinesisInfo = berlioz.getQueueInfo('work_tasks');
+    var kinesisInfo = berlioz.getQueueInfo('jobs');
     if (!kinesisInfo) {
         console.log('Kinesis Peer not present');
         return;
@@ -29,7 +29,7 @@ berlioz.monitorQueues('work_tasks', () => {
 function processData(data)
 {
     console.log('Processing: ' + JSON.stringify(data));
-    var peer = berlioz.getRandomPeer('service', 'dash_app', 'client');
+    var peer = berlioz.getRandomPeer('service', 'dashboard', 'client');
     if (peer) {
         var url = 'http://' + peer.address + ':' + peer.port + '/item';
         data.readyDate = new Date().toISOString();

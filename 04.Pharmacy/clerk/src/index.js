@@ -13,7 +13,7 @@ app.get('/', (request, response) => {
 })
 
 app.post('/job', (request, response) => {
-    var kinesisInfo = berlioz.getQueueInfo('work_tasks');
+    var kinesisInfo = berlioz.getQueueInfo('jobs');
     var kinesis = new AWS.Kinesis(kinesisInfo.config);
 
     var params = {

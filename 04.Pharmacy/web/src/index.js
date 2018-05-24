@@ -21,7 +21,7 @@ app.get('/', (req, response) => {
 
     return Promise.resolve()
         .then(() => {
-            var peer = berlioz.getRandomPeer('service', 'registry_app', 'client');
+            var peer = berlioz.getRandomPeer('service', 'inventory', 'client');
             if (peer) {
                 var url = 'http://' + peer.address + ':' + peer.port + '/items';
                 return request({ url: url, json: true, timeout: 5000 })
@@ -31,7 +31,7 @@ app.get('/', (req, response) => {
             }
         })
         .then(() => {
-            var peer = berlioz.getRandomPeer('service', 'dash_app', 'client');
+            var peer = berlioz.getRandomPeer('service', 'dashboard', 'client');
             if (peer) {
                 var url = 'http://' + peer.address + ':' + peer.port + '/items';
                 return request({ url: url, json: true, timeout: 5000 })
@@ -54,7 +54,7 @@ app.get('/', (req, response) => {
 })
 
 app.post('/new-drug', (req, response) => {
-    var peer = berlioz.getRandomPeer('service', 'registry_app', 'client');
+    var peer = berlioz.getRandomPeer('service', 'inventory', 'client');
     if (!peer) {
         return response.status(503).send('Peer Unavailable.');
     }
@@ -69,7 +69,7 @@ app.post('/new-drug', (req, response) => {
 });
 
 app.post('/drop-prescription', (req, response) => {
-    var peer = berlioz.getRandomPeer('service', 'work_app', 'client');
+    var peer = berlioz.getRandomPeer('service', 'clerk', 'client');
     if (!peer) {
         return response.status(503).send('Peer Unavailable.');
     }
@@ -92,7 +92,7 @@ app.post('/drop-prescription', (req, response) => {
 });
 
 app.post('/pick-up', (req, response) => {
-    var peer = berlioz.getRandomPeer('service', 'dash_app', 'client');
+    var peer = berlioz.getRandomPeer('service', 'dashboard', 'client');
     if (!peer) {
         return response.status(503).send('Peer Unavailable.');
     }
@@ -106,38 +106,7 @@ app.post('/pick-up', (req, response) => {
         });
 });
 
-// app.get('/debug', (req, response) => {
-//     var appClientEndpoints = {};
-//     var renderData = {
-//         settings: [
-//             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
-//             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
-//             {name: 'Region', value: process.env.BERLIOZ_AWS_REGION }
-//         ],
-//         peers: appClientEndpoints,
-//         peersStr: JSON.stringify(appClientEndpoints, null, 2),
-//         appPeer: {
-//         }
-//     };
-//
-//     return Promise.resolve()
-//         // .then(() => queryFromAppClient(renderData.appPeer))
-//         .catch(error => {
-//             if (error instanceof Error) {
-//                 renderData.error = error.stack + error.stack;
-//             } else {
-//                 renderData.error = JSON.stringify(error, null, 2);
-//             }
-//         })
-//         .then(() => {
-//             response.render('pages/debug', renderData);
-//         })
-//         ;
-// })
-//
-// app.get('/peers', (req, response) => {
-//     response.send(berlioz.extractRoot());
-// })
+berlioz.setupDebugExpressJSRoutes(app);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: pharm
-name: dash_app
+name: dashboard
 
 provides:
     client:

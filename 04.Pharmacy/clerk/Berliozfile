@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: pharm
-name: registry_app
+name: clerk
 
 provides:
     client:
@@ -10,7 +10,7 @@ provides:
         load-balance: false
 
 consumes:
-    - database: drugs
+    - queue: jobs
 
 scale:
     min: 1

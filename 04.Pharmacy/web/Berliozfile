@@ -10,11 +10,11 @@ provides:
         load-balance: true
 
 consumes:
-    - service: registry_app
+    - service: inventory
       endpoint: client
-    - service: work_app
+    - service: clerk
       endpoint: client
-    - service: dash_app
+    - service: dashboard
       endpoint: client
 
 scale:

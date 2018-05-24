@@ -1,11 +1,11 @@
 ---
 kind: service
 cluster: pharm
-name: work_proc
+name: pharmacist
 
 consumes:
-    - queue: work_tasks
-    - service: dash_app
+    - queue: jobs
+    - service: dashboard
       endpoint: client
 
 scale:
