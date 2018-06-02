@@ -1,7 +1,7 @@
 # Berlioz Hello World v1.basic
 
-Initial version of Hello World application. Nothing fancy, just a single web
-application. When deployed to local workstation should look somewhat like the
+Initial version of Hello World application. Nothing fancy, just a single **web**
+service. When deployed to local workstation should look somewhat like the
 screenshot below. Environment variables would be different when deployed to
 AWS.
 ![v1.basic Screenshot](screenshot.png)
@@ -39,17 +39,22 @@ $ berlioz push
 
 3. Deploy the project to the test deployment
 ```
-$ berlioz provision --deployment test --cluster dynamo --region us-east-1
+$ berlioz provision --deployment test --cluster hello --region us-east-1
 ```
 
-4. Output service endpoint addresses
+4. Check the deployment status. Proceed forward once completed.
+```
+$ berlioz deployment status
+```
+
+5. Output service endpoint addresses
 ```
 $ berlioz endpoints --deployment test
 ```
 
-5. Once completed release AWS resources
+6. Once completed release AWS resources
 ```
-$ berlioz unprovision --deployment test --cluster dynamo --region us-east-1
+$ berlioz unprovision --deployment test --cluster hello --region us-east-1
 ```
 
 ## Service Diagram
