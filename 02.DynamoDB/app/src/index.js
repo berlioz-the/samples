@@ -11,13 +11,13 @@ app.get('/', (request, response) => {
     var data = {
         myId: process.env.BERLIOZ_TASK_ID,
         message: 'Hello From App Tier',
-        recipeDB: berlioz.getDatabaseInfo('recipes')
+        recipeDB: berlioz.getDatabaseInfo('contacts')
     }
     response.send(data);
 })
 
 app.get('/entries', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('recipes');
+    var dbInfo = berlioz.getDatabaseInfo('contacts');
     if (!dbInfo) {
         return response.send({error: 'DynamoDb not present'});
     }
@@ -40,7 +40,7 @@ app.post('/entry', (request, response) => {
         return response.send({error: 'Missing name or phone'});
     }
 
-    var dbInfo = berlioz.getDatabaseInfo('recipes');
+    var dbInfo = berlioz.getDatabaseInfo('contacts');
     if (!dbInfo) {
         return response.send({error: 'DynamoDb not present'});
     }
@@ -76,34 +76,3 @@ app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,
 
     console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
 })
-
-
-//////////////////////////////
-
-//
-// app.get('/db', (req, response) => {
-//     var dbInfo = berlioz.getDatabaseInfo('recipes');
-//     var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
-//
-//     var params = {
-//         TableName: dbInfo.tableName,
-//         Item: {
-//             'myId': '1234',
-//             'full_name': 'zzasdfasdf',
-//             'eee': 'ddd'
-//         }
-//     };
-//     docClient.put(params, (err, data) => {
-//         if (err) {
-//             response.send(err);
-//         } else {
-//             response.send(JSON.stringify(data));
-//         }
-//     });
-// })
-//
-// app.get('/test', (req, response) => {
-//     var data = berlioz.getDatabaseInfo('recipes');
-//     response.setHeader('Content-Type', 'application/json');
-//     response.send(JSON.stringify(data));
-// })

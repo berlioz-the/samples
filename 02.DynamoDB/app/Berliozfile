@@ -9,7 +9,7 @@ provides:
         protocol: http
 
 consumes:
-    - database: recipes
+    - database: contacts
 
 scale:
     min: 1

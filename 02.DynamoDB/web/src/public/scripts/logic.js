@@ -11,7 +11,7 @@ function submitForm(){
         success : function(result) {
             restoreButton();
             if (result.error) {
-                formError(result.error);
+                formError(JSON.stringify(result.error));
             } else {
                 window.location.reload();
             }

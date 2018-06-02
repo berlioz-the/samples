@@ -1,7 +1,7 @@
 ---
 kind: database
 cluster: dynamo
-name: recipes
+name: contacts
 class: nosql
 subClass: dynamodb
 
