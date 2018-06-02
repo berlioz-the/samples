@@ -1,5 +1,5 @@
 # Berlioz Samples
-The purpose of this repository is to present capabilities of [Berlioz](https://berlioz.cloud) the microservices provisioning, deployment and orchestration service for AWS.
+The purpose of this repository is to present capabilities of [Berlioz](https://berlioz.cloud) - the microservices applications deployment and orchestration service for AWS.
 
 The repo is structured in chapters, starting with trivial samples to more complex applications.
 

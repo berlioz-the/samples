@@ -14,7 +14,7 @@ app.get('/', function (req, response) {
         settings: [
             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
-            {name: 'Region', value: process.env.BERLIOZ_AWS_REGION },
+            {name: 'Region', value: process.env.BERLIOZ_REGION },
             {name: 'Cluster', value: process.env.BERLIOZ_CLUSTER },
             {name: 'Service', value: process.env.BERLIOZ_SERVICE }
         ]
