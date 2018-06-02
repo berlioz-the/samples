@@ -1,21 +1,20 @@
-# Berlioz Hello World v2.second-service
+# Berlioz Hello World v3.load-balancer
 
-Second version of Hello World application. The **web** service from [version one](../v1.basic) got evolved and a new **app** service got added. The **web** service communicates with the **app** service. When deployed to local workstation should look somewhat like the
-screenshot below. The green box on the right shows list of **app** peers. The **web** services makes an HTTP request to a random **app** peer and outputs the response in the bottom box. This is effectively a load-balancing without any load-balancer device.
+Third version of Hello World application. Very similar to [second version](../v2.second-service), except we provisioned a http load balancer in front of the web service.
 
-![v2.second-service Screenshot](screenshot.png)
+![v3.load-balancer Screenshot](screenshot.png)
 
 ## Service Diagram
 ```
 $ berlioz output-diagram
 ```
-![v2.second-service Diagram](diagram.png)
+![v3.load-balancer Diagram](diagram.png)
 
 ## Running Locally
 
 1. Navigate to sample directory
 ```
-$ cd 01.HelloWorld/v2.second-service
+$ cd 01.HelloWorld/v3.load-balancer
 ```
 
 2. Build and deploy the project
@@ -64,7 +63,8 @@ $ berlioz scale set --deployment test --cluster hello --region us-east-1 --servi
 $ berlioz deployment status
 ```
 
-6. Output service endpoint addresses
+6. Output service endpoint addresses. This time the output will only have one
+endpoint which would be the AWS load balancer.
 ```
 $ berlioz endpoints --deployment test
 ```
@@ -74,5 +74,6 @@ $ berlioz endpoints --deployment test
 $ berlioz unprovision --deployment test --cluster hello --region us-east-1
 ```
 
+
 ## Next Version
-Navigate to [next version](../v3.load-balancer) of HelloWorld sample were a real load-balancer will be added.
+Navigate to [next version](../v4.dns) of HelloWorld sample were a public dns and the second load-balancer will be added.

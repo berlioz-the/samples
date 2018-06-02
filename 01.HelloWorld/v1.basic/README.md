@@ -6,6 +6,12 @@ screenshot below. Environment variables would be different when deployed to
 AWS.
 ![v1.basic Screenshot](screenshot.png)
 
+## Service Diagram
+```
+$ berlioz output-diagram
+```
+![v1.basic Diagram](diagram.png)
+
 ## Running Locally
 
 1. Navigate to sample directory
@@ -57,8 +63,5 @@ $ berlioz endpoints --deployment test
 $ berlioz unprovision --deployment test --cluster hello --region us-east-1
 ```
 
-## Service Diagram
-```
-$ berlioz output-diagram
-```
-![v1.basic Diagram](diagram.png)
+## Next Version
+Navigate to [next version](../v2.second-service) of HelloWorld sample were the second **app** service will be added.
