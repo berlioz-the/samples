@@ -1,24 +1,31 @@
-# Berlioz Hello World v4.dns
+# Berlioz Hello World v5.db
 
-Fourth version of Hello World application. Compared with the
-[third version](../v3.load-balancer) a second load-balancer is added
-in front of the **app** service. Please note that there was no code change
-made to the **web** service. It automatically communicates with the load-balancer
-instead. Another change is to register public DNS entry for the **web** service.
+Fifth version of Hello World application. Compared with the
+[fourth version](../v4.dns) adding third service: self-hosted **mysql**
+database. For the **db** service we defined that it would need a 1GB of storage and that storage should be mapped to _/var/lib/mysql_.
 
-![v4.dns Screenshot](screenshot.png)
+Also, we removed the load-balancer which was in front of the **app**
+service. To make it more interesting we made a contact list application.
+
+Please note that even though in this example there are three tiers: web, app and db, we by no means are promoting a monolithic application architectures.
+With berlioz it is a trivial task to define
+per-domain/per-feature app, db, etc services.
+For more complex cases please checkout further samples.    
+
+The screenshot below shows how the **web** and **app** endpoints discovered their peers.
+![v5.db Screenshot](screenshot.png)
 
 ## Service Diagram
 ```
 $ berlioz output-diagram
 ```
-![v4.dns Diagram](diagram.png)
+![v5.db Diagram](diagram.png)
 
 ## Running Locally
 
 1. Navigate to sample directory
 ```
-$ cd 01.HelloWorld/v4.dns
+$ cd 01.HelloWorld/v5.db
 ```
 
 2. Build and deploy the project
@@ -62,31 +69,21 @@ $ berlioz scale set --deployment test --cluster hello --region us-east-1 --servi
 $ berlioz scale set --deployment test --cluster hello --region us-east-1 --service app --value 3
 ```
 
-5. Set the public DNS name. Please note that you would still need to set NS
-records with your domain registrar. Sorry, that's the only part that could not
-be automated :)
-```
-$ berlioz dns set --deployment test --cluster hello --region us-east-1 --service web --value example.com
-```
-
-6. Check the deployment status. Proceed forward once completed.
+5. Check the deployment status. Proceed forward once completed.
 ```
 $ berlioz deployment status
 ```
 
-7. Output service endpoint addresses. This time the output will only have one
-endpoint which would be the AWS load balancer.
+6. Output service endpoint addresses.
 ```
 $ berlioz endpoints --deployment test
 ```
-See how the same application looks like when running in AWS.
-![v4.dns Screenshot-AWS](screenshot-aws.png)
 
-8. Once completed release AWS resources
+7. Once completed release AWS resources
 ```
 $ berlioz unprovision --deployment test --cluster hello --region us-east-1
 ```
 
-## Next Version
-Navigate to [next version](../v5.db) of HelloWorld sample were a self hosted
-stateful database service will be added.
+## Next
+This was the last change we planned for Hello World sample.
+Now you're ready for more [advanced samples](../../02.DynamoDB) scenarios using AWS native services.
