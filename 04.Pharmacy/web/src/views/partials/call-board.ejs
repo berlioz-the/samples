@@ -3,7 +3,7 @@
         Call Board
     </div>
     <div class="card-body">
-        <% if (typeof readyItems !=='undefined') { readyItems.forEach(function(item) { %>
+        <% if (_.isArray(readyItems)) { readyItems.forEach(function(item) { %>
             <div class="card float-left m-2" style="min-width: 150px;">
                 <div class="card-body">
                     <h5 class="card-title"><%= item.patient %></h5>

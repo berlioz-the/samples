@@ -5,11 +5,12 @@ const request = require('request-promise');
 const AWS = require('aws-sdk');
 const berlioz = require('berlioz-connector');
 
-const app = express()
+const app = express();
 berlioz.setupExpress(app);
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
+app.locals._ = _;
 
 app.get('/', (req, response) => {
     console.log('***/ ROOT traceId: ' + berlioz.zipkin.tracer.id);

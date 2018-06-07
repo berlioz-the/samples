@@ -15,26 +15,26 @@ app.post('/item', (request, response) => {
     var params = {
         Item: request.body
     };
-    docClient.put(params, (err, data) => {
-        if (err) {
-            response.send(err);
-        } else {
+    return docClient.put(params)
+        .then(data => {
             response.send(data);
-        }
-    });
+        })
+        .catch(err => {
+            response.send(err);
+        });
 });
 
 app.get('/items', (request, response) => {
     var docClient = berlioz.getDatabaseClient('dash', AWS);
     var params = {
     };
-    docClient.scan(params, (err, data) => {
-        if (err) {
-            response.send(err);
-        } else {
+    return docClient.scan(params)
+        .then(data => {
             response.send(data.Items);
-        }
-    });
+        })
+        .catch(err => {
+            response.send(err);
+        });
 });
 
 app.post('/pick-up', (request, response) => {
@@ -44,13 +44,13 @@ app.post('/pick-up', (request, response) => {
             'patient': request.body.patient
         }
     };
-    docClient.delete(params, (err, data) => {
-        if (err) {
-            response.send(err);
-        } else {
+    return docClient.delete(params)
+        .then(data => {
             response.send(data);
-        }
-    });
+        })
+        .catch(err => {
+            response.send(err);
+        });
 });
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,

@@ -11,7 +11,7 @@
             <div class="form-group">
                 <label for="medication">Medication</label>
                 <select class="form-control" id="medication" name="medication">
-                    <% if (typeof drugs !=='undefined') { drugs.forEach(function(drug) { %>
+                    <% if (_.isArray(drugs)) { drugs.forEach(function(drug) { %>
                         <option><%= drug.name %></option>
                     <% }); } %>
                 </select>

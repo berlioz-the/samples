@@ -11,40 +11,32 @@ app.get('/', (request, response) => {
 })
 
 app.post('/item', (request, response) => {
-    console.log('*** /item POST ROOT traceId: ' + berlioz.zipkin.tracer.id);
-    console.log(JSON.stringify(request.headers));
-
     var docClient = berlioz.getDatabaseClient('drugs', AWS);
     var params = {
         Item: {
             'name': request.body.name
         }
     };
-    docClient.put(params, (err, data) => {
-        if (err) {
-            response.send(err);
-        } else {
+    return docClient.put(params)
+        .then(data => {
             response.send(data);
-        }
-    });
+        })
+        .catch(err => {
+            response.send(err);
+        });
 });
 
 app.get('/items', (request, response) => {
-    console.log('*** /items GET ROOT traceId: ' + berlioz.zipkin.tracer.id);
-    console.log(JSON.stringify(request.headers));
-
     var docClient = berlioz.getDatabaseClient('drugs', AWS);
     var params = {
     };
-    docClient.scan(params, (err, data) => {
-        if (err) {
-            console.log('ITEMS ERROR:' + JSON.stringify(err));
-            response.send(err);
-        } else {
-            console.log('ITEMS:' + JSON.stringify(data));
+    return docClient.scan(params)
+        .then(data => {
             response.send(data.Items);
-        }
-    });
+        })
+        .catch(err => {
+            response.send(err);
+        });
 });
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,
