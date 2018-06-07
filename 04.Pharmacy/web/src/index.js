@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const _ = require('lodash');
 const Promise = require('promise');
 const request = require('request-promise');
@@ -7,38 +6,32 @@ const AWS = require('aws-sdk');
 const berlioz = require('berlioz-connector');
 
 const app = express()
+berlioz.setupExpress(app);
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, response) => {
-    var renderData = {
-        drugs: [],
-        readyItems: []
-    };
+    console.log('***/ ROOT traceId: ' + berlioz.zipkin.tracer.id);
+    // response.send({traceId: berlioz.zipkin.tracer.id});
+    // return;
+
+    var renderData = { };
 
     return Promise.resolve()
         .then(() => {
-            var peer = berlioz.getRandomPeer('service', 'inventory', 'client');
-            if (peer) {
-                var url = 'http://' + peer.address + ':' + peer.port + '/items';
-                return request({ url: url, json: true, timeout: 5000 })
-                    .then(result => {
-                        renderData.drugs = result;
-                    });
-            }
+            var options = { url: '/items', json: true };
+            return berlioz.request('service', 'inventory', 'client', options)
+                .then(result => {
+                    renderData.drugs = result.body;
+                });
         })
         .then(() => {
-            var peer = berlioz.getRandomPeer('service', 'dashboard', 'client');
-            if (peer) {
-                var url = 'http://' + peer.address + ':' + peer.port + '/items';
-                return request({ url: url, json: true, timeout: 5000 })
-                    .then(result => {
-                        renderData.readyItems = result;
-                    });
-            }
+            var options = { url: '/items', json: true };
+            return berlioz.request('service', 'dashboard', 'client', options)
+                .then(result => {
+                    renderData.readyItems = result.body;
+                });
         })
         .catch(error => {
             if (error instanceof Error) {
@@ -54,13 +47,13 @@ app.get('/', (req, response) => {
 })
 
 app.post('/new-drug', (req, response) => {
-    var peer = berlioz.getRandomPeer('service', 'inventory', 'client');
-    if (!peer) {
-        return response.status(503).send('Peer Unavailable.');
-    }
-    var url = 'http://' + peer.address + ':' + peer.port + '/item';
-    return request({ url: url, body: req.body, method: 'POST', json: true, timeout: 5000 })
-        .then(body => {
+    // console.log('*** /new-drug ROOT traceId: ' + berlioz.zipkin.tracer.id);
+    // console.log('*** /new-drug IN REQUEST traceId: ' + req.tracerId);
+    var options = { url: '/item', method: 'POST', body: req.body, json: true };
+    return berlioz.request('service', 'inventory', 'client', options)
+        .then(result => {
+            // console.log(result);
+            // response.send(result);
             return response.redirect('/');
         })
         .catch(reason => {
@@ -69,19 +62,13 @@ app.post('/new-drug', (req, response) => {
 });
 
 app.post('/drop-prescription', (req, response) => {
-    var peer = berlioz.getRandomPeer('service', 'clerk', 'client');
-    if (!peer) {
-        return response.status(503).send('Peer Unavailable.');
-    }
-    var url = 'http://' + peer.address + ':' + peer.port + '/job';
     var body = {
         patient: req.body.patient,
         medication: req.body.medication,
         dropDate: new Date().toISOString()
     };
-    var requestData = { url: url, body: body, method: 'POST', json: true, timeout: 5000 };
-    console.log('In /drop-prescription: ' + JSON.stringify(requestData, null, 4));
-    return request(requestData)
+    var options = { url: '/job', method: 'POST', body: body, json: true };
+    return berlioz.request('service', 'clerk', 'client', options)
         .then(result => {
             console.log('/drop-prescription Result: ' + JSON.stringify(result, null, 4));
             return response.redirect('/');
@@ -92,12 +79,8 @@ app.post('/drop-prescription', (req, response) => {
 });
 
 app.post('/pick-up', (req, response) => {
-    var peer = berlioz.getRandomPeer('service', 'dashboard', 'client');
-    if (!peer) {
-        return response.status(503).send('Peer Unavailable.');
-    }
-    var url = 'http://' + peer.address + ':' + peer.port + '/pick-up';
-    return request({ url: url, body: req.body, method: 'POST', json: true, timeout: 5000 })
+    var options = { url: '/pick-up', method: 'POST', body: req.body, json: true };
+    return berlioz.request('service', 'dashboard', 'client', options)
         .then(body => {
             return response.redirect('/');
         })
@@ -105,8 +88,6 @@ app.post('/pick-up', (req, response) => {
             response.send('ERROR FROM Web::PickUp ' + JSON.stringify(reason));
         });
 });
-
-berlioz.setupDebugExpressJSRoutes(app);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

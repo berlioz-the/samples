@@ -9,12 +9,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-connector": "^1.0.4",
+    "berlioz-connector": "^1.0.40",
     "ejs": "^2.5.8",
     "express": "^4.16.3",
     "lodash": "^4.17.5",
     "promise": "^8.0.1",
     "request": "^2.85.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "zipkin": "^0.12.0",
+    "zipkin-context-cls": "^0.11.0",
+    "zipkin-instrumentation-express": "^0.12.0",
+    "zipkin-instrumentation-request": "^0.12.0",
+    "zipkin-transport-http": "^0.12.0"
   }
 }

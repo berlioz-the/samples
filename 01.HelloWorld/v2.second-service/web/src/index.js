@@ -2,9 +2,11 @@ const express = require('express')
 const _ = require('lodash')
 const request = require('request-promise');
 const Promise = require('promise');
+
 const berlioz = require('berlioz-connector');
 
 const app = express()
+berlioz.setupExpress(app);
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
@@ -22,8 +24,8 @@ app.get('/', function (req, response) {
 
     return Promise.resolve()
         .then(() => {
-            var options = { url: '/', json: true, timeout: 5000 };
-            return berlioz.requestRandomPeer('service', 'app', 'client', options)
+            var options = { url: '/', json: true };
+            return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
                         renderData.appPeer.url = result.url;
@@ -55,7 +57,6 @@ app.get('/', function (req, response) {
         ;
 });
 
-berlioz.setupDebugExpressJSRoutes(app);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

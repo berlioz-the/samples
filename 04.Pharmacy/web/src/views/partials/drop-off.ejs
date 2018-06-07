@@ -11,9 +11,9 @@
             <div class="form-group">
                 <label for="medication">Medication</label>
                 <select class="form-control" id="medication" name="medication">
-                    <% drugs.forEach(function(drug) { %>
+                    <% if (typeof drugs !=='undefined') { drugs.forEach(function(drug) { %>
                         <option><%= drug.name %></option>
-                    <% }); %>
+                    <% }); } %>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Drop off</button>

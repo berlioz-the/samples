@@ -1,11 +1,9 @@
 const AWS = require('aws-sdk');
 const berlioz = require('berlioz-connector');
-const express = require('express')
-const bodyParser = require('body-parser');
+const express = require('express');
 
-const app = express()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+berlioz.setupExpress(app);
 
 app.get('/', (request, response) => {
     response.send({ service: process.env.BERLIOZ_SERVICE,
@@ -13,11 +11,8 @@ app.get('/', (request, response) => {
 })
 
 app.post('/item', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('dash');
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
-
+    var docClient = berlioz.getDatabaseClient('dash', AWS);
     var params = {
-        TableName: dbInfo.tableName,
         Item: request.body
     };
     docClient.put(params, (err, data) => {
@@ -30,11 +25,8 @@ app.post('/item', (request, response) => {
 });
 
 app.get('/items', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('dash');
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
-
+    var docClient = berlioz.getDatabaseClient('dash', AWS);
     var params = {
-        TableName: dbInfo.tableName
     };
     docClient.scan(params, (err, data) => {
         if (err) {
@@ -45,13 +37,9 @@ app.get('/items', (request, response) => {
     });
 });
 
-
 app.post('/pick-up', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('dash');
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
-
+    var docClient = berlioz.getDatabaseClient('dash', AWS);
     var params = {
-        TableName: dbInfo.tableName,
         Key: {
             'patient': request.body.patient
         }
@@ -63,15 +51,6 @@ app.post('/pick-up', (request, response) => {
             response.send(data);
         }
     });
-});
-
-
-app.get('/peers', (req, response) => {
-    response.send(berlioz.extractRoot());
-});
-
-app.get('/env', (req, response) => {
-    response.send(process.env);
 });
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,

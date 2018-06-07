@@ -1,11 +1,9 @@
 const AWS = require('aws-sdk');
 const berlioz = require('berlioz-connector');
-const express = require('express')
-const bodyParser = require('body-parser');
+const express = require('express');
 
-const app = express()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+berlioz.setupExpress(app);
 
 app.get('/', (request, response) => {
     response.send({ service: process.env.BERLIOZ_SERVICE,
@@ -13,11 +11,11 @@ app.get('/', (request, response) => {
 })
 
 app.post('/item', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('drugs');
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
+    console.log('*** /item POST ROOT traceId: ' + berlioz.zipkin.tracer.id);
+    console.log(JSON.stringify(request.headers));
 
+    var docClient = berlioz.getDatabaseClient('drugs', AWS);
     var params = {
-        TableName: dbInfo.tableName,
         Item: {
             'name': request.body.name
         }
@@ -32,27 +30,21 @@ app.post('/item', (request, response) => {
 });
 
 app.get('/items', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('drugs');
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
+    console.log('*** /items GET ROOT traceId: ' + berlioz.zipkin.tracer.id);
+    console.log(JSON.stringify(request.headers));
 
+    var docClient = berlioz.getDatabaseClient('drugs', AWS);
     var params = {
-        TableName: dbInfo.tableName
     };
     docClient.scan(params, (err, data) => {
         if (err) {
+            console.log('ITEMS ERROR:' + JSON.stringify(err));
             response.send(err);
         } else {
+            console.log('ITEMS:' + JSON.stringify(data));
             response.send(data.Items);
         }
     });
-});
-
-app.get('/peers', (req, response) => {
-    response.send(berlioz.extractRoot());
-});
-
-app.get('/env', (req, response) => {
-    response.send(process.env);
 });
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,

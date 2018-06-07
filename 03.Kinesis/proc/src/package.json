@@ -12,7 +12,7 @@
     "ascii-art": "^1.4.3",
     "aws-processors": "^1.0.1",
     "aws-sdk": "^2.241.1",
-    "berlioz-connector": "^1.0.11",
+    "berlioz-connector": "^1.0.40",
     "the-lodash": "^1.0.3",
     "the-promise": "^1.0.26"
   }
