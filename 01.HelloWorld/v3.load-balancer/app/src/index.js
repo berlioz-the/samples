@@ -1,6 +1,8 @@
 const express = require('express');
+const berlioz = require('berlioz-connector');
 
 const app = express();
+berlioz.setupExpress(app);
 
 app.get('/', (request, response) => {
     response.send({

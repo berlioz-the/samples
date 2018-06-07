@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const berlioz = require('berlioz-connector');
 const express = require('express');
 
-const app = express()
+const app = express();
 berlioz.setupExpress(app);
 
 app.get('/', (request, response) => {

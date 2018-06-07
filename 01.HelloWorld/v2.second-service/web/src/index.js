@@ -1,11 +1,8 @@
 const express = require('express')
-const _ = require('lodash')
-const request = require('request-promise');
 const Promise = require('promise');
-
 const berlioz = require('berlioz-connector');
 
-const app = express()
+const app = express();
 berlioz.setupExpress(app);
 
 app.use(express.static('public'))
@@ -53,8 +50,7 @@ app.get('/', function (req, response) {
         })
         .then(() => {
             response.render('pages/index', renderData);
-        })
-        ;
+        });
 });
 
 

@@ -1,11 +1,9 @@
-const express = require('express')
+const express = require('express');
 const berlioz = require('berlioz-connector');
 const mysql = require('promise-mysql');
-const bodyParser = require('body-parser');
 
-const app = express()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+berlioz.setupExpress(app);
 
 app.get('/', (request, response) => {
     var data = {
@@ -18,8 +16,8 @@ app.get('/', (request, response) => {
 
 app.get('/entries', (request, response) => {
     return executeQuery('select * from addressBook')
-        .then(rows => {
-            response.send(rows);
+        .then(result => {
+            response.send(result);
         })
 })
 
