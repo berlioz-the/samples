@@ -1,11 +1,9 @@
 const AWS = require('aws-sdk');
-const express = require('express')
+const express = require('express');
 const berlioz = require('berlioz-connector');
-const bodyParser = require('body-parser');
 
-const app = express()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+berlioz.setupExpress(app);
 
 app.get('/', (request, response) => {
     var data = {
@@ -17,22 +15,16 @@ app.get('/', (request, response) => {
 })
 
 app.get('/entries', (request, response) => {
-    var dbInfo = berlioz.getDatabaseInfo('contacts');
-    if (!dbInfo) {
-        return response.send({error: 'DynamoDb not present'});
-    }
-
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
+    var docClient = berlioz.getDatabaseClient('contacts', AWS);
     var params = {
-        TableName: dbInfo.tableName
     };
-    docClient.scan(params, (err, data) => {
-        if (err) {
-            response.send({error: err});
-        } else {
+    return docClient.scan(params)
+        .then(data => {
             response.send(data.Items);
-        }
-    });
+        })
+        .catch(err => {
+            response.send({error: err});
+        });
 })
 
 app.post('/entry', (request, response) => {
@@ -40,33 +32,21 @@ app.post('/entry', (request, response) => {
         return response.send({error: 'Missing name or phone'});
     }
 
-    var dbInfo = berlioz.getDatabaseInfo('contacts');
-    if (!dbInfo) {
-        return response.send({error: 'DynamoDb not present'});
-    }
-
-    var docClient = new AWS.DynamoDB.DocumentClient(dbInfo.config);
+    var docClient = berlioz.getDatabaseClient('contacts', AWS);
     var params = {
-        TableName: dbInfo.tableName,
         Item: {
             'name': request.body.name,
             'phone': request.body.phone
         }
     };
-    docClient.put(params, (err, data) => {
-        if (err) {
-            response.send({error: err});
-        } else {
+    return docClient.put(params)
+        .then(data => {
             response.send(data);
-        }
-    });
+        })
+        .catch(err => {
+            response.send({error: err});
+        });
 })
-
-function executeQuery(querySql)
-{
-
-}
-
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,
            process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {

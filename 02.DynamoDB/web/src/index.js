@@ -1,12 +1,10 @@
 const express = require('express')
-const _ = require('lodash')
 const Promise = require('promise');
 const berlioz = require('berlioz-connector');
-const bodyParser = require('body-parser');
 
-const app = express()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+berlioz.setupExpress(app);
+
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
@@ -22,15 +20,10 @@ app.get('/', function (req, response) {
         appPeerInfo: { }
     };
 
-    var appPeer = berlioz.getRandomPeer('service', 'app', 'client');
-    if (appPeer) {
-        renderData.appPeerInfo.host = appPeer.address + ':' + appPeer.port;
-    }
-
     return Promise.resolve()
         .then(() => {
-            var options = { url: '/entries', json: true, timeout: 5000 };
-            return berlioz.requestPeer(appPeer, options)
+            var options = { url: '/entries', json: true };
+            return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
                         renderData.entries = result.body;
@@ -51,12 +44,13 @@ app.get('/', function (req, response) {
                 });
         })
         .then(() => {
-            var options = { url: '/', json: true, timeout: 5000 };
-            return berlioz.requestPeer(appPeer, options)
+            var options = { url: '/', json: true };
+            return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
                         renderData.appPeerInfo.tableName = result.body.recipeDB.tableName;
                         renderData.appPeerInfo.config = result.body.recipeDB.config;
+                        renderData.appPeerInfo.host = result.url;
                         renderData.appDbPeers = result.body.recipeDB;
                     }
                 })
@@ -82,8 +76,8 @@ app.get('/', function (req, response) {
 });
 
 app.post('/new-contact', (request, response) => {
-    var options = { url: '/entry', method: 'POST', body: request.body, json: true, timeout: 5000 };
-    return berlioz.requestRandomPeer('service', 'app', 'client', options)
+    var options = { url: '/entry', method: 'POST', body: request.body, json: true };
+    return berlioz.request('service', 'app', 'client', options)
         .then(result => {
             console.log('**** ' + JSON.stringify(result));
             if (!result) {
@@ -95,8 +89,6 @@ app.post('/new-contact', (request, response) => {
             return response.send({ error: error });
         });
 });
-
-berlioz.setupDebugExpressJSRoutes(app);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

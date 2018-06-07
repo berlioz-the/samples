@@ -1,14 +1,12 @@
 const AWS = require('aws-sdk');
 const express = require('express')
-const _ = require('lodash')
 const Promise = require('promise');
 const berlioz = require('berlioz-connector');
-const bodyParser = require('body-parser');
 
-const app = express()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'))
+const app = express();
+berlioz.setupExpress(app);
+
+app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', function (req, response) {
@@ -42,19 +40,16 @@ app.get('/', function (req, response) {
 
     return Promise.resolve()
         .then(() => {
-            if (dynamoInfo) {
-                var docClient = new AWS.DynamoDB.DocumentClient(dynamoInfo.config);
-                var params = {
-                    TableName: dynamoInfo.tableName
-                };
-                return docClient.scan(params).promise()
-                    .then(data => {
-                        renderData.entries = data.Items;
-                    })
-                    .catch(reason => {
-                        console.log(reason);
-                    });
-            }
+            var docClient = berlioz.getDatabaseClient('arts', AWS);
+            var params = {
+            };
+            return docClient.scan(params)
+                .then(data => {
+                    renderData.entries = data.Items;
+                })
+                .catch(reason => {
+                    console.log(reason);
+                });
         })
         .catch(error => {
             if (error instanceof Error) {
@@ -78,30 +73,24 @@ app.post('/new-job', (request, response) => {
     if (!request.body.name) {
         return response.send({error: 'Missing name'});
     }
-
     return Promise.resolve()
         .then(() => {
-            var dynamoInfo = berlioz.getDatabaseInfo('arts');
-            var docClient = new AWS.DynamoDB.DocumentClient(dynamoInfo.config);
+            var docClient = berlioz.getDatabaseClient('arts', AWS);
             var params = {
-                TableName: dynamoInfo.tableName,
                 Item: {
                     'name': request.body.name,
                     'art': 'Render in progress... Refresh in few seconds...'
                 }
             };
-            return docClient.put(params).promise();
+            return docClient.put(params);
         })
         .then(() => {
-            var queueInfo = berlioz.getQueueInfo('jobs');
-            var kinesis = new AWS.Kinesis(queueInfo.config);
-
+            var kinesis = berlioz.getQueueClient('jobs', AWS);
             var params = {
-                StreamName: queueInfo.streamName,
                 PartitionKey: request.body.name,
                 Data: JSON.stringify(request.body)
             };
-            return kinesis.putRecord(params).promise()
+            return kinesis.putRecord(params)
                 .then(data => {
                     response.send({result: data});
                 })
@@ -110,9 +99,6 @@ app.post('/new-job', (request, response) => {
                 });
         })
 })
-
-
-berlioz.setupDebugExpressJSRoutes(app);
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

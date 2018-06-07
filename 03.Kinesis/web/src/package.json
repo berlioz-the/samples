@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.245.1",
-    "berlioz-connector": "^1.0.40",
+    "berlioz-connector": "^1.0.55",
     "body-parser": "^1.18.3",
     "ejs": "^2.5.8",
     "express": "^4.16.3",

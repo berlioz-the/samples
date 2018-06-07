@@ -1,4 +1,3 @@
-const _ = require('the-lodash');
 const Promise = require('the-promise');
 const AWS = require('aws-sdk');
 const KinesisConsumer = require('aws-processors/kinesis-consumer');
@@ -6,11 +5,10 @@ const asciiArt = require('ascii-art')
 
 const berlioz = require('berlioz-connector');
 
-
 berlioz.monitorQueues('jobs', () => {
-
     var kinesisInfo = berlioz.getQueueInfo('jobs');
     if (!kinesisInfo) {
+        tracer.error('Queue Not Present');
         console.log('Kinesis Peer not present');
         return;
     }
@@ -23,30 +21,34 @@ berlioz.monitorQueues('jobs', () => {
         })
         .process()
         ;
-
 });
 
 function processData(data)
 {
-    console.log('Processing: ' + JSON.stringify(data));
-    var dynamoInfo = berlioz.getDatabaseInfo('arts');
-    if (!dynamoInfo) {
-        console.log('Error: DynamoDB not present.');
-        return;
-    }
+    berlioz.zipkin.tracer.scoped(() => {
+        berlioz.zipkin.tracer.createRootId();
 
-    var docClient = new AWS.DynamoDB.DocumentClient(dynamoInfo.config);
-    return renderText(data.name)
-        .then(rendered => {
-            var params = {
-                TableName: dynamoInfo.tableName,
-                Item: {
-                    'name': data.name,
-                    'art': rendered
-                }
-            };
-            return docClient.put(params).promise();
-        });
+        console.log('Processing: ' + JSON.stringify(data));
+        var dynamoInfo = berlioz.getDatabaseInfo('arts');
+        if (!dynamoInfo) {
+            console.log('Error: DynamoDB not present.');
+            return;
+        }
+
+        return renderText(data.name)
+            .then(rendered => {
+                var params = {
+                    Item: {
+                        'name': data.name,
+                        'art': rendered
+                    }
+                };
+                var docClient = berlioz.getDatabaseClient('arts', AWS);
+                return docClient.put(params);
+            });
+
+    });
+
 }
 
 function renderText(text)
