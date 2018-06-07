@@ -13,26 +13,10 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, response) => {
     console.log('***/ ROOT traceId: ' + berlioz.zipkin.tracer.id);
-    // response.send({traceId: berlioz.zipkin.tracer.id});
-    // return;
 
     var renderData = { };
 
-    return Promise.resolve()
-        .then(() => {
-            var options = { url: '/items', json: true };
-            return berlioz.request('service', 'inventory', 'client', options)
-                .then(result => {
-                    renderData.drugs = result.body;
-                });
-        })
-        .then(() => {
-            var options = { url: '/items', json: true };
-            return berlioz.request('service', 'dashboard', 'client', options)
-                .then(result => {
-                    renderData.readyItems = result.body;
-                });
-        })
+    return Promise.serial([queryInventory, queryDashboard], x => x(renderData))
         .catch(error => {
             if (error instanceof Error) {
                 renderData.error = error.stack + error.stack;
@@ -45,6 +29,24 @@ app.get('/', (req, response) => {
         })
         ;
 })
+
+function queryInventory(renderData)
+{
+    var options = { url: '/items', json: true };
+    return berlioz.request('service', 'inventory', 'client', options)
+        .then(result => {
+            renderData.drugs = result.body;
+        });
+}
+
+function queryDashboard(renderData)
+{
+    var options = { url: '/items', json: true };
+    return berlioz.request('service', 'dashboard', 'client', options)
+        .then(result => {
+            renderData.readyItems = result.body;
+        });
+}
 
 app.post('/new-drug', (req, response) => {
     // console.log('*** /new-drug ROOT traceId: ' + berlioz.zipkin.tracer.id);
