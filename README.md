@@ -17,7 +17,7 @@ $ cd 01.HelloWorld/v1.basic
 
 2. Build and deploy the project
 ```
-$ berlioz local push-provision
+$ berlioz local push-run
 ```
 
 3. Output service endpoint addresses
@@ -59,7 +59,7 @@ $ berlioz push
 
 3. Deploy the project to the test deployment
 ```
-$ berlioz provision --deployment test
+$ berlioz run --deployment test
 ```
 
 4. Output service endpoint addresses

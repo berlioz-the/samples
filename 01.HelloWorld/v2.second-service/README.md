@@ -20,7 +20,7 @@ $ cd 01.HelloWorld/v2.second-service
 
 2. Build and deploy the project
 ```
-$ berlioz local push-provision
+$ berlioz local push-run
 ```
 
 3. Output service endpoint addresses
@@ -36,7 +36,7 @@ $ berlioz local scale set --cluster hello --service app --value 3
 
 5. Once completed release AWS resources
 ```
-$ berlioz local unprovision
+$ berlioz local stop
 ```
 
 ## Deploying to AWS
@@ -50,7 +50,7 @@ $ berlioz push
 
 3. Deploy the project to the test deployment
 ```
-$ berlioz provision --deployment test --cluster hello --region us-east-1
+$ berlioz run --deployment test --cluster hello --region us-east-1
 ```
 
 4. Change the number of **web** and **app** service instances running
@@ -61,7 +61,7 @@ $ berlioz scale set --deployment test --cluster hello --region us-east-1 --servi
 
 5. Check the deployment status. Proceed forward once completed.
 ```
-$ berlioz deployment status
+$ berlioz status
 ```
 
 6. Output service endpoint addresses
@@ -71,7 +71,7 @@ $ berlioz endpoints --deployment test
 
 7. Once completed release AWS resources
 ```
-$ berlioz unprovision --deployment test --cluster hello --region us-east-1
+$ berlioz stop --deployment test --cluster hello --region us-east-1
 ```
 
 ## Next Version

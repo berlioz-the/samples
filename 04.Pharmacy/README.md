@@ -19,7 +19,7 @@ $ cd 04.Pharmacy
 
 2. Build and deploy the project
 ```
-$ berlioz local push-provision
+$ berlioz local push-run
 ```
 
 3. Output service endpoint addresses
@@ -29,7 +29,7 @@ $ berlioz local endpoints
 
 4. Once completed release AWS resources
 ```
-$ berlioz local unprovision
+$ berlioz local stop
 ```
 
 ## Deploying to AWS
@@ -43,7 +43,7 @@ $ berlioz push
 
 3. Deploy the project to the test deployment
 ```
-$ berlioz provision --deployment test --cluster pharm --region us-east-1
+$ berlioz run --deployment test --cluster pharm --region us-east-1
 ```
 
 4. Output service endpoint addresses
@@ -53,5 +53,5 @@ $ berlioz endpoints --deployment test
 
 5. Once completed release AWS resources
 ```
-$ berlioz unprovision --deployment test --cluster pharm --region us-east-1
+$ berlioz stop --deployment test --cluster pharm --region us-east-1
 ```

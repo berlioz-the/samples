@@ -23,7 +23,7 @@ $ cd 01.HelloWorld/v4.dns
 
 2. Build and deploy the project
 ```
-$ berlioz local push-provision
+$ berlioz local push-run
 ```
 
 3. Output service endpoint addresses
@@ -39,7 +39,7 @@ $ berlioz local scale set --cluster hello --service app --value 3
 
 5. Once completed release AWS resources
 ```
-$ berlioz local unprovision
+$ berlioz local stop
 ```
 
 ## Deploying to AWS
@@ -53,7 +53,7 @@ $ berlioz push
 
 3. Deploy the project to the test deployment
 ```
-$ berlioz provision --deployment test --cluster hello --region us-east-1
+$ berlioz run --deployment test --cluster hello --region us-east-1
 ```
 
 4. Change the number of **web** and **app** service instances running
@@ -71,7 +71,7 @@ $ berlioz dns set --deployment test --cluster hello --region us-east-1 --service
 
 6. Check the deployment status. Proceed forward once completed.
 ```
-$ berlioz deployment status
+$ berlioz status
 ```
 
 7. Output service endpoint addresses. This time the output will only have one
@@ -84,7 +84,7 @@ See how the same application looks like when running in AWS.
 
 8. Once completed release AWS resources
 ```
-$ berlioz unprovision --deployment test --cluster hello --region us-east-1
+$ berlioz stop --deployment test --cluster hello --region us-east-1
 ```
 
 ## Next Version
