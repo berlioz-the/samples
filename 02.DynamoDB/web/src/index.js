@@ -1,5 +1,6 @@
 const express = require('express')
 const Promise = require('promise');
+const _ = require('the-lodash');
 const berlioz = require('berlioz-connector');
 
 const app = express();
@@ -7,6 +8,7 @@ berlioz.setupExpress(app);
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
+app.locals._ = _;
 
 app.get('/', function (req, response) {
     var renderData = {

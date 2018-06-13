@@ -6,18 +6,18 @@
         <% if (entries) { %>
         <table class="table">
             <thead>
-                <tr>
+                <tr>d
                     <th scope="col">Name</th>
                     <th scope="col">Phone</th>
                 </tr>
             </thead>
             <tbody>
-                <% entries.forEach(function(entry) { %>
+                <% if (_.isArray(entries)) { entries.forEach(function(entry) { %>
                     <tr>
                         <th scope="row"><%= entry.name %></th>
                         <td><%= entry.phone %></td>
                     </tr>
-                <% }); %>
+                <% }); } %>
             </tbody>
         </table>
         <% } %>
