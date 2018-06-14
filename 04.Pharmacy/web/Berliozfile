@@ -17,9 +17,6 @@ consumes:
     - service: dashboard
       endpoint: client
 
-scale:
-    min: 1
-
 resources:
     memory:
         min: 100

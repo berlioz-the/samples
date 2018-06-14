@@ -12,9 +12,6 @@ provides:
 consumes:
     - queue: jobs
 
-scale:
-    min: 1
-
 resources:
     memory:
         min: 128
