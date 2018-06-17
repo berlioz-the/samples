@@ -14,7 +14,7 @@ berlioz.monitorQueues('jobs', () => {
     }
     var kinesis = new AWS.Kinesis(kinesisInfo.config);
     var consumer = new KinesisConsumer(kinesis)
-        .streamName(kinesisInfo.streamName)
+        .streamName(kinesisInfo.name)
         .shouldParseJson(true)
         .handler(data => {
             return processData(data);

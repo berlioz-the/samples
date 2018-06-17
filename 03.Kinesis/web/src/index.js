@@ -21,7 +21,7 @@ app.get('/', function (req, response) {
     var queueInfo = berlioz.getQueueInfo('jobs');
     if (queueInfo) {
         renderData.kinesisInfo = {
-            name: queueInfo.streamName,
+            name: queueInfo.name,
             region: queueInfo.config.region
         };
     } else {
@@ -31,7 +31,7 @@ app.get('/', function (req, response) {
     var dynamoInfo = berlioz.getDatabaseInfo('arts');
     if (dynamoInfo) {
         renderData.dynamoInfo = {
-            name: dynamoInfo.tableName,
+            name: dynamoInfo.name,
             region: dynamoInfo.config.region
         };
     } else {

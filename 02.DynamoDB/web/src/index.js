@@ -50,7 +50,7 @@ app.get('/', function (req, response) {
             return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
-                        renderData.appPeerInfo.tableName = result.body.recipeDB.tableName;
+                        renderData.appPeerInfo.tableName = result.body.recipeDB.name;
                         renderData.appPeerInfo.config = result.body.recipeDB.config;
                         renderData.appPeerInfo.host = result.url;
                         renderData.appDbPeers = result.body.recipeDB;

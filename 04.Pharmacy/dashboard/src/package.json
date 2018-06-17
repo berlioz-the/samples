@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.241.1",
-    "berlioz-connector": "^1.0.52",
+    "berlioz-connector": "^1.0.57",
     "express": "^4.16.3"
   }
 }
