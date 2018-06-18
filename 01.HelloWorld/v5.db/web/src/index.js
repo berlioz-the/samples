@@ -28,7 +28,7 @@ app.get('/', function (req, response) {
 
     return Promise.resolve()
         .then(() => {
-            var options = { url: '/entries', json: true };
+            var options = { url: '/entries', json: true, resolveWithFullResponse: true };
             return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
@@ -50,7 +50,7 @@ app.get('/', function (req, response) {
                 });
         })
         .then(() => {
-            var options = { url: '/', json: true };
+            var options = { url: '/', json: true, resolveWithFullResponse: true };
             return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
@@ -86,7 +86,7 @@ app.post('/new-contact', (request, response) => {
             if (!result) {
                 return response.send({ error: 'No app peers present.' });
             }
-            return response.send(result.body);
+            return response.send(result);
         })
         .catch(error => {
             return response.send({ error: error });

@@ -28,11 +28,11 @@ app.get('/', function (req, response) {
             return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
-                        renderData.entries = result.body;
+                        renderData.entries = result;
                         renderData.appPeerInfo.url = result.url;
                         renderData.appPeerInfo.cardClass = 'eastern-blue';
                         renderData.appPeerInfo.title = 'RESPONSE:';
-                        renderData.appPeerInfo.response = JSON.stringify(result.body, null, 2);
+                        renderData.appPeerInfo.response = JSON.stringify(result, null, 2);
                     } else {
                         renderData.appPeerInfo.cardClass = 'yellow';
                         renderData.appPeerInfo.title = 'No peers present';
@@ -50,10 +50,10 @@ app.get('/', function (req, response) {
             return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
-                        renderData.appPeerInfo.tableName = result.body.recipeDB.name;
-                        renderData.appPeerInfo.config = result.body.recipeDB.config;
+                        renderData.appPeerInfo.tableName = result.recipeDB.name;
+                        renderData.appPeerInfo.config = result.recipeDB.config;
                         renderData.appPeerInfo.host = result.url;
-                        renderData.appDbPeers = result.body.recipeDB;
+                        renderData.appDbPeers = result.recipeDB;
                     }
                 })
                 .catch(error => {
@@ -85,7 +85,7 @@ app.post('/new-contact', (request, response) => {
             if (!result) {
                 return response.send({ error: 'No app peers present.' });
             }
-            return response.send(result.body);
+            return response.send(result);
         })
         .catch(error => {
             return response.send({ error: error });

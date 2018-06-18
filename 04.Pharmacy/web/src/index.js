@@ -36,7 +36,7 @@ function queryInventory(renderData)
     var options = { url: '/items', json: true };
     return berlioz.request('service', 'inventory', 'client', options)
         .then(result => {
-            renderData.drugs = result.body;
+            renderData.drugs = result;
         });
 }
 
@@ -45,7 +45,7 @@ function queryDashboard(renderData)
     var options = { url: '/items', json: true };
     return berlioz.request('service', 'dashboard', 'client', options)
         .then(result => {
-            renderData.readyItems = result.body;
+            renderData.readyItems = result;
         });
 }
 

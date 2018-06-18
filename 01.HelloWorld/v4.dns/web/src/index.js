@@ -21,7 +21,7 @@ app.get('/', function (req, response) {
 
     return Promise.resolve()
         .then(() => {
-            var options = { url: '/', json: true };
+            var options = { url: '/', json: true, resolveWithFullResponse: true };
             return berlioz.request('service', 'app', 'client', options)
                 .then(result => {
                     if (result) {
