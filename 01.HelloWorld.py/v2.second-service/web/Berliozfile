@@ -5,8 +5,12 @@ name: web
 
 provides:
     client:
-        port: 3000
+        port: 5000
         protocol: http
+
+consumes:
+    - service: app
+      endpoint: client
 
 resources:
     memory:

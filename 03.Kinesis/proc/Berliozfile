@@ -7,9 +7,6 @@ consumes:
     - queue: jobs
     - database: arts
 
-scale:
-    min: 1
-
 resources:
     memory:
         min: 128

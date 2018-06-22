@@ -22,9 +22,6 @@ environment:
     MYSQL_USER: ${HELLO_RELATIONAL_DB_USER}
     MYSQL_PASSWORD: ${HELLO_RELATIONAL_DB_PASS}
 
-scale:
-    min: 1
-
 resources:
     memory:
         min: 300

@@ -9,9 +9,6 @@ provides:
         protocol: http
         load-balance: true
         
-scale:
-    min: 1
-
 resources:
     memory:
         min: 128

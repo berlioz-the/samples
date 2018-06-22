@@ -1,11 +1,11 @@
 ---
 kind: service
 cluster: hello
-name: web
+name: app
 
 provides:
     client:
-        port: 3000
+        port: 5000
         protocol: http
 
 resources:

@@ -11,9 +11,6 @@ provides:
 consumes:
     - database: contacts
 
-scale:
-    min: 1
-
 resources:
     memory:
         min: 128
