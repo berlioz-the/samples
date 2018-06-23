@@ -1,0 +1,13 @@
+---
+kind: service
+cluster: hello
+name: app
+
+provides:
+    client:
+        port: 5000
+        protocol: http
+
+resources:
+    memory:
+        min: 100
