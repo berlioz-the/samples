@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <% include ../partials/head %>
+    {% include 'parts/head.html' %}
 </head>
 <body class="container">
 
 <header>
-    <% include ../partials/header %>
+    {% include 'parts/header.html' %}
 </header>
 
 <main>
-    <h1>Berlioz Hello World.js</h1>
+    <h1>Berlioz Hello World.py</h1>
     <h2>v2.second-service</h2>
 
     <div class="row">
         <div class="col-sm">
-            <% include ../partials/environment %>
+            {% include 'parts/environment.html' %}
         </div>
         <div class="col-sm">
-            <% include ../partials/app-peers %>
+            {% include 'parts/app-peers.html' %}
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm">
-            <% include ../partials/app-response %>
+            {% include 'parts/app-response.html' %}
         </div>
     </div>
 
-    <% include ../partials/global-error %>
+    {% include 'parts/global-error.html' %}
 </main>
 
 <footer>
-    <% include ../partials/footer %>
+    {% include 'parts/footer.html' %}
 </footer>
 
 </body>
