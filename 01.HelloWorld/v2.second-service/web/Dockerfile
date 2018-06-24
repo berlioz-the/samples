@@ -1,4 +1,4 @@
-FROM node:9-alpine
+FROM node:9-jessie
 
 WORKDIR /src
 COPY src /src
