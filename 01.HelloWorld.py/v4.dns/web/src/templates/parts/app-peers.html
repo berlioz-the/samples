@@ -1,0 +1,31 @@
+<div class="card green">
+    <div class="card-header">
+        App::Client Peers
+    </div>
+    <div class="card-body">
+        {% if peers %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Identity</th>
+                    <th scope="col">Protocol</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for identity, peer in peers.iteritems() %}
+                    <tr>
+                        <th scope="row">{{ identity }}</th>
+                        <td>{{ peer.protocol }}</td>
+                        <td>{{ peer.address }}</td>
+                        <td>{{ peer.port }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            No peers present
+        {% endif %}
+    </div>
+</div>

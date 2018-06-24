@@ -1,0 +1,19 @@
+---
+kind: service
+cluster: hello
+name: web
+
+provides:
+    client:
+        port: 5000
+        protocol: http
+        load-balance: true
+        dns: true
+
+consumes:
+    - service: app
+      endpoint: client
+
+resources:
+    memory:
+        min: 100

@@ -1,0 +1,19 @@
+<div class="card blue">
+    <div class="card-header">
+        Task Environment
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                {% if settings %}
+                    {% for setting in settings %}
+                        <tr>
+                            <th scope="row">{{ setting.name }}</th>
+                            <td>{{ setting.value }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
