@@ -1,7 +1,4 @@
-FROM node:9-jessie
+FROM berliozcloud/node-9
 
-WORKDIR /src
-COPY src /src
+COPY src /app
 RUN npm install
-
-CMD ["node", "."]
