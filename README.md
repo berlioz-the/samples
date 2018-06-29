@@ -15,17 +15,22 @@ $ npm install berlioz -g
 $ cd 01.HelloWorld/v1.basic
 ```
 
-2. Build and deploy the project
+2. Some examples are using AWS native resources like DynamoDB and Kinesis. In order to run the samples locally you should provide the name of AWS profile to use to provision thouse native resources:
+```
+$ berlioz local account --profile <the-name-of-aws-profile-to-use>
+```
+
+3. Build and deploy the project
 ```
 $ berlioz local push-run
 ```
 
-3. Output service endpoint addresses
+4. Output service endpoint addresses
 ```
 $ berlioz local endpoints
 ```
 
-4. Open the endpoint in the browser: http://localhost:40000 (use the port returned from the step 3).
+5. Open the endpoint in the browser: http://localhost:40000 (use the port returned from the step 3).
 
 ## Running Samples in AWS
 

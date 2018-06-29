@@ -12,22 +12,28 @@ A model of a modern pharmacy application. All client request are entering throug
 
 ## Running Locally
 
-1. Navigate to sample directory
+1. Prerequisites. If you haven't already installed **berlioz** command line tools and set up AWS account profile, run:
+```
+$ npm install berlioz -g
+$ berlioz local account --profile <the-name-of-aws-profile-to-use>
+```
+
+2. Navigate to sample directory
 ```
 $ cd 04.Pharmacy
 ```
 
-2. Build and deploy the project
+3. Build and deploy the project
 ```
 $ berlioz local push-run
 ```
 
-3. Output service endpoint addresses
+4. Output service endpoint addresses
 ```
 $ berlioz local endpoints
 ```
 
-4. Once completed release AWS resources
+5. Once completed release AWS resources
 ```
 $ berlioz local stop
 ```
