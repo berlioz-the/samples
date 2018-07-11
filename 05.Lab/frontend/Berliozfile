@@ -12,6 +12,10 @@ provides:
 consumes:
     - service: desk
       endpoint: client
+    - secret: personal
+      action: encrypt
+    - secret: age
+      action: encrypt
 
 resources:
     memory:

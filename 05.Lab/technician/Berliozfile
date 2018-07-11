@@ -7,6 +7,8 @@ consumes:
     - queue: jobs
     - service: notif
       endpoint: client
+    - secret: age
+      action: decrypt
 
 resources:
     memory:

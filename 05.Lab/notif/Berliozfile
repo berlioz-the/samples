@@ -10,6 +10,8 @@ provides:
 
 consumes:
     - database: orders
+    - secret: personal
+      action: decrypt
 
 resources:
     memory:
