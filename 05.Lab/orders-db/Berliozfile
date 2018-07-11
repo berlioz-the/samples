@@ -1,0 +1,10 @@
+---
+kind: database
+cluster: lab
+name: orders
+class: nosql
+subClass: dynamodb
+
+hashKey:
+    name: id
+    type: String

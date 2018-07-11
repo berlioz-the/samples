@@ -1,0 +1,6 @@
+---
+kind: queue
+cluster: lab
+name: jobs
+class: queue
+subClass: kinesis

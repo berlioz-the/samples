@@ -1,0 +1,18 @@
+---
+kind: service
+cluster: lab
+name: frontend
+
+provides:
+    client:
+        port: 3000
+        protocol: http
+        load-balance: true
+
+consumes:
+    - service: desk
+      endpoint: client
+
+resources:
+    memory:
+        min: 100

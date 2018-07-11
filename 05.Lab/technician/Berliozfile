@@ -1,0 +1,13 @@
+---
+kind: service
+cluster: lab
+name: technician
+
+consumes:
+    - queue: jobs
+    - service: notif
+      endpoint: client
+
+resources:
+    memory:
+        min: 100

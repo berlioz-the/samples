@@ -1,0 +1,17 @@
+---
+kind: service
+cluster: lab
+name: desk
+
+provides:
+    client:
+        port: 3000
+        protocol: http
+
+consumes:
+    - queue: jobs
+    - database: orders
+
+resources:
+    memory:
+        min: 100

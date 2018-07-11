@@ -1,0 +1,9 @@
+---
+kind: cluster
+name: lab
+
+provides:
+    front:
+        service: frontend
+        endpoint: client
+        public: true
