@@ -1,3 +1,9 @@
 ---
 kind: cluster
 name: lab
+
+provides:
+    web:
+        service: web
+        endpoint: client
+        public: true

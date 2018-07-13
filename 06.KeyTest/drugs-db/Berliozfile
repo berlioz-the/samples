@@ -1,0 +1,14 @@
+---
+kind: database
+cluster: lab
+name: drugs
+class: nosql
+subClass: dynamodb
+
+hashKey:
+    name: name
+    type: String
+
+# rangeKey:
+#     name: full_name
+#     type: String

@@ -1,0 +1,20 @@
+---
+kind: service
+cluster: lab
+name: web
+
+provides:
+    client:
+        port: 3000
+        protocol: http
+
+consumes:
+    - database: drugs
+    - secret: personal
+      action: 
+        - encrypt
+        - decrypt
+
+resources:
+    memory:
+        min: 100
