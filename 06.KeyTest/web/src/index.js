@@ -9,6 +9,8 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
 app.get('/', function (req, response) {
+    console.log('ROOT /');
+
     var renderData = {
         settings: [
             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
@@ -33,6 +35,21 @@ app.get('/secret', function (req, response) {
             console.log('222222222222222222222222222222');
             console.log(result);
             response.send(result);
+        })
+        .catch(reason => {
+            console.log('333333333333333333333333333333');
+            console.log(reason);
+            response.send(reason);
+        })
+})
+
+app.get('/encrypt', function (req, response) {
+    console.log('*******************************');
+    berlioz.getSecretPublicKeyX('personal', AWS).encrypt('lalala')
+        .then(result => {
+            console.log('11111111111111111111111111111');
+            console.log(result);
+            return berlioz.getSecretPrivateKeyX('personal', AWS).decrypt(result)
         })
         .catch(reason => {
             console.log('333333333333333333333333333333');
