@@ -49,7 +49,7 @@ app.get('/encrypt', function (req, response) {
         .then(result => {
             console.log('11111111111111111111111111111');
             console.log(result);
-            return berlioz.getSecretPrivateKeyX('personal', AWS).decrypt(result)
+            response.send(result);
         })
         .catch(reason => {
             console.log('333333333333333333333333333333');
