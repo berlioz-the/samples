@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.245.1",
-    "berlioz-connector": "^1.0.62",
+    "aws-sdk": "^2.275.1",
+    "berlioz-connector": "^1.0.73",
     "ejs": "^2.5.8",
     "express": "^4.16.3",
     "lodash": "^4.17.5",

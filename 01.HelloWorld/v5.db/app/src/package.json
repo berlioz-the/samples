@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-connector": "^1.0.40",
+    "berlioz-connector": "^1.0.73",
     "express": "^4.16.3",
-    "promise-mysql": "^3.2.1"
+    "promise-mysql": "^3.3.1"
   }
 }

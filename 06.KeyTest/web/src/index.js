@@ -25,11 +25,11 @@ app.get('/', function (req, response) {
 
 app.get('/secret', function (req, response) {
     console.log('*******************************');
-    berlioz.getSecretPublicKeyX('personal', AWS).encrypt('lalala')
+    berlioz.getSecret('personal', AWS).encrypt('lalala')
         .then(result => {
             console.log('11111111111111111111111111111');
             console.log(result);
-            return berlioz.getSecretPrivateKeyX('personal', AWS).decrypt(result)
+            return berlioz.getSecret('personal', AWS).decrypt(result)
         })
         .then(result => {
             console.log('222222222222222222222222222222');
@@ -45,7 +45,7 @@ app.get('/secret', function (req, response) {
 
 app.get('/encrypt', function (req, response) {
     console.log('*******************************');
-    berlioz.getSecretPublicKeyX('personal', AWS).encrypt('lalala')
+    berlioz.getSecret('personal', AWS).encrypt('lalala')
         .then(result => {
             console.log('11111111111111111111111111111');
             console.log(result);

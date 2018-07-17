@@ -10,8 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "aws-processors": "^1.0.1",
-    "aws-sdk": "^2.241.1",
-    "berlioz-connector": "^1.0.65",
+    "aws-sdk": "^2.275.1",
+    "berlioz-connector": "^1.0.73",
     "request": "^2.86.0",
     "request-promise": "^4.2.2",
     "the-lodash": "^1.0.3",
