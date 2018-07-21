@@ -1,0 +1,11 @@
+---
+kind: lambda
+cluster: lambda
+name: dosomething
+
+runtime: nodejs
+handler: index.handler
+
+resources:
+    memory:
+        min: 512
