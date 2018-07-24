@@ -1,0 +1,10 @@
+---
+kind: database
+cluster: lambda
+name: contacts
+class: nosql
+subClass: dynamodb
+
+hashKey:
+    name: name
+    type: String

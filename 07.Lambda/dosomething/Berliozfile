@@ -3,8 +3,11 @@ kind: lambda
 cluster: lambda
 name: dosomething
 
-runtime: nodejs
+runtime: nodejs8.10
 handler: index.handler
+
+consumes:
+    - database: contacts
 
 resources:
     memory:

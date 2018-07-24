@@ -12,9 +12,9 @@ provides:
 consumes:
     - service: desk
       endpoint: client
-    - secret: personal
+    - secret: contact
       action: encrypt
-    - secret: age
+    - secret: ssn
       action: encrypt
 
 resources:

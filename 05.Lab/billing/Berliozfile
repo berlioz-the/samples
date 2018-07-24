@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: lab
-name: notif
+name: billing
 
 provides:
     client:
@@ -10,7 +10,9 @@ provides:
 
 consumes:
     - database: orders
-    - secret: contact
+    - secret: personal
+      action: decrypt
+    - secret: ssn
       action: decrypt
 
 resources:
