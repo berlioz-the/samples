@@ -5,6 +5,7 @@ name: dosomething
 
 runtime: nodejs8.10
 handler: index.handler
+timeout: 200
 
 consumes:
     - database: contacts
