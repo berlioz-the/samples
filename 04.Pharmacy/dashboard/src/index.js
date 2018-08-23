@@ -11,7 +11,7 @@ app.get('/', (request, response) => {
 })
 
 app.post('/item', (request, response) => {
-    var docClient = berlioz.getDatabaseClient('dash', AWS);
+    var docClient = berlioz.database('dash').client(AWS);
     var params = {
         Item: request.body
     };
@@ -25,7 +25,7 @@ app.post('/item', (request, response) => {
 });
 
 app.get('/items', (request, response) => {
-    var docClient = berlioz.getDatabaseClient('dash', AWS);
+    var docClient = berlioz.database('dash').client(AWS);
     var params = {
     };
     return docClient.scan(params)
@@ -38,7 +38,7 @@ app.get('/items', (request, response) => {
 });
 
 app.post('/pick-up', (request, response) => {
-    var docClient = berlioz.getDatabaseClient('dash', AWS);
+    var docClient = berlioz.database('dash').client(AWS);
     var params = {
         Key: {
             'patient': request.body.patient

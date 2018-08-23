@@ -11,7 +11,7 @@ app.get('/', (request, response) => {
 })
 
 app.post('/job', (request, response) => {
-    var kinesis = berlioz.getQueueClient('jobs', AWS);
+    var kinesis = berlioz.queue('jobs').client(AWS);
     var params = {
         PartitionKey: request.body.patient,
         Data: JSON.stringify(request.body)

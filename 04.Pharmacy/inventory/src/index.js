@@ -11,7 +11,7 @@ app.get('/', (request, response) => {
 })
 
 app.post('/item', (request, response) => {
-    var docClient = berlioz.getDatabaseClient('drugs', AWS);
+    var docClient = berlioz.database('drugs').client(AWS);
     var params = {
         Item: {
             'name': request.body.name
@@ -27,7 +27,7 @@ app.post('/item', (request, response) => {
 });
 
 app.get('/items', (request, response) => {
-    var docClient = berlioz.getDatabaseClient('drugs', AWS);
+    var docClient = berlioz.database('drugs').client(AWS);
     var params = {
     };
     return docClient.scan(params)
