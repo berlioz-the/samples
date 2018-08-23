@@ -9,7 +9,7 @@ app.get('/', (request, response) => {
     var data = {
         myId: process.env.BERLIOZ_TASK_ID,
         message: 'Hello From App Tier',
-        myDbPeers: berlioz.getPeers('service', 'db', 'client')
+        myDbPeers: berlioz.service('db', 'client').all()
     }
     response.send(data);
 })
@@ -34,7 +34,7 @@ app.post('/entry', (request, response) => {
 
 function executeQuery(querySql)
 {
-    var peer = berlioz.getRandomPeer('service', 'db', 'client');
+    var peer = berlioz.service('db', 'client').random();
     if (!peer) {
         return Promise.resolve(null);
     }

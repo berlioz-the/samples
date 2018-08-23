@@ -15,13 +15,13 @@ app.get('/', function (req, response) {
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_REGION }
         ],
-        peers: berlioz.getPeers('service', 'app', 'client'),
+        peers: berlioz.service('app', 'client').all(),
         entries: [],
         appPeer: '',
         appPeerInfo: { }
     };
 
-    var appPeer = berlioz.getRandomPeer('service', 'app', 'client');
+    var appPeer = berlioz.service('app', 'client').random();
     if (appPeer) {
         renderData.appPeer = appPeer.address + ':' + appPeer.port;
     }
@@ -29,7 +29,7 @@ app.get('/', function (req, response) {
     return Promise.resolve()
         .then(() => {
             var options = { url: '/entries', json: true, resolveWithFullResponse: true };
-            return berlioz.request('service', 'app', 'client', options)
+            return berlioz.service('app', 'client').request(options)
                 .then(result => {
                     if (result) {
                         renderData.entries = result.body;
@@ -51,7 +51,7 @@ app.get('/', function (req, response) {
         })
         .then(() => {
             var options = { url: '/', json: true, resolveWithFullResponse: true };
-            return berlioz.request('service', 'app', 'client', options)
+            return berlioz.service('app', 'client').request(options)
                 .then(result => {
                     if (result) {
                         renderData.appDbPeers = result.body.myDbPeers;
@@ -80,7 +80,7 @@ app.get('/', function (req, response) {
 
 app.post('/new-contact', (request, response) => {
     var options = { url: '/entry', method: 'POST', body: request.body, json: true };
-    return berlioz.request('service', 'app', 'client', options)
+    return berlioz.service('app', 'client').request(options)
         .then(result => {
             console.log('**** ' + JSON.stringify(result));
             if (!result) {
