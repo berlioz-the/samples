@@ -5,5 +5,4 @@ name: pharm
 provides:
     web:
         service: web
-        endpoint: client
         public: true

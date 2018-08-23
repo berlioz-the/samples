@@ -4,7 +4,7 @@ cluster: kin
 name: web
 
 provides:
-    client:
+    default:
         port: 3000
         protocol: http
 

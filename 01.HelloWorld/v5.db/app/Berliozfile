@@ -4,13 +4,12 @@ cluster: hello
 name: app
 
 provides:
-    client:
+    default:
         port: 4000
         protocol: http
 
 consumes:
     - service: db
-      endpoint: client
 
 resources:
     memory:

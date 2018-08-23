@@ -6,7 +6,6 @@ name: hello
 provides:
     web:
         service: web
-        endpoint: client
         public: true
 
 environment:

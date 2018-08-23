@@ -30,7 +30,7 @@ function processData(data)
 
     data.readyDate = new Date().toISOString();
     var options = { url: '/item', body:data, method: 'POST', json: true}
-    return berlioz.service('dashboard', 'client').request(options)
+    return berlioz.service('dashboard').request(options)
         .then(result => {
         })
         .catch(error => {

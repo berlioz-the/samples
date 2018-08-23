@@ -15,14 +15,14 @@ app.get('/', function (req, response) {
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_REGION }
         ],
-        peers: berlioz.service('app', 'client').all(),
+        peers: berlioz.service('app').all(),
         appPeer: { }
     };
 
     return Promise.resolve()
         .then(() => {
             var options = { url: '/', json: true, resolveWithFullResponse: true };
-            return berlioz.service('app', 'client').request(options)
+            return berlioz.service('app').request(options)
                 .then(result => {
                     if (result) {
                         renderData.appPeer.url = result.url;
@@ -54,9 +54,9 @@ app.get('/', function (req, response) {
         ;
 });
 
-app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
+app.listen(process.env.BERLIOZ_LISTEN_PORT_DEFAULT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
-    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
+    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_DEFAULT}`)
 })

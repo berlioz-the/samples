@@ -15,13 +15,13 @@ app.get('/', function (req, response) {
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_REGION }
         ],
-        peers: berlioz.service('app', 'client').all(),
+        peers: berlioz.service('app').all(),
         entries: [],
         appPeer: '',
         appPeerInfo: { }
     };
 
-    var appPeer = berlioz.service('app', 'client').random();
+    var appPeer = berlioz.service('app').random();
     if (appPeer) {
         renderData.appPeer = appPeer.address + ':' + appPeer.port;
     }
@@ -29,7 +29,7 @@ app.get('/', function (req, response) {
     return Promise.resolve()
         .then(() => {
             var options = { url: '/entries', json: true, resolveWithFullResponse: true };
-            return berlioz.service('app', 'client').request(options)
+            return berlioz.service('app').request(options)
                 .then(result => {
                     if (result) {
                         renderData.entries = result.body;
@@ -51,7 +51,7 @@ app.get('/', function (req, response) {
         })
         .then(() => {
             var options = { url: '/', json: true, resolveWithFullResponse: true };
-            return berlioz.service('app', 'client').request(options)
+            return berlioz.service('app').request(options)
                 .then(result => {
                     if (result) {
                         renderData.appDbPeers = result.body.myDbPeers;
@@ -80,7 +80,7 @@ app.get('/', function (req, response) {
 
 app.post('/new-contact', (request, response) => {
     var options = { url: '/entry', method: 'POST', body: request.body, json: true };
-    return berlioz.service('app', 'client').request(options)
+    return berlioz.service('app').request(options)
         .then(result => {
             console.log('**** ' + JSON.stringify(result));
             if (!result) {
@@ -93,9 +93,9 @@ app.post('/new-contact', (request, response) => {
         });
 });
 
-app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
+app.listen(process.env.BERLIOZ_LISTEN_PORT_DEFAULT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
-    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
+    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_DEFAULT}`)
 })

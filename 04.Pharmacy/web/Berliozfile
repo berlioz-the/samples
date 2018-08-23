@@ -4,18 +4,15 @@ cluster: pharm
 name: web
 
 provides:
-    client:
+    default:
         port: 3000
         protocol: http
         load-balance: true
 
 consumes:
     - service: inventory
-      endpoint: client
     - service: clerk
-      endpoint: client
     - service: dashboard
-      endpoint: client
 
 resources:
     memory:

@@ -34,7 +34,7 @@ app.get('/', (req, response) => {
 function queryInventory(renderData)
 {
     var options = { url: '/items', json: true };
-    return berlioz.request('service', 'inventory', 'client', options)
+    return berlioz.service('inventory').request(options)
         .then(result => {
             renderData.drugs = result;
         });
@@ -43,20 +43,16 @@ function queryInventory(renderData)
 function queryDashboard(renderData)
 {
     var options = { url: '/items', json: true };
-    return berlioz.request('service', 'dashboard', 'client', options)
+    return berlioz.service('dashboard').request(options)
         .then(result => {
             renderData.readyItems = result;
         });
 }
 
 app.post('/new-drug', (req, response) => {
-    // console.log('*** /new-drug ROOT traceId: ' + berlioz.zipkin.tracer.id);
-    // console.log('*** /new-drug IN REQUEST traceId: ' + req.tracerId);
     var options = { url: '/item', method: 'POST', body: req.body, json: true };
-    return berlioz.request('service', 'inventory', 'client', options)
+    return berlioz.service('inventory').request(options)
         .then(result => {
-            // console.log(result);
-            // response.send(result);
             return response.redirect('/');
         })
         .catch(reason => {
@@ -71,7 +67,7 @@ app.post('/drop-prescription', (req, response) => {
         dropDate: new Date().toISOString()
     };
     var options = { url: '/job', method: 'POST', body: body, json: true };
-    return berlioz.request('service', 'clerk', 'client', options)
+    return berlioz.service('clerk').request(options)
         .then(result => {
             console.log('/drop-prescription Result: ' + JSON.stringify(result, null, 4));
             return response.redirect('/');
@@ -83,7 +79,7 @@ app.post('/drop-prescription', (req, response) => {
 
 app.post('/pick-up', (req, response) => {
     var options = { url: '/pick-up', method: 'POST', body: req.body, json: true };
-    return berlioz.request('service', 'dashboard', 'client', options)
+    return berlioz.service('dashboard').request(options)
         .then(body => {
             return response.redirect('/');
         })
@@ -92,9 +88,9 @@ app.post('/pick-up', (req, response) => {
         });
 });
 
-app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
+app.listen(process.env.BERLIOZ_LISTEN_PORT_DEFAULT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
-    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
+    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_DEFAULT}`)
 })

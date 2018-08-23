@@ -5,5 +5,4 @@ name: dynamo
 provides:
     web:
         service: web
-        endpoint: client
         public: true

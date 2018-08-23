@@ -9,7 +9,7 @@ app.get('/', (request, response) => {
     var data = {
         myId: process.env.BERLIOZ_TASK_ID,
         message: 'Hello From App Tier',
-        myDbPeers: berlioz.service('db', 'client').all()
+        myDbPeers: berlioz.service('db').all()
     }
     response.send(data);
 })
@@ -34,7 +34,7 @@ app.post('/entry', (request, response) => {
 
 function executeQuery(querySql)
 {
-    var peer = berlioz.service('db', 'client').random();
+    var peer = berlioz.service('db').random();
     if (!peer) {
         return Promise.resolve(null);
     }
@@ -67,11 +67,11 @@ function executeQuery(querySql)
 }
 
 
-app.listen(process.env.BERLIOZ_LISTEN_PORT_CLIENT,
+app.listen(process.env.BERLIOZ_LISTEN_PORT_DEFAULT,
            process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
 
-    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_CLIENT}`)
+    console.log(`server is listening on ${process.env.BERLIOZ_LISTEN_ADDRESS}:${process.env.BERLIOZ_LISTEN_PORT_DEFAULT}`)
 })

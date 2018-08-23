@@ -4,7 +4,7 @@ cluster: dynamo
 name: app
 
 provides:
-    client:
+    default:
         port: 4000
         protocol: http
 

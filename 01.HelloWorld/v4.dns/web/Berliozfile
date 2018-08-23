@@ -4,7 +4,7 @@ cluster: hello
 name: web
 
 provides:
-    client:
+    default:
         port: 3000
         protocol: http
         load-balance: true
@@ -12,7 +12,6 @@ provides:
 
 consumes:
     - service: app
-      endpoint: client
 
 resources:
     memory:

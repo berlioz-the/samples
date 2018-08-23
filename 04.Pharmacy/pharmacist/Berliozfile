@@ -6,7 +6,6 @@ name: pharmacist
 consumes:
     - queue: jobs
     - service: dashboard
-      endpoint: client
 
 resources:
     memory:

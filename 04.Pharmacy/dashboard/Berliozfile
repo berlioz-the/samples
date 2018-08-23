@@ -4,7 +4,7 @@ cluster: pharm
 name: dashboard
 
 provides:
-    client:
+    default:
         port: 4000
         protocol: http
         load-balance: false
