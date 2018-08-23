@@ -17,7 +17,7 @@ app.get('/', function (req, response) {
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_REGION }
         ],
-        peers: berlioz.getPeers('service', 'app', 'client'),
+        peers: berlioz.service('app', 'client').all(),
         entries: [],
         appPeerInfo: { }
     };
@@ -25,7 +25,7 @@ app.get('/', function (req, response) {
     return Promise.resolve()
         .then(() => {
             var options = { url: '/entries', json: true };
-            return berlioz.request('service', 'app', 'client', options)
+            return berlioz.service('app', 'client').request(options)
                 .then(result => {
                     if (result) {
                         renderData.entries = result;
@@ -47,7 +47,7 @@ app.get('/', function (req, response) {
         })
         .then(() => {
             var options = { url: '/', json: true };
-            return berlioz.request('service', 'app', 'client', options)
+            return berlioz.service('app', 'client').request(options)
                 .then(result => {
                     if (result) {
                         renderData.appPeerInfo.tableName = result.recipeDB.name;
@@ -79,7 +79,7 @@ app.get('/', function (req, response) {
 
 app.post('/new-contact', (request, response) => {
     var options = { url: '/entry', method: 'POST', body: request.body, json: true };
-    return berlioz.request('service', 'app', 'client', options)
+    return berlioz.service('app', 'client').request(options)
         .then(result => {
             console.log('**** ' + JSON.stringify(result));
             if (!result) {

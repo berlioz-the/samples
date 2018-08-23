@@ -9,13 +9,13 @@ app.get('/', (request, response) => {
     var data = {
         myId: process.env.BERLIOZ_TASK_ID,
         message: 'Hello From App Tier',
-        recipeDB: berlioz.getDatabaseInfo('contacts')
+        recipeDB: berlioz.database('contacts').first()
     }
     response.send(data);
 })
 
 app.get('/entries', (request, response) => {
-    var docClient = berlioz.getDatabaseClient('contacts', AWS);
+    var docClient = berlioz.database('contacts').client(AWS);
     var params = {
     };
     return docClient.scan(params)
@@ -32,7 +32,7 @@ app.post('/entry', (request, response) => {
         return response.send({error: 'Missing name or phone'});
     }
 
-    var docClient = berlioz.getDatabaseClient('contacts', AWS);
+    var docClient = berlioz.database('contacts').client(AWS);
     var params = {
         Item: {
             'name': request.body.name,
