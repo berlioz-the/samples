@@ -5,8 +5,7 @@ const asciiArt = require('ascii-art')
 
 const berlioz = require('berlioz-connector');
 
-berlioz.monitorQueues('jobs', () => {
-    var kinesisInfo = berlioz.getQueueInfo('jobs');
+berlioz.queue('jobs').monitorFirst(kinesisInfo => {
     if (!kinesisInfo) {
         tracer.error('Queue Not Present');
         console.log('Kinesis Peer not present');
@@ -29,8 +28,8 @@ function processData(data)
         berlioz.zipkin.tracer.createRootId();
 
         console.log('Processing: ' + JSON.stringify(data));
-        var dynamoInfo = berlioz.getDatabaseInfo('arts');
-        if (!dynamoInfo) {
+        var docClient = berlioz.database('arts').client(AWS);
+        if (!docClient) {
             console.log('Error: DynamoDB not present.');
             return;
         }
@@ -43,7 +42,6 @@ function processData(data)
                         'art': rendered
                     }
                 };
-                var docClient = berlioz.getDatabaseClient('arts', AWS);
                 return docClient.put(params);
             });
 

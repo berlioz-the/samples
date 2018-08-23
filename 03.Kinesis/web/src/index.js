@@ -18,7 +18,7 @@ app.get('/', function (req, response) {
         ]
     };
 
-    var queueInfo = berlioz.getQueueInfo('jobs');
+    var queueInfo = berlioz.queue('jobs').first();
     if (queueInfo) {
         renderData.kinesisInfo = {
             name: queueInfo.name,
@@ -28,7 +28,7 @@ app.get('/', function (req, response) {
         renderData.kinesisInfo = {};
     }
 
-    var dynamoInfo = berlioz.getDatabaseInfo('arts');
+    var dynamoInfo = berlioz.database('arts').first();
     if (dynamoInfo) {
         renderData.dynamoInfo = {
             name: dynamoInfo.name,
@@ -40,7 +40,7 @@ app.get('/', function (req, response) {
 
     return Promise.resolve()
         .then(() => {
-            var docClient = berlioz.getDatabaseClient('arts', AWS);
+            var docClient = berlioz.database('arts').client(AWS);
             var params = {
             };
             return docClient.scan(params)
@@ -75,7 +75,7 @@ app.post('/new-job', (request, response) => {
     }
     return Promise.resolve()
         .then(() => {
-            var docClient = berlioz.getDatabaseClient('arts', AWS);
+            var docClient = berlioz.database('arts').client(AWS);
             var params = {
                 Item: {
                     'name': request.body.name,
@@ -85,7 +85,7 @@ app.post('/new-job', (request, response) => {
             return docClient.put(params);
         })
         .then(() => {
-            var kinesis = berlioz.getQueueClient('jobs', AWS);
+            var kinesis = berlioz.queue('jobs').client(AWS);
             var params = {
                 PartitionKey: request.body.name,
                 Data: JSON.stringify(request.body)
