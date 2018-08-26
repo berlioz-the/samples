@@ -69,3 +69,4 @@ typings/
 logs_berlioz/
 
 package-lock.json
+.vscode
