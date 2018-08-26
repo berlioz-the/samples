@@ -18,12 +18,12 @@ $ berlioz output-diagram
 
 1. Navigate to sample directory
 ```
-$ cd 01.HelloWorld/v4.dns
+$ cd 01.HelloWorld.js/v4.dns
 ```
 
 2. Build and deploy the project
 ```
-$ berlioz local push-run
+$ berlioz local build-run
 ```
 
 3. Output service endpoint addresses

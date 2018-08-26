@@ -19,7 +19,7 @@ $ cd 03.Kinesis
 
 3. Build and deploy the project
 ```
-$ berlioz local push-run
+$ berlioz local build-run
 ```
 
 4. Output service endpoint addresses

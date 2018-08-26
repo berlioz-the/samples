@@ -14,12 +14,12 @@ $ berlioz output-diagram
 
 1. Navigate to sample directory
 ```
-$ cd 01.HelloWorld/v3.load-balancer
+$ cd 01.HelloWorld.js/v3.load-balancer
 ```
 
 2. Build and deploy the project
 ```
-$ berlioz local push-run
+$ berlioz local build-run
 ```
 
 3. Output service endpoint addresses
