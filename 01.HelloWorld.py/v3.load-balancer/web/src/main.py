@@ -14,11 +14,11 @@ def hello_world():
         {'name': 'Instance ID', 'value': os.environ.get('BERLIOZ_INSTANCE_ID') },
         {'name': 'Region', 'value': os.environ.get('BERLIOZ_REGION') }
     ]
-    peers = berlioz.getPeers('service', 'app', 'client')
+    peers = berlioz.service('app').all()
     
     appPeer = {}
     try:
-        response = berlioz.request('service', 'app', 'client').get('/')
+        response = berlioz.service('app').request().get('/')
         appPeer['title'] = 'RESPONSE:'
         appPeer['cardClass'] = 'eastern-blue'
         appPeer['response'] = response.text
