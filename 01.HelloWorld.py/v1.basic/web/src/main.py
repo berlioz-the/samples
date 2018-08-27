@@ -4,6 +4,9 @@ app = Flask(__name__)
 
 import os
 
+import berlioz
+berlioz.setupFlask(app)
+
 @app.route('/')
 def hello_world():
     settings = [
