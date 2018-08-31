@@ -46,7 +46,11 @@ app.get('/', function (req, response) {
                     renderData.appPeerInfo.url = error.url;
                     renderData.appPeerInfo.cardClass = 'red';
                     renderData.appPeerInfo.title = 'ERROR';
-                    renderData.appPeerInfo.response = JSON.stringify(error, null, 2);
+                    if (error.message) {
+                        renderData.appPeerInfo.response = error.message
+                    } else {
+                        renderData.appPeerInfo.response = JSON.stringify(error, null, 2);
+                    }
                 });
         })
         .then(() => {
