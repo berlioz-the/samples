@@ -7,7 +7,6 @@ provides:
     default:
         port: 4000
         protocol: http
-        load-balance: false
 
 consumes:
     - database: drugs
