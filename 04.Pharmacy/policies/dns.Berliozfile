@@ -1,0 +1,7 @@
+- kind: policy
+  name: domain-name
+  service: web
+  endpoint: default
+  deployment: prod
+  config:
+    name: example.com

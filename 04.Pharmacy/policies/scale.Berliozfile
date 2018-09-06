@@ -1,0 +1,19 @@
+- kind: policy
+  name: scale
+  service: web
+  deployment: prod
+  config:
+    min: 2
+    max: 10
+    matrics:
+      - name: berlioz_cpu_usage
+        value: median_1min_median
+        target: 50%
+
+- kind: policy
+  name: scale
+  service: web
+  deployment: local
+  config:
+    min: 2
+    max: 2
