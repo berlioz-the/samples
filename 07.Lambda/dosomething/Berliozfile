@@ -7,6 +7,20 @@ runtime: nodejs8.10
 handler: index.handler
 timeout: 200
 
+exposed:
+    - api: sample
+      path: /item/setup/{name}/ccc
+      method: POST
+    - api: sample
+      path: /item
+      method: GET
+    - api: sample
+      path: /
+      method: GET
+    - api: sample
+      path: /
+      method: POST
+
 consumes:
     - database: contacts
 
