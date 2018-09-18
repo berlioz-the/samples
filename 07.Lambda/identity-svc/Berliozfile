@@ -1,0 +1,11 @@
+- kind: database
+  cluster: lambda
+  name: directory
+  class: identity
+  subClass: cognito
+  appClients:
+    name: Primary
+  triggers:
+    PreTokenGeneration:
+        lambda: dosomething
+    

@@ -11,6 +11,8 @@ exposed:
     - api: sample
       path: /item/setup/{name}/ccc
       method: POST
+      authorize:
+        database: directory
     - api: sample
       path: /item
       method: GET
