@@ -13,15 +13,6 @@ exposed:
       method: POST
       authorize:
         database: directory
-    - api: sample
-      path: /item
-      method: GET
-    - api: sample
-      path: /
-      method: GET
-    - api: sample
-      path: /
-      method: POST
 
 consumes:
     - database: contacts

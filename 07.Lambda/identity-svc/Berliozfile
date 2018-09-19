@@ -4,8 +4,7 @@
   class: identity
   subClass: cognito
   appClients:
-    name: Primary
+    - name: Primary
   triggers:
     PreTokenGeneration:
         lambda: dosomething
-    
