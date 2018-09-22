@@ -1,10 +1,60 @@
-- kind: database
-  cluster: lambda
-  name: directory
-  class: identity
-  subClass: cognito
+- kind:                        database
+  cluster:                     lambda
+  name:                        directory
+  class:                       identity
+  subClass:                    cognito
   appClients:
-    - name: Primary
+    - name:                    Primary
+      native-config:
+        RefreshTokenValidity:  10
+        ReadAttributes:
+          - address
+          - birthdate
+          - email
+          - email_verified
+          - family_name
+          - gender
+          - given_name
+          - locale
+          - middle_name
+          - name
+          - nickname
+          - phone_number
+          - phone_number_verified
+          - picture
+          - preferred_username
+          - profile
+          - updated_at
+          - website
+          - zoneinfo
+        WriteAttributes:
+          - address
+          - birthdate
+          - email
+          - family_name
+          - gender
+          - given_name
+          - locale
+          - middle_name
+          - phone_number
+          - name
+          - nickname
+          - picture
+          - preferred_username
+          - profile
+          - updated_at
+          - website
+          - zoneinfo
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
   triggers:
     PreTokenGeneration:
-        lambda: dosomething
+        lambda:                dosomething
+  native-config:
+      Policies:
+          PasswordPolicy:
+              MinimumLength: 6
+              RequireUppercase: true
+              RequireLowercase: false
+              RequireNumbers: true
+              RequireSymbols: false
