@@ -3,7 +3,7 @@
   name:                        directory
   class:                       identity
   subClass:                    cognito
-  appClients:
+  app-clients:
     - name:                    Primary
       native-config:
         RefreshTokenValidity:  10
@@ -53,7 +53,7 @@
   native-config:
       Policies:
           PasswordPolicy:
-              MinimumLength: 6
+              MinimumLength: 7
               RequireUppercase: true
               RequireLowercase: false
               RequireNumbers: true
