@@ -1,0 +1,12 @@
+---
+kind: lambda
+cluster: lambda
+name: preToken
+
+runtime: nodejs8.10
+handler: index.handler
+timeout: 200
+
+resources:
+    memory:
+        min: 512

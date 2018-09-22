@@ -49,7 +49,7 @@
           - ADMIN_NO_SRP_AUTH
   triggers:
     PreTokenGeneration:
-        lambda:                dosomething
+        lambda:                preToken
   native-config:
       Policies:
           PasswordPolicy:
