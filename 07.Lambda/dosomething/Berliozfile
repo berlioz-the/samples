@@ -12,7 +12,12 @@ exposed:
       path: /item/setup/{name}/ccc
       method: POST
       authorize:
-        database: directory
+        database: dir
+    - api: sample
+      path: /test
+      method: GET
+      authorize:
+        database: dir
 
 consumes:
     - database: contacts

@@ -1,6 +1,6 @@
 - kind:                        database
   cluster:                     lambda
-  name:                        directory
+  name:                        dir
   class:                       identity
   subClass:                    cognito
   app-clients:
