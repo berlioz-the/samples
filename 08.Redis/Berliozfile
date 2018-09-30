@@ -1,0 +1,25 @@
+---
+kind: service
+cluster: hello
+name: redis
+
+provides:
+    default:
+        port: 6379
+        protocol: tcp
+    web:
+        port: 3000
+        protocol: http
+    gossip:
+        port: 16379
+        protocol: tcp
+
+consumes:
+    - service: redis
+      endpoint: default
+    - service: redis
+      endpoint: gossip
+
+resources:
+    memory:
+        min: 300

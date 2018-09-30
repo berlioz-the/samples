@@ -21,6 +21,8 @@ exposed:
 
 consumes:
     - database: contacts
+    - database: dir
+      app-client: Primary
 
 resources:
     memory:
