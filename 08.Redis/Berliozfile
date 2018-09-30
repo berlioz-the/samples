@@ -2,14 +2,13 @@
 kind: service
 cluster: hello
 name: redis
+identity:
+    kind: sequential
 
 provides:
     default:
         port: 6379
         protocol: tcp
-    web:
-        port: 3000
-        protocol: http
     gossip:
         port: 16379
         protocol: tcp

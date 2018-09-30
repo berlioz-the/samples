@@ -1434,14 +1434,20 @@ class RedisTrib
         # wait_cluster_join will find all the nodes agree about the config as
         # they are still empty with unassigned slots.
         sleep 1
+        xputs ">>> wait_cluster_join..."
         wait_cluster_join
+        xputs ">>> flush_nodes_config..."
         flush_nodes_config # Useful for the replicas
         # Reset the node information, so that when the
         # final summary is listed in check_cluster about the newly created cluster
         # all the nodes would get properly listed as slaves or masters
+        xputs ">>> reset_nodes..."
         reset_nodes
+        xputs ">>> load_cluster_info_from_node..."
         load_cluster_info_from_node(argv[0])
+        xputs ">>> check_cluster..."
         check_cluster
+        xputs ">>> done."
     end
 
     def addnode_cluster_cmd(argv,opt)

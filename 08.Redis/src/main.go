@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/berlioz-the/connector-go"
@@ -14,6 +15,7 @@ const redisConfFile = "/etc/redis.conf"
 
 var configContents = make(map[string]string)
 var isConfigReady = false
+var isRedisUp = false
 var isSelfDefaultPresent = false
 var isSelfGossipPresent = false
 var isClusterDeployed = false
@@ -21,6 +23,8 @@ var isClusterDeployed = false
 var replicaCount = 0
 var myIdentity = ""
 var myService = ""
+
+var setupMutex = &sync.Mutex{}
 
 func check(e error) {
 	if e != nil {
@@ -71,44 +75,57 @@ func startRedis() {
 		os.Exit(1)
 	}
 	fmt.Printf("**** STARTED REDIS. Pid: %d\n", cmd.Process.Pid)
-	// runningCommands = append(runningCommands, cmd)
+	time.Sleep(5 * time.Second)
+	fmt.Printf("**** REDIS START SLEEP COMPLETE> Pid: %d\n", cmd.Process.Pid)
+
+	isRedisUp = true
+
+	setupCluster()
 }
 
 func setupCluster() {
-	if isClusterDeployed {
+	if !isRedisUp {
 		return
 	}
+	go func() {
+		setupMutex.Lock()
+		defer setupMutex.Unlock()
 
-	var peers = berlioz.Service(myService).All()
-	fmt.Printf("***** SETUP CLUSTER PEERS: %#v\n", peers)
-
-	var requiredCount = (replicaCount + 1) * 3
-	if len(peers) >= requiredCount {
-
-		var commandArray []string
-		commandArray = append(commandArray, "ruby")
-		commandArray = append(commandArray, "/var/local/redis/redis-trib.rb")
-		commandArray = append(commandArray, "create")
-		commandArray = append(commandArray, "--replicas")
-		commandArray = append(commandArray, fmt.Sprintf("%v", replicaCount))
-		for _, v := range peers {
-			selfPeer := v.(map[string]interface{})
-			var peerArg = fmt.Sprintf("%v:%v", selfPeer["address"], selfPeer["port"])
-			commandArray = append(commandArray, peerArg)
+		if isClusterDeployed {
+			return
 		}
 
-		fmt.Printf("***** SETUP CLUSTER COMMAND: %#v\n", commandArray)
+		var peers = berlioz.Service(myService).All()
+		fmt.Printf("***** SETUP CLUSTER PEERS: %#v\n", peers)
 
-		fmt.Printf("**** CONFIGURING CLUSTER\n")
-		cmd := exec.Command(commandArray[0], commandArray[1:]...)
-		cmd.Stdout = os.Stdout
-		err := cmd.Start()
-		if err != nil {
-			fmt.Printf("**** ERROR CONFIGURING CLUSTER: %#v\n", err)
+		var requiredCount = (replicaCount + 1) * 3
+		if len(peers) >= requiredCount {
+
+			var commandArray []string
+			commandArray = append(commandArray, "ruby")
+			commandArray = append(commandArray, "/var/local/redis/redis-trib.rb")
+			commandArray = append(commandArray, "create")
+			commandArray = append(commandArray, "--replicas")
+			commandArray = append(commandArray, fmt.Sprintf("%v", replicaCount))
+			for _, v := range peers {
+				selfPeer := v.(map[string]interface{})
+				var peerArg = fmt.Sprintf("%v:%v", selfPeer["address"], selfPeer["port"])
+				commandArray = append(commandArray, peerArg)
+			}
+
+			fmt.Printf("***** SETUP CLUSTER COMMAND: %#v\n", commandArray)
+
+			fmt.Printf("**** CONFIGURING CLUSTER\n")
+			cmd := exec.Command(commandArray[0], commandArray[1:]...)
+			cmd.Stdout = os.Stdout
+			err := cmd.Start()
+			if err != nil {
+				fmt.Printf("**** ERROR CONFIGURING CLUSTER: %#v\n", err)
+			}
+
+			isClusterDeployed = true
 		}
-
-		isClusterDeployed = true
-	}
+	}()
 }
 
 func forever() {
@@ -124,6 +141,10 @@ func main() {
 	myService = os.Getenv("BERLIOZ_SERVICE")
 	if val, err := strconv.Atoi(os.Getenv("replica_count")); err == nil {
 		replicaCount = val
+	}
+
+	if myIdentity != "1" {
+		isClusterDeployed = true
 	}
 
 	fmt.Printf("**** REPLICA COUNT: %v\n", replicaCount)
