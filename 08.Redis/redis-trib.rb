@@ -944,11 +944,12 @@ class RedisTrib
 
     def yes_or_die(msg)
         print "#{msg} (type 'yes' to accept): "
-        STDOUT.flush
-        if !(STDIN.gets.chomp.downcase == "yes")
-            xputs "*** Aborting..."
-            exit 1
-        end
+        print "ANSWERED YES AUTOMATICALLY!!!"
+        # STDOUT.flush
+        # if !(STDIN.gets.chomp.downcase == "yes")
+        #     xputs "*** Aborting..."
+        #     exit 1
+        # end
     end
 
     def load_cluster_info_from_node(nodeaddr)

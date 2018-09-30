@@ -20,6 +20,9 @@ consumes:
     - service: redis
       endpoint: gossip
 
+environment:
+    replica_count: 1
+
 resources:
     memory:
         min: 300

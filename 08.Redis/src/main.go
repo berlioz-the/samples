@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	// "strconv"
+	"strconv"
 	"time"
 
 	"github.com/berlioz-the/connector-go"
@@ -16,6 +16,11 @@ var configContents = make(map[string]string)
 var isConfigReady = false
 var isSelfDefaultPresent = false
 var isSelfGossipPresent = false
+var isClusterDeployed = false
+
+var replicaCount = 0
+var myIdentity = ""
+var myService = ""
 
 func check(e error) {
 	if e != nil {
@@ -58,7 +63,6 @@ func saveConfig() {
 
 func startRedis() {
 	fmt.Printf("**** STARTING REDIS\n")
-
 	cmd := exec.Command("docker-entrypoint.sh", "redis-server", redisConfFile)
 	cmd.Stdout = os.Stdout
 	err := cmd.Start()
@@ -70,6 +74,43 @@ func startRedis() {
 	// runningCommands = append(runningCommands, cmd)
 }
 
+func setupCluster() {
+	if isClusterDeployed {
+		return
+	}
+
+	var peers = berlioz.Service(myService).All()
+	fmt.Printf("***** SETUP CLUSTER PEERS: %#v\n", peers)
+
+	var requiredCount = (replicaCount + 1) * 3
+	if len(peers) >= requiredCount {
+
+		var commandArray []string
+		commandArray = append(commandArray, "ruby")
+		commandArray = append(commandArray, "/var/local/redis/redis-trib.rb")
+		commandArray = append(commandArray, "create")
+		commandArray = append(commandArray, "--replicas")
+		commandArray = append(commandArray, fmt.Sprintf("%v", replicaCount))
+		for _, v := range peers {
+			selfPeer := v.(map[string]interface{})
+			var peerArg = fmt.Sprintf("%v:%v", selfPeer["address"], selfPeer["port"])
+			commandArray = append(commandArray, peerArg)
+		}
+
+		fmt.Printf("***** SETUP CLUSTER COMMAND: %#v\n", commandArray)
+
+		fmt.Printf("**** CONFIGURING CLUSTER\n")
+		cmd := exec.Command(commandArray[0], commandArray[1:]...)
+		cmd.Stdout = os.Stdout
+		err := cmd.Start()
+		if err != nil {
+			fmt.Printf("**** ERROR CONFIGURING CLUSTER: %#v\n", err)
+		}
+
+		isClusterDeployed = true
+	}
+}
+
 func forever() {
 	for {
 		// fmt.Printf("%v+\n", time.Now())
@@ -79,14 +120,19 @@ func forever() {
 
 func main() {
 
+	myIdentity = os.Getenv("BERLIOZ_IDENTITY")
+	myService = os.Getenv("BERLIOZ_SERVICE")
+	if val, err := strconv.Atoi(os.Getenv("replica_count")); err == nil {
+		replicaCount = val
+	}
+
+	fmt.Printf("**** REPLICA COUNT: %v\n", replicaCount)
+
 	configContents["port"] = "6379"
 	configContents["cluster-enabled"] = "yes"
 	configContents["cluster-config-file"] = "nodes.conf"
 	configContents["cluster-node-timeout"] = "5000"
 	configContents["appendonly"] = "yes"
-
-	var myIdentity = os.Getenv("BERLIOZ_IDENTITY")
-	var myService = os.Getenv("BERLIOZ_SERVICE")
 
 	berlioz.MyEndpoint("default").Monitor(func(ep berlioz.EndpointModel) {
 		fmt.Printf("**** MONITOR DEFAULT EP: %#v. Present: %t\n", ep, ep.IsPresent())
@@ -110,6 +156,7 @@ func main() {
 				checkConfigReady()
 			}
 		}
+
 	})
 
 	berlioz.Service(myService).Endpoint("gossip").MonitorAll(func(peers map[string]interface{}) {
@@ -125,6 +172,8 @@ func main() {
 				checkConfigReady()
 			}
 		}
+
+		setupCluster()
 	})
 
 	forever()
