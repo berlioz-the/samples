@@ -20,7 +20,7 @@ consumes:
       endpoint: gossip
 
 environment:
-    replica_count: 1
+    replica_count: 0
 
 resources:
     memory:

@@ -105,6 +105,7 @@ func setupCluster() {
 			commandArray = append(commandArray, "ruby")
 			commandArray = append(commandArray, "/var/local/redis/redis-trib.rb")
 			commandArray = append(commandArray, "create")
+			commandArray = append(commandArray, "--verbose")
 			commandArray = append(commandArray, "--replicas")
 			commandArray = append(commandArray, fmt.Sprintf("%v", replicaCount))
 			for _, v := range peers {
@@ -147,6 +148,7 @@ func main() {
 		isClusterDeployed = true
 	}
 
+	fmt.Printf("**** IDENTITY: %v\n", myIdentity)
 	fmt.Printf("**** REPLICA COUNT: %v\n", replicaCount)
 
 	configContents["port"] = "6379"
@@ -155,47 +157,54 @@ func main() {
 	configContents["cluster-node-timeout"] = "5000"
 	configContents["appendonly"] = "yes"
 
-	berlioz.MyEndpoint("default").Monitor(func(ep berlioz.EndpointModel) {
-		fmt.Printf("**** MONITOR DEFAULT EP: %#v. Present: %t\n", ep, ep.IsPresent())
-	})
+	configContents["cluster-announce-ip"] = os.Getenv("BERLIOZ_ADDRESS")
+	configContents["cluster-announce-port"] = os.Getenv("BERLIOZ_PROVIDED_PORT_DEFAULT")
+	configContents["cluster-announce-bus-port"] = os.Getenv("BERLIOZ_PROVIDED_PORT_GOSSIP")
+	isSelfDefaultPresent = true
+	isSelfGossipPresent = true
+	checkConfigReady()
 
-	berlioz.MyEndpoint("gossip").Monitor(func(ep berlioz.EndpointModel) {
-		fmt.Printf("**** MONITOR GOSSIP EP: %#v. Present: %t\n", ep, ep.IsPresent())
-	})
+	// berlioz.MyEndpoint("default").Monitor(func(ep berlioz.EndpointModel) {
+	// 	fmt.Printf("**** MONITOR DEFAULT EP: %#v. Present: %t\n", ep, ep.IsPresent())
+	// })
+
+	// berlioz.MyEndpoint("gossip").Monitor(func(ep berlioz.EndpointModel) {
+	// 	fmt.Printf("**** MONITOR GOSSIP EP: %#v. Present: %t\n", ep, ep.IsPresent())
+	// })
 
 	berlioz.Service(myService).MonitorAll(func(peers map[string]interface{}) {
 		fmt.Printf("***** UPDATED DEFAULT PEERS: %#v\n", peers)
-		if !isSelfDefaultPresent {
-			if selfPeerObj, ok := peers[myIdentity]; ok {
-				fmt.Printf("***** UPDATED DEFAULT SELF PEER: %#v\n", selfPeerObj)
+		// if !isSelfDefaultPresent {
+		// 	if selfPeerObj, ok := peers[myIdentity]; ok {
+		// 		fmt.Printf("***** UPDATED DEFAULT SELF PEER: %#v\n", selfPeerObj)
 
-				selfPeer := selfPeerObj.(map[string]interface{})
-				configContents["cluster-announce-ip"] = fmt.Sprintf("%v", selfPeer["address"])
-				configContents["cluster-announce-port"] = fmt.Sprintf("%v", selfPeer["port"])
+		// 		selfPeer := selfPeerObj.(map[string]interface{})
+		// 		configContents["cluster-announce-ip"] = fmt.Sprintf("%v", selfPeer["address"])
+		// 		configContents["cluster-announce-port"] = fmt.Sprintf("%v", selfPeer["port"])
 
-				isSelfDefaultPresent = true
-				checkConfigReady()
-			}
-		}
-
-	})
-
-	berlioz.Service(myService).Endpoint("gossip").MonitorAll(func(peers map[string]interface{}) {
-		fmt.Printf("***** UPDATED GOSSIP PEERS: %#v\n", peers)
-		if !isSelfGossipPresent {
-			if selfPeerObj, ok := peers[myIdentity]; ok {
-				fmt.Printf("***** UPDATED GOSSIP SELF PEER: %#v\n", selfPeerObj)
-
-				selfPeer := selfPeerObj.(map[string]interface{})
-				configContents["cluster-announce-bus-port"] = fmt.Sprintf("%v", selfPeer["port"])
-
-				isSelfGossipPresent = true
-				checkConfigReady()
-			}
-		}
-
+		// 		isSelfDefaultPresent = true
+		// 		checkConfigReady()
+		// 	}
+		// }
 		setupCluster()
 	})
+
+	// berlioz.Service(myService).Endpoint("gossip").MonitorAll(func(peers map[string]interface{}) {
+	// 	fmt.Printf("***** UPDATED GOSSIP PEERS: %#v\n", peers)
+	// 	// if !isSelfGossipPresent {
+	// 	// 	if selfPeerObj, ok := peers[myIdentity]; ok {
+	// 	// 		fmt.Printf("***** UPDATED GOSSIP SELF PEER: %#v\n", selfPeerObj)
+
+	// 	// 		selfPeer := selfPeerObj.(map[string]interface{})
+	// 	// 		configContents["cluster-announce-bus-port"] = fmt.Sprintf("%v", selfPeer["port"])
+
+	// 	// 		isSelfGossipPresent = true
+	// 	// 		checkConfigReady()
+	// 	// 	}
+	// 	// }
+
+	// 	setupCluster()
+	// })
 
 	forever()
 }
