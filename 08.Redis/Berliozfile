@@ -1,27 +1,8 @@
 ---
-kind: service
-cluster: hello
-name: redis
-identity:
-    kind: sequential
+kind: cluster
+name: hello
 
 provides:
-    default:
-        port: 6379
-        protocol: tcp
-    gossip:
-        port: 16379
-        protocol: tcp
-
-consumes:
-    - service: redis
-      endpoint: default
-    - service: redis
-      endpoint: gossip
-
-environment:
-    replica_count: 0
-
-resources:
-    memory:
-        min: 300
+    web:
+        service: redis
+        public: true

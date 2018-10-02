@@ -1,8 +1,0 @@
----
-kind: cluster
-name: hello
-
-provides:
-    web:
-        service: redis
-        public: true
