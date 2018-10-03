@@ -3,6 +3,9 @@ kind: cluster
 name: hello
 
 provides:
-    web:
-        service: redis
+    api:
+        service: api
+        public: true
+    frontend:
+        service: frontend
         public: true

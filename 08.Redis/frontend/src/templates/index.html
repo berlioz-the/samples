@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'parts/head.html' %}
+</head>
+<body class="container">
+
+<header>
+    {% include 'parts/header.html' %}
+</header>
+
+<main>
+    <h1>Berlioz Donation Demo</h1>
+    <h3>v1.0</h4>
+
+    <div class="row">
+        <div class="col-sm">
+            {% include 'parts/campaign.html' %}
+        </div>
+        <div class="col-sm">
+            {% include 'parts/donate.html' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            {% include 'parts/recent.html' %}
+        </div>
+    </div>
+
+    {% include 'parts/global-error.html' %}
+</main>
+
+<footer>
+    {% include 'parts/footer.html' %}
+</footer>
+
+</body>
+</html>
