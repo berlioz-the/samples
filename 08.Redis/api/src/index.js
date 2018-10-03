@@ -42,7 +42,7 @@ app.get('/amount', function (req, response) {
 app.post('/donate', function (req, response) {
     return getAmount()
         .then(result => {
-            var newVal = result + 10;
+            var newVal = result + parseInt(req.body.amount);
             redisClient.set('amount', newVal);
         })
         .then(result => {
