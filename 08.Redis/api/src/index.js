@@ -87,6 +87,7 @@ function getAmount()
     return new Promise((resolve, reject) => {
         redisClient.get('amount', (err, reply) => {
             if (err) {
+                console.log(err)
                 reject(error)
             } else {
                 if (reply == null) {
