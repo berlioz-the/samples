@@ -3,10 +3,11 @@ const _ = require('lodash')
 const Promise = require('promise')
 const berlioz = require('berlioz-connector');
 const RedisClustr = require('redis-clustr');
+const AWS = require('aws-sdk');
+const uuid = require('uuid/v4');
 
-const app = express();
+var app = express();
 berlioz.setupExpress(app);
-
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
@@ -23,9 +24,11 @@ berlioz.service("redis").monitorAll(peers => {
     });
 })
 
+
 app.get('/', function (req, response) {
     response.json({})
 });
+
 
 app.get('/amount', function (req, response) {
     return getAmount()
@@ -40,13 +43,38 @@ app.get('/amount', function (req, response) {
 
 
 app.post('/donate', function (req, response) {
-    return getAmount()
+    var amount = parseInt(req.body.amount);
+
+    var docClient = berlioz.database('donations').client(AWS);
+    var params = {
+        Item: {
+            id: uuid(),
+            date: new Date().toISOString(),
+            amount: amount
+        }
+    };
+    return docClient.put(params)
+        .then(() => getAmount())
         .then(result => {
-            var newVal = result + parseInt(req.body.amount);
+            var newVal = result + amount;
             redisClient.set('amount', newVal);
         })
         .then(result => {
             response.json({ value: result });
+        })
+        .catch(reason => {
+            response.statusCode = 500;
+            response.json(reason)
+        })
+});
+
+app.get('/entries', function (req, response) {
+    var docClient = berlioz.database('donations').client(AWS);
+    return docClient.scan({})
+        .then(result => {
+            var items = result.Items;
+            items = _.orderBy(items, ['date'], ['desc'])
+            response.json({ entries: items });
         })
         .catch(reason => {
             response.statusCode = 500;
@@ -71,6 +99,7 @@ function getAmount()
         })
     })      
 } 
+
 
 app.listen(process.env.BERLIOZ_LISTEN_PORT_DEFAULT, process.env.BERLIOZ_LISTEN_ADDRESS, (err) => {
     if (err) {

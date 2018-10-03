@@ -23,6 +23,13 @@ def index():
         campaign['error'] = str(ex)
 
     recent = {}
+    try:
+        response = berlioz.service('api').request().get('/entries')
+        body = json.loads(response.text)
+        recent['entries'] = body['entries']
+    except Exception as ex:
+        recent['entries'] = []
+        recent['error'] = str(ex)
 
     return render_template('index.html', campaign=campaign, recent=recent)
 
