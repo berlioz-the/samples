@@ -1,6 +1,6 @@
 ---
 kind: database
-cluster: hello
+cluster: fundme
 name: donations
 class: nosql
 subClass: dynamodb

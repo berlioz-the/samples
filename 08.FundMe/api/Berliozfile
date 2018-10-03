@@ -1,6 +1,6 @@
 ---
 kind: service
-cluster: hello
+cluster: fundme
 name: api
 
 provides:
