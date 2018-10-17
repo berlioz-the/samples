@@ -47,8 +47,8 @@ $ berlioz provider create --name myaws --kind aws --key <key> --secret <secret>
 ```
 5. Create deployments for production and test:
 ```
-$ berlioz deployment create --name prod --provider myaws --region us-east-1
-$ berlioz deployment create --name test --provider myaws --region us-east-1
+$ berlioz deployment create --name prod --provider myaws
+$ berlioz deployment create --name test --provider myaws
 ```
 
 ### Deploying the sample to AWS
@@ -57,22 +57,27 @@ $ berlioz deployment create --name test --provider myaws --region us-east-1
 $ cd 01.HelloWorld.js/v1.basic
 ```
 
-2. Build and push the project to berlioz
+2. Login the region in order to push images
 ```
-$ berlioz push
+$ berlioz login --region us-east-1
 ```
 
-3. Deploy the project to the test deployment
+3. Build and push the project to berlioz
+```
+$ berlioz push --region us-east-1
+```
+
+4. Deploy the project to the test deployment
 ```
 $ berlioz run --deployment test --cluster hello --region us-east-1
 ```
 
-4. Output service endpoint addresses
+5. Output service endpoint addresses
 ```
-$ berlioz endpoints --deployment test
+$ berlioz endpoints --deployment test --region us-east-1
 ```
 
-5. Open the endpoint in the browser: http://1.2.3.4:12345 (use the address and port returned from the step 4).
+6. Open the endpoint in the browser: http://1.2.3.4:12345 (use the address and port returned from the step 4).
 
 
 ## Service Diagrams

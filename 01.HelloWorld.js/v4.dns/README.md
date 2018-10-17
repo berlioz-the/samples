@@ -31,13 +31,7 @@ $ berlioz local build-run
 $ berlioz local endpoints
 ```
 
-4. Change the number of **web** and **app** service instances running
-```
-$ berlioz local scale set --cluster hello --service web --value 2
-$ berlioz local scale set --cluster hello --service app --value 3
-```
-
-5. Once completed release AWS resources
+4. Once completed release local resources
 ```
 $ berlioz local stop
 ```
@@ -46,20 +40,19 @@ $ berlioz local stop
 
 1. Make sure that AWS account is linked and deployments were created. If not follow instructions [here](../../README.md).
 
-2. Build and push the project to berlioz
+2. Login the region in order to push images
 ```
-$ berlioz push
+$ berlioz login --region us-east-1
 ```
 
-3. Deploy the project to the test deployment
+3. Build and push the project to berlioz
+```
+$ berlioz push --region us-east-1
+```
+
+4. Deploy the project to the test deployment
 ```
 $ berlioz run --deployment test --cluster hello --region us-east-1
-```
-
-4. Change the number of **web** and **app** service instances running
-```
-$ berlioz scale set --deployment test --cluster hello --region us-east-1 --service web --value 2
-$ berlioz scale set --deployment test --cluster hello --region us-east-1 --service app --value 3
 ```
 
 5. Set the public DNS name. Please note that you would still need to set NS
@@ -71,7 +64,7 @@ $ berlioz dns set --deployment test --cluster hello --region us-east-1 --service
 
 6. Check the deployment status. Proceed forward once completed.
 ```
-$ berlioz status
+$ berlioz status --region us-east-1
 ```
 
 7. Output service endpoint addresses. This time the output will only have one

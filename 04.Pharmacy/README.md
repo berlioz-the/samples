@@ -42,22 +42,28 @@ $ berlioz local stop
 
 1. Make sure that AWS account is linked and deployments were created. If not follow instructions [here](../README.md).
 
-2. Build and push the project to berlioz
+
+2. Login the region in order to push images
 ```
-$ berlioz push
+$ berlioz login --region us-east-1
 ```
 
-3. Deploy the project to the test deployment
+3. Build and push the project to berlioz
+```
+$ berlioz push --region us-east-1
+```
+
+4. Deploy the project to the test deployment
 ```
 $ berlioz run --deployment test --cluster pharm --region us-east-1
 ```
 
-4. Output service endpoint addresses
+5. Output service endpoint addresses
 ```
-$ berlioz endpoints --deployment test
+$ berlioz endpoints --deployment test --region us-east-1
 ```
 
-5. Once completed release AWS resources
+6. Once completed release AWS resources
 ```
 $ berlioz stop --deployment test --cluster pharm --region us-east-1
 ```
