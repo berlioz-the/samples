@@ -70,3 +70,15 @@ logs_berlioz/
 
 .vscode
 .history
+
+
+# Java
+**/out/production
+**/maven-status/
+**/maven-archiver/
+**/target/classes/
+**/target/nexus-staging/
+**/target/apidocs/
+**/target/javadoc-bundle-options/
+**/target/*.jar*
+**/target/*.pom*
