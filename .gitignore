@@ -82,3 +82,4 @@ logs_berlioz/
 **/target/javadoc-bundle-options/
 **/target/*.jar*
 **/target/*.pom*
+**/.idea/workspace.xml
