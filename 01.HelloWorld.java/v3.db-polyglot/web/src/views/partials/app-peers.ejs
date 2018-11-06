@@ -1,0 +1,33 @@
+<div class="card green">
+    <div class="card-header">
+        App Peers
+    </div>
+    <div class="card-body">
+        <% if (peers && (Object.keys(peers).length > 0)) { %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Identity</th>
+                    <th scope="col">Protocol</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var identity in peers) {
+                    var peer = peers[identity];
+                    %>
+                    <tr>
+                        <th scope="row"><%= identity %></th>
+                        <td><%= peer.protocol %></td>
+                        <td><%= peer.address %></td>
+                        <td><%= peer.port %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <% } else { %>
+            No peers present
+        <% } %>
+    </div>
+</div>

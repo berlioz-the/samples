@@ -1,0 +1,14 @@
+<% if ((typeof error != "undefined") && error) { %>
+<div class="row">
+    <div class="col-sm">
+        <div class="card red">
+            <div class="card-header">
+                GLOBAL ERROR
+            </div>
+            <div class="card-body">
+                <%= error %>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>

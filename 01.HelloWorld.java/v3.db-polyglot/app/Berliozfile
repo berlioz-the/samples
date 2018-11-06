@@ -1,0 +1,16 @@
+---
+kind: service
+cluster: hello
+name: app
+
+provides:
+    default:
+        port: 4000
+        protocol: http
+
+consumes:
+    - service: db
+
+resources:
+    memory:
+        min: 128

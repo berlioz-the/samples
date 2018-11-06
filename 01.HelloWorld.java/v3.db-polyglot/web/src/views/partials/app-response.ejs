@@ -1,0 +1,18 @@
+<div class="card <%= appPeerInfo.cardClass %>">
+    <div class="card-header">
+        App Peer Response
+    </div>
+    <div class="card-body">
+        <% if (appPeerInfo.url) { %>
+            <div class="card-text">
+                URL: <%= appPeerInfo.url %>
+            </div>
+        <% } %>
+        <div class="card-title">
+            <%= appPeerInfo.title %>
+        </div>
+        <div class="card-text">
+            <%= appPeerInfo.response %>
+        </div>
+    </div>
+</div>

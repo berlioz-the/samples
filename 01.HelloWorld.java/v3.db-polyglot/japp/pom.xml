@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.berlioz.samples</groupId>
-    <artifactId>hello-web</artifactId>
+    <artifactId>hello-japp</artifactId>
     <version>1.0</version>
 
     <parent>

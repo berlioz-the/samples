@@ -1,0 +1,17 @@
+---
+kind: service
+cluster: hello
+name: jweb
+
+provides:
+    default:
+        port: 8080
+        protocol: http
+
+consumes:
+  - service: japp
+  - service: app
+
+resources:
+    memory:
+        min: 200

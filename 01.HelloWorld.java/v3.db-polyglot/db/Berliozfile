@@ -1,0 +1,27 @@
+---
+kind: service
+cluster: hello
+name: db
+
+identity:
+    kind: sequential
+
+provides:
+    default:
+        port: 3306
+        protocol: tcp
+
+storage:
+    - permanent: true
+      path: /var/lib/mysql
+      size: 1GB
+
+environment:
+    MYSQL_ROOT_PASSWORD: mypassword
+    MYSQL_DATABASE: ${HELLO_RELATIONAL_DB_NAME}
+    MYSQL_USER: ${HELLO_RELATIONAL_DB_USER}
+    MYSQL_PASSWORD: ${HELLO_RELATIONAL_DB_PASS}
+
+resources:
+    memory:
+        min: 300

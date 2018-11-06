@@ -1,0 +1,18 @@
+---
+kind: service
+cluster: hello
+name: web
+
+provides:
+    default:
+        port: 3000
+        protocol: http
+        load-balance: true
+        dns: true
+
+consumes:
+    - service: app
+
+resources:
+    memory:
+        min: 100

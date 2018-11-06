@@ -1,0 +1,16 @@
+---
+kind: service
+cluster: hello
+name: japp
+
+provides:
+    default:
+        port: 8080
+        protocol: http
+
+consumes:
+    - service: db
+
+resources:
+    memory:
+        min: 200

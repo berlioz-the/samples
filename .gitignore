@@ -76,10 +76,12 @@ logs_berlioz/
 **/out/production
 **/maven-status/
 **/maven-archiver/
+**/target/application/
 **/target/classes/
 **/target/nexus-staging/
 **/target/apidocs/
 **/target/javadoc-bundle-options/
 **/target/*.jar*
+**/target/*.war*
 **/target/*.pom*
 **/.idea/workspace.xml
