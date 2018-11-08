@@ -1,10 +1,10 @@
-package com.berlioz.samples;
+package com.berlioz.samples.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HelloController {
+public class RootController {
 
     @RequestMapping("/")
     public String index() {
