@@ -1,4 +1,4 @@
-package com.berlioz.samples;
+package com.berlioz.samples.entities;
 
 public class PhoneEntry {
     String name;

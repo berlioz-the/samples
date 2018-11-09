@@ -1,6 +1,4 @@
-package com.berlioz.samples;
-
-import com.berlioz.Berlioz;
+package com.berlioz.samples.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

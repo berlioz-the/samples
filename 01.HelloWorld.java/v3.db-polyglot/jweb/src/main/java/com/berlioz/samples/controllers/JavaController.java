@@ -1,19 +1,27 @@
-package com.berlioz.samples;
+package com.berlioz.samples.controllers;
 
-import com.berlioz.Berlioz;
+import com.berlioz.samples.entities.PhoneEntry;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
 @Controller
 public class JavaController {
 
+    @Autowired
+    @Qualifier("japp")
+    RestTemplate restTemplate;
+
     @RequestMapping("/index-java")
     public String index(Map<String, Object> model) {
         model.put("heading", "Java App Service");
 
-        PhoneEntry[] entries = Berlioz.service("japp").request()
+        PhoneEntry[] entries = restTemplate
                 .getForObject("/entries", PhoneEntry[].class);
 
         model.put("entries", entries);
