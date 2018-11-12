@@ -5,7 +5,7 @@
   config:
     min: 2
     max: 10
-    matrics:
+    metrics:
       - name: berlioz_cpu_usage
         value: median_1min_median
         target: 50%
