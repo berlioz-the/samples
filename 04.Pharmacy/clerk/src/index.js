@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 berlioz.setupExpress(app);
 
+app.set('view engine', 'ejs');
+
 app.get('/', (request, response) => {
     response.send({ service: process.env.BERLIOZ_SERVICE,
                     id: process.env.BERLIOZ_TASK_ID });
@@ -18,7 +20,8 @@ app.post('/job', (request, response) => {
     };
     return kinesis.putRecord(params, (err, data) => {
         if (err) {
-            response.send('ERROR FROM Kinesis::PutRecord ' + JSON.stringify(reason));
+            console.log(err);
+            response.send('ERROR FROM Kinesis::PutRecord ' + JSON.stringify(err));
         } else {
             response.send(data);
         }

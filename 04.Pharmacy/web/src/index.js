@@ -1,8 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
-const Promise = require('promise');
-const request = require('request-promise');
-const AWS = require('aws-sdk');
+const Promise = require('the-promise');
 const berlioz = require('berlioz-connector');
 
 const app = express();
