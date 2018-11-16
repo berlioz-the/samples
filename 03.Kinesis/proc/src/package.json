@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ascii-art": "^1.4.3",
-    "aws-processors": "^1.0.1",
-    "aws-sdk": "^2.275.1",
-    "berlioz-connector": "^1.0.73",
-    "the-lodash": "^1.0.3",
-    "the-promise": "^1.0.26"
+    "ascii-art": "^1.5.0",
+    "aws-processors": "^1.0.4",
+    "aws-sdk": "^2.357.0",
+    "berlioz-connector": "^1.0.96",
+    "the-lodash": "^1.0.13",
+    "the-promise": "^1.1.4"
   }
 }

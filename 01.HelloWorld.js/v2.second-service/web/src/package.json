@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-connector": "^1.0.73",
+    "berlioz-connector": "^1.0.96",
     "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "json-pretty-html": "^1.1.2",
-    "lodash": "^4.17.10",
-    "promise": "^8.0.1"
+    "express": "^4.16.4",
+    "json-pretty-html": "^1.2.0",
+    "lodash": "^4.17.11",
+    "promise": "^8.0.2"
   }
 }

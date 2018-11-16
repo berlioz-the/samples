@@ -1,2 +1,2 @@
 flask==0.10.1
-berlioz>=0.0.10
+berlioz>=0.0.20

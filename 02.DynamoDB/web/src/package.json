@@ -9,10 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-connector": "^1.0.73",
+    "berlioz-connector": "^1.0.96",
     "ejs": "^2.5.8",
-    "express": "^4.16.3",
-    "promise": "^8.0.1",
-    "the-lodash": "^1.0.3"
+    "express": "^4.16.4",
+    "promise": "^8.0.2",
+    "the-lodash": "^1.0.13"
   }
 }

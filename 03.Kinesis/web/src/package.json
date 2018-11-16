@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.275.1",
-    "berlioz-connector": "^1.0.73",
+    "aws-sdk": "^2.357.0",
+    "berlioz-connector": "^1.0.96",
     "ejs": "^2.5.8",
-    "express": "^4.16.3",
-    "lodash": "^4.17.5",
-    "promise": "^8.0.1"
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "promise": "^8.0.2"
   }
 }
