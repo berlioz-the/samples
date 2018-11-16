@@ -33,7 +33,6 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-aop/5.0.9.RELEASE/spring-aop-5.0.9.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-context/5.0.9.RELEASE/spring-context-5.0.9.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-expression/5.0.9.RELEASE/spring-expression-5.0.9.RELEASE.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/berlioz/berlioz-sdk/1.1.4/berlioz-sdk-1.1.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/logging/log4j/log4j-api/2.10.0/log4j-api-2.10.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/logging/log4j/log4j-core/2.10.0/log4j-core-2.10.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar" enabled="true" runInBatchMode="false"/>
@@ -55,5 +54,4 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/io/zipkin/zipkin2/zipkin/2.11.7/zipkin-2.11.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/zipkin/reporter2/zipkin-reporter/2.7.10/zipkin-reporter-2.7.10.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/zipkin/reporter2/zipkin-sender-urlconnection/2.7.10/zipkin-sender-urlconnection-2.7.10.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>
