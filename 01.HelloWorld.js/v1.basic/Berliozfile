@@ -2,7 +2,6 @@
 kind: cluster
 name: hello
 
-
 provides:
     web:
         service: web

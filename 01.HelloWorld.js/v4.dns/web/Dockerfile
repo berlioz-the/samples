@@ -1,4 +1,14 @@
-FROM berliozcloud/node-9
+###############################################################################
+# Step 1 : Builder image
+FROM node:10-alpine
+WORKDIR /app
+COPY src/package*.json ./
+RUN npm install --production
 
-COPY src /app
-RUN npm install
+###############################################################################
+# Step 2 : Runner image
+FROM node:10-alpine
+WORKDIR /app
+COPY --from=0 /app .
+COPY src/ ./
+CMD [ "node", "." ]
