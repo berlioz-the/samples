@@ -10,6 +10,7 @@ app.set('view engine', 'ejs')
 app.get('/', function (req, response) {
     var renderData = {
         settings: [
+            {name: 'Identity', value: berlioz.identity },
             {name: 'Task ID', value: process.env.BERLIOZ_TASK_ID },
             {name: 'Instance ID', value: process.env.BERLIOZ_INSTANCE_ID },
             {name: 'Region', value: process.env.BERLIOZ_REGION },
