@@ -11,6 +11,7 @@ berlioz.setupFlask(app)
 @app.route('/')
 def hello_world():
     settings = [
+        {'name': 'Identity', 'value': berlioz.identity() },
         {'name': 'Task ID', 'value': os.environ.get('BERLIOZ_TASK_ID') },
         {'name': 'Instance ID', 'value': os.environ.get('BERLIOZ_INSTANCE_ID') },
         {'name': 'Region', 'value': os.environ.get('BERLIOZ_REGION') }
