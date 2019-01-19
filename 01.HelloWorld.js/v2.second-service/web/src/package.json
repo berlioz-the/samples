@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-connector": "^1.0.101",
+    "berlioz-connector": "^1.0.105",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "json-pretty-html": "^1.2.0",

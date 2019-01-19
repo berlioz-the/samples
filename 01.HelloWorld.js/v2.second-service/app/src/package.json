@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-connector": "^1.0.101",
+    "berlioz-connector": "^1.0.105",
     "express": "^4.16.4"
   }
 }
