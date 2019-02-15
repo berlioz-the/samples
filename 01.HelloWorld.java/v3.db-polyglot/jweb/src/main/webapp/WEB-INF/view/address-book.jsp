@@ -44,6 +44,14 @@
         </div>
     </div>
 
+    <c:if test="${not empty error}">
+        <div class="row">
+            <div class="col-sm">
+                <h3>${error}</h3>
+            </div>
+        </div>
+    </c:if>
+
 </main>
 </body>
 </html>

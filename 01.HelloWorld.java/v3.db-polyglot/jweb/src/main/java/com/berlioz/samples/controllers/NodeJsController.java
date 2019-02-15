@@ -21,10 +21,16 @@ public class NodeJsController {
     public String index(Map<String, Object> model) {
         model.put("heading", "NodeJS App Service");
 
-        PhoneEntry[] entries = restTemplate
-                .getForObject("/entries", PhoneEntry[].class);
-
-        model.put("entries", entries);
+        try 
+        {
+            PhoneEntry[] entries = restTemplate
+                    .getForObject("/entries", PhoneEntry[].class);
+            model.put("entries", entries);
+        }
+        catch(Exception ex)
+        {
+            model.put("error", "Error from app: " + ex.getMessage());
+        }
 
         return "address-book";
     }
