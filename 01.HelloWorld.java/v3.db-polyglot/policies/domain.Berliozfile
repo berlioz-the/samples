@@ -1,5 +1,6 @@
 kind: policy
 name: domain-name
+deployment: gprod
 cluster: hello
 endpoint: web
 value: web.example.com

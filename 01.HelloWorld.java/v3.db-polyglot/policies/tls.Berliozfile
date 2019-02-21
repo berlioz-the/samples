@@ -1,5 +1,6 @@
 kind: policy
 name: tls
+deployment: gprod
 cluster: hello
 endpoint: web
 config:
