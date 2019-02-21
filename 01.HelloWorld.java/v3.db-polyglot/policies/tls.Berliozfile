@@ -1,0 +1,6 @@
+kind: policy
+name: tls
+cluster: hello
+endpoint: web
+config:
+  enabled: true

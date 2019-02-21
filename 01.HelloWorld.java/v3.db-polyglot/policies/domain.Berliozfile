@@ -1,0 +1,5 @@
+kind: policy
+name: domain-name
+cluster: hello
+endpoint: web
+value: web.example.com
