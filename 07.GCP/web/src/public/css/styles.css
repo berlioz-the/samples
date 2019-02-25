@@ -1,0 +1,107 @@
+.container {
+}
+
+.card {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* .small-card {
+    max-width: 400px;
+    float: left;
+} */
+
+.red {
+    background-color: #f4bec3;
+}
+.red .card-header {
+    background-color: #dc3545;
+    color: white;
+    font-weight: 600;
+}
+.red .table td, .red .table th {
+    border-top: 1px solid #dc3545;
+}
+.red .table thead th {
+    border-bottom: 1px solid #28a745;
+}
+
+
+.blue {
+    background-color: #b3d7ff;
+}
+.blue .card-header {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+}
+.blue .table td, .blue .table th {
+    border-top: 1px solid #007bff;
+}
+.blue .table thead th {
+    border-bottom: 1px solid #28a745;
+}
+
+
+.green {
+    background-color: #c1f0cc;
+}
+.green .card-header {
+    background-color: #28a745;
+    color: white;
+    font-weight: 600;
+}
+.green .table td, .green .table th {
+    border-top: 1px solid #28a745;
+}
+.green .table thead th {
+    border-bottom: 1px solid #28a745;
+}
+
+
+.yellow {
+    background-color: #ffecb3;
+}
+.yellow .card-header {
+    background-color: #ffbf00;
+    color: white;
+    font-weight: 600;
+}
+.yellow .table td, .yellow .table th {
+    border-top: 1px solid #ffbf00;
+}
+.yellow .table thead th {
+    border-bottom: 1px solid #28a745;
+}
+
+
+.dark {
+    background-color: #d5d9dd;
+}
+.dark .card-header {
+    background-color: #343a40;
+    color: white;
+    font-weight: 600;
+}
+.dark .table td, .dark .table th {
+    border-top: 1px solid #343a40;
+}
+.dark .table thead th {
+    border-bottom: 1px solid #28a745;
+}
+
+
+.eastern-blue {
+    background-color: #bbeff7;
+}
+.eastern-blue .card-header {
+    background-color: #17a2b8;
+    color: white;
+    font-weight: 600;
+}
+.eastern-blue .table td, .eastern-blue .table th {
+    border-top: 1px solid #17a2b8;
+}
+.eastern-blue .table thead th {
+    border-bottom: 1px solid #28a745;
+}

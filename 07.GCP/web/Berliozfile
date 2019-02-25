@@ -1,0 +1,17 @@
+---
+kind: service
+cluster: hello
+name: web
+
+provides:
+    default:
+        port: 3000
+        protocol: http
+
+consumes:
+  - queue: jobs
+  - database: users
+
+resources:
+    memory:
+        min: 100
