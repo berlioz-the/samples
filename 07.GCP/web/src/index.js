@@ -40,7 +40,7 @@ app.get('/', function (req, response) {
         .catch(reason => {
             renderData.settings.push({
                 name: 'ERROR:: ',
-                value: JSON.stringify(reasonresult)
+                value: reason.message
             })
         })
         .then(() => response.render('pages/index', renderData));
