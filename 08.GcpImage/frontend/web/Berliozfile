@@ -1,0 +1,16 @@
+---
+kind: service
+cluster: img
+name: web
+
+provides:
+    default:
+        port: 3000
+        protocol: http
+
+consumes:
+  - database: images
+
+resources:
+    memory:
+        min: 100

@@ -1,0 +1,8 @@
+---
+kind: cluster
+name: img
+
+provides:
+    web:
+        service: web
+        public: true
