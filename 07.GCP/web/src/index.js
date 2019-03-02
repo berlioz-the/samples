@@ -2,6 +2,7 @@ const _ = require('lodash');
 const express = require('express');
 const berlioz = require('berlioz-sdk');
 const {Storage} = require('@google-cloud/storage');
+const PubSub = require('@google-cloud/pubsub');
 
 const app = express();
 berlioz.setupExpress(app);
@@ -37,6 +38,7 @@ app.get('/', function (req, response) {
                 value: JSON.stringify(names)
             })
         })
+        .then(() => publishSampleMessage())
         .catch(reason => {
             renderData.settings.push({
                 name: 'ERROR:: ',
@@ -45,6 +47,27 @@ app.get('/', function (req, response) {
         })
         .then(() => response.render('pages/index', renderData));
 })
+
+function publishSampleMessage()
+{
+    const msg = {
+        messages: [
+            {
+                data: Buffer.from("world")
+            }
+        ],
+    };
+    if (!PubSub) {
+        throw new Error("PubSub is NULL");
+    }
+    if (!PubSub.v1) {
+        throw new Error("PubSub.v1 is NULL");
+    }
+    if (!PubSub.v1.PublisherClient) {
+        throw new Error("PubSub.v1.PublisherClient is NULL");
+    }
+    return berlioz.queue('jobs').client(PubSub, 'PublisherClient').publish(msg);
+}
 
 for(var x of _.keys(process.env)) {
     console.log('ENV:: ' + x + ' => ' + process.env[x]);
