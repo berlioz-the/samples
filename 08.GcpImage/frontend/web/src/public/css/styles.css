@@ -5,6 +5,11 @@ h3 {
     margin-top: 40px;
 }
 
+.user-image {
+    width: 200px;
+    height: 200px;
+}
+
 .card {
     margin-top: 15px;
     margin-bottom: 15px;
