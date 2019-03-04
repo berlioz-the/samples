@@ -11,6 +11,8 @@ provides:
 consumes:
   - database: images
   - queue: jobs
+    actions:
+      - publish
 
 resources:
     memory:

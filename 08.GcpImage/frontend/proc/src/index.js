@@ -11,12 +11,12 @@ berlioz.addon(require('berlioz-gcp'));
 var SubscriptionId = null;
 
 berlioz.queue('jobs').monitorFirst(peer => {
-    console.log('[Pub /Sub] Changed.');
+    console.log('[PubSub] Changed.');
     console.log(peer)
     if (peer) {
         var name = peer.name;
         name = name.replace('/topics/', '/subscriptions/');
-        name = name + '-' + berlioz.identity;
+        name = name + '-proc';
         var msgRequest = {
             name: name,
             topic: peer.name

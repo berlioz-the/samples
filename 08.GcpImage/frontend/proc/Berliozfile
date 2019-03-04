@@ -5,6 +5,8 @@ name: proc
 
 consumes:
   - queue: jobs
+    actions:
+      - subscribe
   - database: images
 
 resources:
