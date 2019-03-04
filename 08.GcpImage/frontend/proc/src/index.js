@@ -14,31 +14,7 @@ berlioz.queue('jobs').monitorFirst(peer => {
     console.log('[PubSub] Changed.');
     console.log(peer)
     if (peer) {
-        var name = peer.name;
-        name = name.replace('/topics/', '/subscriptions/');
-        name = name + '-proc';
-        var msgRequest = {
-            name: name,
-            topic: peer.name
-        }
-        console.log('CREATING SUBSCRIPTION:');
-        console.log(msgRequest);
-        return berlioz.queue('jobs').client(PubSub, 'SubscriberClient').createSubscription(msgRequest)
-            .then(result => {
-                console.log('NEW SUBSCRIPTION RESULT:');
-                console.log(result);
-                SubscriptionId = result.name;
-            })
-            .catch(reason => {
-                if(reason.code == 6) {
-                    console.log('SUBSCRIPTION ALREADY PRESENT.');
-                    SubscriptionId = name;
-                } else {
-                    console.log('ERROR CREATING SUBSCRIPTION:');
-                    console.log(reason);
-                    throw reason;
-                }
-            });
+        SubscriptionId = peer.subName;
     } else {
         SubscriptionId = null;
     }
