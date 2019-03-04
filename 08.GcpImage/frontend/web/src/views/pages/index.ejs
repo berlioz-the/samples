@@ -57,7 +57,13 @@
                                     <tr>
                                         <th scope="row"><%= image.name %></th>
                                         <td><image class="user-image" src="<%= image.origUrl %>" /></td>
-                                        <td><image class="user-image" src="<%= image.processedUrl %>" /></td>
+                                        <td>
+                                            <% if ((typeof image.processedUrl != "undefined") && image.processedUrl) { %>
+                                                <image class="user-image" src="<%= image.processedUrl %>" />
+                                            <% } else {%>
+                                                <span>processing...</span>
+                                            <% }%>
+                                        </td>
                                     </tr>
                                 <% }); %>
                             </tbody>

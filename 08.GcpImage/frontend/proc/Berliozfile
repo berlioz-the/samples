@@ -1,16 +1,11 @@
 ---
 kind: service
 cluster: img
-name: web
-
-provides:
-    default:
-        port: 3000
-        protocol: http
+name: proc
 
 consumes:
-  - database: images
   - queue: jobs
+  - database: images
 
 resources:
     memory:
