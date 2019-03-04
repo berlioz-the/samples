@@ -4,8 +4,7 @@ const berlioz = require('berlioz-sdk');
 const {Storage} = require('@google-cloud/storage');
 const PubSub = require('@google-cloud/pubsub');
 const filterous = require('filterous');
-const tmp = require('tmp');
-const stream = require('stream');
+const Stream = require('stream');
 
 berlioz.addon(require('berlioz-gcp'));
 
@@ -70,17 +69,40 @@ function processSubscription(id)
     return berlioz.queue('jobs').client(PubSub, 'SubscriberClient').pull(pullRequest)
         .then(responses => {
             console.log(responses);
-            return Promise.serial(responses.receivedMessages, x => processMessage(x));
+            return Promise.serial(responses.receivedMessages, x => processMessage(id, x));
         })
         .catch(reason => {
+            if (reason.code == 4) {
+                console.log('[processSubscription] DEADLINE_EXCEEDED...');
+                return;
+            }
             console.log('[processSubscription] Error: ');
             console.log(reason);
         })
 }
 
-function processMessage(message)
+function acknowledgeMessage(id, message)
 {
-    console.log('[processMessage] ', message)
+    console.log('[acknowledgeMessage] %s...', message.ackId)
+
+    var ackRequest = {
+        subscription: id,
+        ackIds: [message.ackId]
+    }
+    console.log('[acknowledgeMessage] ', ackRequest)
+    return berlioz.queue('jobs').client(PubSub, 'SubscriberClient').acknowledge(ackRequest)
+        .then(result => {
+            console.log('[acknowledgeMessage] RESULT: ', result)
+        })
+        .catch(reason => {
+            console.log('[acknowledgeMessage] Error: ');
+            console.log(reason);
+        })
+}
+
+function processMessage(id, message)
+{
+    console.log('[processMessage] Begin ', message)
     var data = JSON.parse(message.message.data.toString());
     console.log('[processMessage] ', data)
     return downloadImage(data.name)
@@ -94,6 +116,10 @@ function processMessage(message)
         })
         .then(() => {
             console.log('[processMessage] uploaded.')
+            return acknowledgeMessage(id, message);
+        })
+        .then(() => {
+            console.log('[processMessage] message acknowledged.')
         })
         .catch(reason => {
             console.log('[processMessage] error in download: ')
@@ -126,29 +152,20 @@ function downloadImage(id)
                 console.log(reason);
                 reject(reason);
             });
-
     });
-    
 }
 
 function processImage(buf)
 {
     console.log('[processImage] buffer size: %s', buf.length);
-
-    var tmpobj = tmp.fileSync();
-    // console.log('[processImage] target tmp: %s', tmpobj.name);
-
     var image = filterous.importImage(buf, {});
-
     image.applyInstaFilter('amaro')
-
-    return extractImageBuffer(image); //, tmpobj.name
+    return extractImageBuffer(image);
 }
-
 
 function uploadImage(id, buf)
 {
-    var stream = new stream.PassThrough();
+    var stream = new Stream.PassThrough();
     stream.end( buf );
 
     return new Promise((resolve, reject) => {
@@ -169,32 +186,7 @@ function uploadImage(id, buf)
                 reject(reason);
             });
     });
-
 }
-
-// function saveImage(image, filename)
-// {
-//     return new Promise((resolve, reject) => {
-//         let type = 'image/' + image.options.format;
-
-//         image.canvas.toDataURL(type, (err, base64) => {
-//             if (err) {
-//                 reject(err);
-//                 return;
-//             }
-//             // Sync JPEG is not supported bu node-canvas
-//             let base64Data = base64.split(',')[1];
-//             let binaryData = new Buffer(base64Data, 'base64');
-//             fs.writeFile(filename, base64Data, {encoding: 'base64'}, (err2) => {
-//                     if(err2) {
-//                         reject(err2);
-//                     } else {
-//                         resolve(filename);
-//                     }
-//                 });
-//         });
-//     });
-// }
 
 function extractImageBuffer(image)
 {

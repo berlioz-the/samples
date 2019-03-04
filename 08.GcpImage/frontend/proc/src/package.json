@@ -17,7 +17,6 @@
     "filterous": "^2.0.2-beta",
     "lodash": "^4.17.11",
     "stream": "0.0.2",
-    "the-promise": "^1.1.4",
-    "tmp": "0.0.33"
+    "the-promise": "^1.1.4"
   }
 }
