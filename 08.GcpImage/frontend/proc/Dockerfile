@@ -1,6 +1,6 @@
 ###############################################################################
 # Step 1 : Builder image
-FROM node:10-alpine
+FROM node:10-jessie
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -16,7 +16,7 @@ RUN npm install --production
 
 ###############################################################################
 # Step 2 : Runner image
-FROM node:10-alpine
+FROM node:10-jessie
 
 RUN apt-get update && apt-get install -y \
     build-essential \

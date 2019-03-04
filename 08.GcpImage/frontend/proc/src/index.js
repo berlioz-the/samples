@@ -4,6 +4,8 @@ const berlioz = require('berlioz-sdk');
 const {Storage} = require('@google-cloud/storage');
 const PubSub = require('@google-cloud/pubsub');
 const filterous = require('filterous');
+const tmp = require('tmp');
+const stream = require('stream');
 
 berlioz.addon(require('berlioz-gcp'));
 
@@ -83,8 +85,15 @@ function processMessage(message)
     console.log('[processMessage] ', data)
     return downloadImage(data.name)
         .then(buf => {
-            console.log('[processMessage] got buffer: %s', buf.length)
+            console.log('[processMessage] orig buffer size: %s', buf.length)
             return processImage(buf);
+        })
+        .then(buf => {
+            console.log('[processMessage] processed buffer size: %s', buf.length)
+            return uploadImage(data.name, buf);
+        })
+        .then(() => {
+            console.log('[processMessage] uploaded.')
         })
         .catch(reason => {
             console.log('[processMessage] error in download: ')
@@ -126,9 +135,84 @@ function processImage(buf)
 {
     console.log('[processImage] buffer size: %s', buf.length);
 
-    return filterous.importImage(buf, options)
-        .applyInstaFilter('amaro')
-        .save(filename);
+    var tmpobj = tmp.fileSync();
+    // console.log('[processImage] target tmp: %s', tmpobj.name);
+
+    var image = filterous.importImage(buf, {});
+
+    image.applyInstaFilter('amaro')
+
+    return extractImageBuffer(image); //, tmpobj.name
+}
+
+
+function uploadImage(id, buf)
+{
+    var stream = new stream.PassThrough();
+    stream.end( buf );
+
+    return new Promise((resolve, reject) => {
+        berlioz.database('images').client(Storage).file('processed/' + id)
+            .then(file => {
+                return file.createWriteStream();
+            })
+            .then(writeStream => {
+                stream.pipe(writeStream)
+                    .on('error', (error) => {
+                        reject(error);
+                    })
+                    .on('finish', () => {
+                        resolve();
+                    });
+            })
+            .catch(reason => {
+                reject(reason);
+            });
+    });
+
+}
+
+// function saveImage(image, filename)
+// {
+//     return new Promise((resolve, reject) => {
+//         let type = 'image/' + image.options.format;
+
+//         image.canvas.toDataURL(type, (err, base64) => {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             }
+//             // Sync JPEG is not supported bu node-canvas
+//             let base64Data = base64.split(',')[1];
+//             let binaryData = new Buffer(base64Data, 'base64');
+//             fs.writeFile(filename, base64Data, {encoding: 'base64'}, (err2) => {
+//                     if(err2) {
+//                         reject(err2);
+//                     } else {
+//                         resolve(filename);
+//                     }
+//                 });
+//         });
+//     });
+// }
+
+function extractImageBuffer(image)
+{
+    return new Promise((resolve, reject) => {
+        let type = 'image/' + image.options.format;
+
+        image.canvas.toDataURL(type, (err, base64) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            // Sync JPEG is not supported bu node-canvas
+            let base64Data = base64.split(',')[1];
+            // let binaryData = new Buffer(base64Data, 'base64');
+            let binaryData = Buffer.from(base64Data, 'base64');
+            resolve(binaryData);
+        });
+    });
 }
 
 return processQueue()
