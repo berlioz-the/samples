@@ -8,6 +8,10 @@ RUN npm install --production
 ###############################################################################
 # Step 2 : Runner image
 FROM node:10-alpine
+
+RUN apt-get update 
+RUN apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev 
+
 WORKDIR /app
 COPY --from=0 /app .
 COPY src/ ./

@@ -14,6 +14,7 @@
     "berlioz-gcp": "^1.0.7",
     "berlioz-sdk": "^1.0.113",
     "canvas": "^2.3.1",
+    "filterous": "^2.0.2-beta",
     "lodash": "^4.17.11",
     "the-promise": "^1.1.4"
   }
