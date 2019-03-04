@@ -3,6 +3,7 @@ const Promise = require('the-promise');
 const berlioz = require('berlioz-sdk');
 const {Storage} = require('@google-cloud/storage');
 const PubSub = require('@google-cloud/pubsub');
+const filterous = require('filterous');
 
 berlioz.addon(require('berlioz-gcp'));
 
@@ -83,6 +84,7 @@ function processMessage(message)
     return downloadImage(data.name)
         .then(buf => {
             console.log('[processMessage] got buffer: %s', buf.length)
+            return processImage(buf);
         })
         .catch(reason => {
             console.log('[processMessage] error in download: ')
@@ -120,6 +122,14 @@ function downloadImage(id)
     
 }
 
+function processImage(buf)
+{
+    console.log('[processImage] buffer size: %s', buf.length);
+
+    return filterous.importImage(buf, options)
+        .applyInstaFilter('amaro')
+        .save(filename);
+}
 
 return processQueue()
     .then(result => {
