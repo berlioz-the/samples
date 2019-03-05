@@ -1,0 +1,7 @@
+kind: policy
+name: tls
+deployment: gtest
+cluster: img
+endpoint: web
+config:
+  enabled: true
