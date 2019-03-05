@@ -1,6 +1,6 @@
 const express = require('express')
 const Promise = require('promise');
-const berlioz = require('berlioz-connector');
+const berlioz = require('berlioz-sdk');
 
 const app = express()
 berlioz.setupExpress(app);

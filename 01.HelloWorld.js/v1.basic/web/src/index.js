@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const express = require('express');
-const berlioz = require('berlioz-connector');
+const berlioz = require('berlioz-sdk');
 
 const app = express();
 berlioz.setupExpress(app);
