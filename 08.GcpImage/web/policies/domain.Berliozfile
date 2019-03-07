@@ -1,6 +1,0 @@
-kind: policy
-name: domain-name
-deployment: gtest
-cluster: img
-endpoint: web
-value: web.example.com

@@ -1,7 +1,9 @@
-- kind: policy
-  name: domain-name
+---
+kind: policy
+name: domain-name
+target:
+  deployment: prod
   service: web
   endpoint: default
-  deployment: prod
-  config:
-    name: example.com
+config:
+  value: example.com

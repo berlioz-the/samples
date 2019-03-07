@@ -1,8 +1,9 @@
+---
 kind: policy
 name: tls
 target:
-  deployment: gprod
-  cluster: hello
+  deployment: gtest
+  cluster: img
   endpoint: web
 config:
   enable: true

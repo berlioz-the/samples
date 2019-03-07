@@ -1,7 +1,10 @@
-- kind: policy
-  name: object-substitute
+kind: policy
+name: object-substitute
+enabled: false
+target:
   deployment: gg
   region: us-central1-a
+config:
   meta: cluster
   target: [gg]
   value: standard-cluster-1

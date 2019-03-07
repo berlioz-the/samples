@@ -13,7 +13,3 @@ consumes:
   - queue: jobs
     actions:
       - publish
-
-resources:
-    memory:
-        min: 100
