@@ -1,29 +1,29 @@
 ---
 kind: policy
-name: cpu
+name: memory
 target:
     cluster: img
 config:
-    min: 0.15
-    max: 0.2
+    min: 100
+    max: 150
 
 ---
 kind: policy
-name: cpu
+name: memory
 target:
     deployment: gprod
     cluster: img
 config:
-    min: 0.2
-    max: 0.3
+    min: 150
+    max: null
 
 ---
 kind: policy
-name: cpu
+name: memory
 target:
     deployment: gprod
     cluster: img
     service: proc
 config:
-    min: 0.3
-    max: 0.4
+    min: 200
+    max: 300
