@@ -1,0 +1,22 @@
+---
+kind: lambda
+cluster: func
+name: hello
+
+runtime: nodejs6
+handler: index.handler
+timeout: 300
+
+# consumes:
+#     - database: providers
+
+# exposed:
+#     - api: api
+#       path: /provider
+#       method: POST
+#       authorize:
+#         database: directory
+#
+resources:
+    memory:
+        min: 512
