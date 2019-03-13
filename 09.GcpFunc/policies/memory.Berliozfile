@@ -1,0 +1,17 @@
+---
+kind: policy
+name: memory
+target:
+    cluster: func
+config:
+    min: 200
+
+---
+kind: policy
+name: memory
+target:
+    deployment: gprod
+    lambda: getImages
+    cluster: func
+config:
+    min: 512
