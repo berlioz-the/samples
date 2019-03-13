@@ -12,9 +12,9 @@ exports.handler = (req, res) => {
 
             var result = `<html>
             <body>
-            <pre>
+            <pre><strong>
             ${JSON.stringify(names, null, 4)}
-            </pre>
+            </strong></pre>
             </body>
             </html>`
 
