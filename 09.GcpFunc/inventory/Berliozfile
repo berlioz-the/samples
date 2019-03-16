@@ -1,0 +1,6 @@
+---
+kind: database
+cluster: func
+name: inventory
+class: sql
+subClass: sql
