@@ -3,21 +3,40 @@ berlioz.addon(require('berlioz-gcp'));
 var mysql = require('mysql');
 var _ = require('lodash');
 
-var mysqlConfig = null;
+var mysqlConfig = {
+    config: null
+};
+
+console.log("Module Begin X...");
 
 berlioz.database('inventory').monitorFirst(peer => {
     if (peer) {
-        mysqlConfig = _.clone(peer);
-        mysqlConfig.user = 'root';
-        mysqlConfig.password = '';
+        console.log("[monitorFirst] Peer: ");
+        console.log(JSON.stringify(peer, null, 4));
+        mysqlConfig.config = _.clone(peer.config);
+        mysqlConfig.config.user = 'root';
+        mysqlConfig.config.password = '';
     } else {
-        mysqlConfig = null;
+        console.log("[monitorFirst] No Peer Found");
+        mysqlConfig.config = null;
     }
+
+    console.log("[monitorFirst] Final mysqlConfig: ");
+    console.log(JSON.stringify(mysqlConfig, null, 4));
+
 });
 
 exports.handler = (req, res) => {
 
-    console.log("Begin...");
+    console.log("Handler Begin...");
+    console.log("[handler] mysqlConfig: ");
+    console.log(JSON.stringify(mysqlConfig, null, 4));
+
+    if (mysqlConfig.config) {
+        console.log(JSON.stringify(mysqlConfig.config, null, 4));
+    } else {
+        console.log("Missing mysqlConfig");
+    }
 
     connectToDemoDatabase(con => {
         if (!con) {
@@ -93,13 +112,13 @@ function connectToDemoDatabase(cb)
 
 function connectToDatabase(name, cb)
 {
-    if (!mysqlConfig) {
+    if (!mysqlConfig.config) {
         console.log("*** ERROR: DB Peer not present");
         cb(null);
         return;
     }
 
-    var config = _.clone(mysqlConfig);
+    var config = _.clone(mysqlConfig.config);
     config.database = name;
 
     var con = mysql.createConnection(config);
