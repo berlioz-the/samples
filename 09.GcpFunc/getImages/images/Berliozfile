@@ -1,0 +1,6 @@
+---
+kind: database
+cluster: func
+name: images
+class: storage
+subClass: storage

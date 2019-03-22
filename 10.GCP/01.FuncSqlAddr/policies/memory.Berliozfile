@@ -1,0 +1,15 @@
+---
+kind: policy
+name: memory
+target:
+    cluster: func
+config:
+    min: 200
+
+---
+kind: policy
+name: memory
+target:
+    deployment: gprod
+config:
+    min: 512

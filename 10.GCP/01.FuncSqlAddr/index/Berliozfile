@@ -1,0 +1,22 @@
+---
+kind: lambda
+cluster: addrf
+name: index
+
+runtime: nodejs6
+handler: handler
+timeout: 15
+
+consumes:
+    - database: book
+
+# exposed:
+#     - api: api
+#       path: /provider
+#       method: POST
+#       authorize:
+#         database: directory
+#
+# resources:
+#     memory:
+#         min: 500

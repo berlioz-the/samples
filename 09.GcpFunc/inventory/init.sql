@@ -1,0 +1,7 @@
+CREATE DATABASE IF NOT EXISTS demo;
+
+USE demo;
+
+CREATE TABLE IF NOT EXISTS persons (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name varchar(100) );
