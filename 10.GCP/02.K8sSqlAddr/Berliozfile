@@ -1,0 +1,8 @@
+---
+kind: cluster
+name: addr
+
+provides:
+  web:
+    service: web
+    public: true
