@@ -92,6 +92,7 @@ function getConnection()
     return Promise.resolve(mysql.createConnection(mysqlConfig.config))
         .then(result => {
             mysqlConfig.connection = result;
+            return result;
         })
         .catch(reason => {
             console.log("ERROR Connecting to DB:");
