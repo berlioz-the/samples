@@ -5,6 +5,7 @@ var _ = require('lodash');
 var Promise = require('promise');
 var ejs = require('ejs');
 var path = require('path');
+const PubSub = require('@google-cloud/pubsub');
 
 exports.handler = (req, res) => {
 
@@ -38,7 +39,13 @@ function processGet(connection, req, renderData)
 
 function processPost(connection, req, renderData)
 {
-    return connection.query(`INSERT INTO contacts(name, phone) VALUES('${req.body.name}', '${req.body.phone}')`);
+    return connection.query(`INSERT INTO contacts(name, phone) VALUES('${req.body.name}', '${req.body.phone}')`)
+        .then(() => {
+            return publishMessage({
+                name: req.body.name,
+                phone: req.body.phone
+            });
+        });
 }
 
 function renderResult(res, renderData)
@@ -53,6 +60,19 @@ function renderResult(res, renderData)
                 res.send(html);
             }
         });
+}
+
+function publishMessage(msg)
+{
+    const msgRequest = {
+        messages: [
+            {
+                data: Buffer.from(JSON.stringify(msg))
+            }
+        ],
+    };
+    return berlioz.queue('jobs').client(PubSub, 'PublisherClient')
+        .publish(msgRequest);
 }
 
 

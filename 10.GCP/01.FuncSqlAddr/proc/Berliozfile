@@ -1,7 +1,7 @@
 ---
 kind: lambda
 cluster: addrf
-name: index
+name: proc
 
 runtime: nodejs6
 handler: handler
@@ -11,4 +11,7 @@ consumes:
     - database: book
     - queue: jobs
       actions:
-      - publish
+      - subscribe
+
+# trigger:
+#   queue: jobs
