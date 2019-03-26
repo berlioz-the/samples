@@ -12,6 +12,3 @@ consumes:
     - queue: jobs
       actions:
       - subscribe
-
-# trigger:
-#   queue: jobs
