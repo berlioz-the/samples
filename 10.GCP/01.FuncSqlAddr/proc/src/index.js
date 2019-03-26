@@ -3,19 +3,23 @@ berlioz.addon(require('berlioz-gcp'));
 var mysql = require('promise-mysql');
 var _ = require('lodash');
 var Promise = require('promise');
+const PNF = require('google-libphonenumber').PhoneNumberFormat;
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 exports.handler = (event, callback) => {
     const pubsubMessage = event.data;
     const strData = Buffer.from(pubsubMessage.data, 'base64').toString();
     console.log(`Message: ${strData}`);
     var body = JSON.parse(strData);
-    body.name = 'HI-' + body.name;
+
+    const number = phoneUtil.parseAndKeepRawInput(body.phone, 'US');
+    var newPhone = phoneUtil.format(number, PNF.INTERNATIONAL);
 
     console.log(`Connecting to database...`);
     return connectToDatabase()
         .then(connection => {
             console.log(`Updating...`);
-            return connection.query(`INSERT INTO contacts(name, phone) VALUES('${body.name}', '${body.phone}')`)
+            return connection.query(`UPDATE contacts SET phone='${newPhone}' WHERE name = '${body.name}'`)
         })
         .then(() => {
             console.log(`Done.`);
