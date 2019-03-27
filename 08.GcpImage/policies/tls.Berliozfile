@@ -1,9 +1,0 @@
----
-kind: policy
-name: tls
-target:
-  deployment: gtest
-  cluster: img
-  endpoint: web
-config:
-  enable: true

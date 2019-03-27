@@ -1,9 +1,0 @@
----
-kind: policy
-name: domain-name
-target:
-  deployment: gtest
-  cluster: img
-  endpoint: web
-config:
-  value: web.example.com

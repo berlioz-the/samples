@@ -1,6 +1,0 @@
----
-kind: queue
-cluster: img
-name: jobs
-class: queue
-subClass: pubsub

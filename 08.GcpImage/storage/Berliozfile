@@ -1,6 +1,0 @@
----
-kind: database
-cluster: img
-name: images
-class: storage
-subClass: storage
