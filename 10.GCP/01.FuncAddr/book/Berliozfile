@@ -1,8 +1,0 @@
----
-kind: database
-cluster: addrf
-name: book
-class: sql
-subClass: sql
-
-init: init.sql
