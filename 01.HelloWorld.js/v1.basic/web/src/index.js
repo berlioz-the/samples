@@ -1,3 +1,5 @@
+console.log(JSON.stringify(process.env));
+
 const _ = require('lodash');
 const express = require('express');
 const berlioz = require('berlioz-sdk');

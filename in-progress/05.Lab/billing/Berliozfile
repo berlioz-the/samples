@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: lab
-name: billing
+name: bllng
 
 provides:
     client:

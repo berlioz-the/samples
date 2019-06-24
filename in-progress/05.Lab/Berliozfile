@@ -4,6 +4,6 @@ name: lab
 
 provides:
     front:
-        service: frontend
+        service: front
         endpoint: client
         public: true

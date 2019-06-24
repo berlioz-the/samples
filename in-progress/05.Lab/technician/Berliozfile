@@ -1,7 +1,7 @@
 ---
 kind: service
 cluster: lab
-name: technician
+name: tech
 
 consumes:
     - queue: jobs

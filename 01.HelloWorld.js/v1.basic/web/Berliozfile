@@ -7,7 +7,4 @@ provides:
     default:
         port: 3000
         protocol: http
-
-resources:
-    memory:
-        min: 100
+        load-balance: true
