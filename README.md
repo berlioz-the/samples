@@ -59,7 +59,7 @@ $ cd 01.HelloWorld.js/v1.basic
 
 2. Login the region in order to push images
 ```
-$ berlioz login --region us-east-1
+$ berlioz login
 ```
 
 3. Build and push the project to berlioz
