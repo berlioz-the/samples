@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "berlioz-sdk": "^1.0.113",
+    "berlioz-sdk": "^1.0.120",
     "ejs": "^2.5.8",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
