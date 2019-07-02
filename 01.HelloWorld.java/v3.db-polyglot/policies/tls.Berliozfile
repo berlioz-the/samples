@@ -1,7 +1,7 @@
 kind: policy
 name: tls
 target:
-  deployment: gprod
+  deployment: gtest
   cluster: hello
   endpoint: web
 config:

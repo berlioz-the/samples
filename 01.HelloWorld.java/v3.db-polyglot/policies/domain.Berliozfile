@@ -2,7 +2,7 @@
 kind: policy
 name: domain-name
 target:
-  deployment: gprod
+  deployment: gtest
   cluster: hello
   endpoint: web
 config:
