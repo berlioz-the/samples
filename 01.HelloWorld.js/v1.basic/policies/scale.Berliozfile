@@ -1,0 +1,6 @@
+kind: policy
+name: scale
+target:
+  service: web
+config:
+  desired: 2
