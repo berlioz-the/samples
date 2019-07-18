@@ -8,3 +8,7 @@ provides:
         port: 3000
         protocol: http
         load-balance: true
+
+checks:
+  - stage: health
+  - stage: ready
