@@ -12,7 +12,7 @@
     "berlioz-connector": "^1.0.96",
     "ejs": "^2.5.8",
     "express": "^4.16.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "the-promise": "^1.1.4"
   }
 }
