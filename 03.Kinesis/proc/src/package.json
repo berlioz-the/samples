@@ -11,7 +11,7 @@
   "dependencies": {
     "ascii-art": "^1.5.0",
     "aws-processors": "^1.0.4",
-    "aws-sdk": "^2.357.0",
+    "aws-sdk": "^2.814.0",
     "berlioz-connector": "^1.0.96",
     "the-lodash": "^1.0.13",
     "the-promise": "^1.1.4"
