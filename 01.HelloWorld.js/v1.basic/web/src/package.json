@@ -11,7 +11,7 @@
   "dependencies": {
     "berlioz-sdk": "^1.0.120",
     "ejs": "^2.5.8",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "lodash": "^4.17.11",
     "promise": "^8.0.2"
   }
